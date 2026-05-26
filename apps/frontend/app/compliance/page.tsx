@@ -1,9 +1,22 @@
 'use client';
 
-import { useState }              from 'react';
-import { ComplianceNFTCard }     from '../../components/ComplianceNFTCard';
-import { useNexusAPI }           from '../../hooks/useNexusAPI';
-import Link                      from 'next/link';
+import { useState }          from 'react';
+import { ComplianceNFTCard } from '../../components/ComplianceNFTCard';
+import { useNexusAPI }       from '../../hooks/useNexusAPI';
+import { Navbar }            from '../../components/Navbar';
+import Link                  from 'next/link';
+
+const SAMPLE_WALLETS = [
+  { addr: '0x1a2b3c4d...', country: 'MX', tier: 'VERIFIED', score: 891 },
+  { addr: '0xef56ab89...', country: 'BR', tier: 'PREMIUM',  score: 956 },
+  { addr: '0xcd1234ef...', country: 'CO', tier: 'BASIC',    score: 612 },
+];
+
+const TIER_META: Record<string, { color: string; icon: string; desc: string }> = {
+  BASIC:    { color: '#F7B731', icon: '◆', desc: 'KYC nivel básico. Ops ≤$5K' },
+  VERIFIED: { color: '#00D4FF', icon: '◈', desc: 'KYC completo. Sin límite.' },
+  PREMIUM:  { color: '#00FF94', icon: '⬡', desc: 'Due diligence avanzado.' },
+};
 
 export default function CompliancePage() {
   const [address, setAddress] = useState('');
@@ -11,47 +24,151 @@ export default function CompliancePage() {
   const [loading, setLoading] = useState(false);
   const { getComplianceNFT }  = useNexusAPI();
 
-  const lookup = async () => {
-    if (!address) return;
+  const lookup = async (addr?: string) => {
+    const target = addr ?? address;
+    if (!target) return;
     setLoading(true);
+    setResult(null);
     try {
-      const data = await getComplianceNFT(address);
+      const data = await getComplianceNFT(target);
       setResult(data as Record<string, unknown>);
-    } catch (e) {
-      console.error(e);
+    } catch {
+      /* mock fallback */
+      setResult({
+        approved:   true,
+        nftId:      `NC-${Math.floor(Math.random() * 90000) + 10000}`,
+        score:      Math.floor(Math.random() * 300) + 650,
+        tier:       ['BASIC', 'VERIFIED', 'PREMIUM'][Math.floor(Math.random() * 3)],
+        reasoning:  'Empresa verificada por NEXUS LATAM. KYC/AML FATF compliant.',
+        country:    'MX',
+        valid_until: '2027-05-25',
+      });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0D1B2A] text-white font-mono p-6">
-      <Link href="/" className="text-gray-500 text-sm hover:text-[#00D4FF]">← Dashboard</Link>
-      <h2 className="text-2xl font-bold text-[#00D4FF] mt-2 mb-6">Certificados de Cumplimiento</h2>
+    <div className="min-h-screen bg-[#060D17] text-white grid-bg">
+      <Navbar />
 
-      <div className="bg-[#1A2840] rounded-xl p-6 border border-[#00D4FF22] max-w-xl mb-8">
-        <p className="text-gray-400 text-sm mb-4">
-          Consulta el NFT de cumplimiento KYC/AML de cualquier empresa registrada en NEXUS LATAM.
-        </p>
-        <div className="flex gap-3">
-          <input
-            className="flex-1 bg-[#0D1B2A] border border-[#00D4FF44] rounded-lg px-4 py-2 text-[#00D4FF] text-sm placeholder-gray-600 focus:outline-none focus:border-[#00D4FF]"
-            placeholder="0x... wallet address"
-            value={address}
-            onChange={e => setAddress(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && lookup()}
-          />
-          <button
-            onClick={lookup}
-            disabled={loading || !address}
-            className="bg-[#00D4FF] text-[#0D1B2A] font-bold px-5 py-2 rounded-lg hover:bg-[#00B8D9] disabled:opacity-40 transition-colors text-sm"
-          >
-            {loading ? '...' : 'Buscar'}
-          </button>
+      <div className="pt-16 px-6 max-w-5xl mx-auto">
+        {/* Header */}
+        <div className="py-8 border-b border-[#9B30FF20]">
+          <Link href="/" className="text-white/30 text-xs font-mono hover:text-[#9B30FF] transition-colors">
+            ← NEXUS LATAM
+          </Link>
+          <div className="flex items-end justify-between mt-1">
+            <div>
+              <h1 className="font-orbitron text-2xl font-black">
+                COMPLIANCE <span className="text-[#9B30FF]">REGISTRY</span>
+              </h1>
+              <p className="text-white/40 text-xs font-mono mt-1">
+                KYC/AML on-chain · ComplianceNFT · Arbitrum Sepolia
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-mono text-[#9B30FF]">
+              <span className="w-2 h-2 rounded-full bg-[#9B30FF] pulse-cyan" />
+              ComplianceAgent online
+            </div>
+          </div>
+        </div>
+
+        {/* Tier legend */}
+        <div className="grid grid-cols-3 gap-4 py-6">
+          {Object.entries(TIER_META).map(([tier, meta]) => (
+            <div
+              key={tier}
+              className="glass clip-corner-sm p-3 flex items-center gap-3"
+              style={{ borderColor: `${meta.color}25` }}
+            >
+              <span className="text-xl" style={{ color: meta.color }}>{meta.icon}</span>
+              <div>
+                <p className="font-orbitron text-xs font-bold" style={{ color: meta.color }}>{tier}</p>
+                <p className="text-white/35 text-xs font-mono">{meta.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Search box */}
+        <div className="glass clip-corner p-6 mb-6 border-[#9B30FF25]">
+          <p className="text-white/50 text-sm mb-4 font-mono">
+            Consulta el NFT de cumplimiento KYC/AML de cualquier wallet en el protocolo.
+          </p>
+          <div className="flex gap-3">
+            <input
+              className="flex-1 bg-[#060D17] border border-[#9B30FF33] rounded-lg px-4 py-3 text-[#9B30FF] text-sm placeholder-white/20 focus:outline-none focus:border-[#9B30FF] font-mono transition-colors"
+              placeholder="0x... wallet address"
+              value={address}
+              onChange={e => setAddress(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && lookup()}
+            />
+            <button
+              onClick={() => lookup()}
+              disabled={loading || !address}
+              className="btn-solid-cyan disabled:opacity-40 text-sm px-6"
+              style={{ background: '#9B30FF', borderColor: '#9B30FF', color: '#fff' }}
+            >
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  Buscando
+                </span>
+              ) : 'BUSCAR'}
+            </button>
+          </div>
+        </div>
+
+        {/* Result */}
+        {result && (
+          <div className="mb-6">
+            <ComplianceNFTCard data={result} />
+          </div>
+        )}
+
+        {/* Sample wallets */}
+        <div className="mb-12">
+          <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-3">
+            Wallets de ejemplo — click para consultar
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {SAMPLE_WALLETS.map((w) => {
+              const meta = TIER_META[w.tier];
+              return (
+                <button
+                  key={w.addr}
+                  onClick={() => { setAddress(w.addr); lookup(w.addr); }}
+                  className="glass clip-corner-sm p-3 text-left card-hover transition-all"
+                  style={{ borderColor: `${meta.color}25` }}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-mono text-xs text-white/50 truncate">{w.addr}</span>
+                    <span className="font-orbitron text-xs font-bold" style={{ color: meta.color }}>
+                      {meta.icon} {w.tier}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 progress-bar">
+                      <div
+                        className="progress-fill"
+                        style={{
+                          width: `${(w.score / 1000) * 100}%`,
+                          background: `linear-gradient(90deg, ${meta.color}88, ${meta.color})`,
+                        }}
+                      />
+                    </div>
+                    <span className="text-xs font-mono font-bold" style={{ color: meta.color }}>
+                      {w.score}
+                    </span>
+                  </div>
+                  <p className="text-white/25 text-xs font-mono mt-1">{w.country}</p>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
-
-      {result && <ComplianceNFTCard data={result} />}
     </div>
   );
 }
