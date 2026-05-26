@@ -4,18 +4,18 @@ import { useEffect, useState } from 'react';
 import { useNexusAPI }          from '../hooks/useNexusAPI';
 
 interface AuditEntry {
-  batchId:      string;
-  txCount:      number;
-  volumeUSDC:   number;
-  merkleRoot:   string;
-  nftId:        string;
-  timestamp:    string;
+  batchId:    string;
+  txCount:    number;
+  volumeUSDC: number;
+  merkleRoot: string;
+  nftId:      string;
+  timestamp:  string;
 }
 
-const MOCK_ENTRIES: AuditEntry[] = [
-  { batchId: '#12', txCount: 500, volumeUSDC: 1_250_000, merkleRoot: '0xabc1...', nftId: '#1012', timestamp: '2026-05-26 10:00' },
-  { batchId: '#11', txCount: 500, volumeUSDC: 980_000,   merkleRoot: '0xdef2...', nftId: '#1011', timestamp: '2026-05-25 18:30' },
-  { batchId: '#10', txCount: 500, volumeUSDC: 1_100_000, merkleRoot: '0xghi3...', nftId: '#1010', timestamp: '2026-05-25 09:15' },
+const MOCK: AuditEntry[] = [
+  { batchId: '#42', txCount: 500, volumeUSDC: 1_250_000, merkleRoot: '0xabc1...', nftId: '#1042', timestamp: '14:32' },
+  { batchId: '#41', txCount: 500, volumeUSDC: 980_000,   merkleRoot: '0xdef2...', nftId: '#1041', timestamp: '09:11' },
+  { batchId: '#40', txCount: 500, volumeUSDC: 1_100_000, merkleRoot: '0x789a...', nftId: '#1040', timestamp: '18:45' },
 ];
 
 export function AuditTrailTable({ tradeId }: { tradeId?: string }) {
@@ -23,49 +23,63 @@ export function AuditTrailTable({ tradeId }: { tradeId?: string }) {
   const { getAuditTrail }     = useNexusAPI();
 
   useEffect(() => {
-    if (tradeId) {
-      getAuditTrail(tradeId)
-        .then(() => setEntries(MOCK_ENTRIES.slice(0, 1)))
-        .catch(() => setEntries(MOCK_ENTRIES.slice(0, 1)));
-    } else {
-      setEntries(MOCK_ENTRIES);
-    }
+    const data = tradeId ? MOCK.slice(0, 1) : MOCK;
+    getAuditTrail(tradeId ?? '')
+      .then(() => setEntries(data))
+      .catch(() => setEntries(data));
   }, [tradeId]);
 
   return (
-    <div className="bg-[#1A2840] rounded-xl border border-[#00D4FF22] overflow-hidden">
-      <div className="px-5 py-3 border-b border-[#00D4FF22]">
-        <h3 className="text-[#F7B731] text-sm font-bold uppercase tracking-wider">
-          Audit NFTs On-Chain
-        </h3>
+    <div className="glass clip-corner border-[#FF6B3518] overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-[#FF6B3515]">
+        <span className="font-orbitron text-xs text-[#FF6B35] uppercase tracking-widest">
+          Audit NFTs
+        </span>
+        <span className="flex items-center gap-1.5 text-xs font-mono text-[#FF6B35]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#FF6B35] animate-pulse" />
+          on-chain
+        </span>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-xs font-mono">
-          <thead>
-            <tr className="border-b border-[#00D4FF11]">
-              {['Bundle', 'Txs', 'Volumen', 'Merkle Root', 'NFT', 'Timestamp'].map(h => (
-                <th key={h} className="px-4 py-3 text-left text-gray-500 uppercase tracking-wider font-medium">
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {entries.map((entry) => (
-              <tr key={entry.batchId} className="border-b border-[#00D4FF0A] hover:bg-[#0D1B2A] transition-colors">
-                <td className="px-4 py-3 text-[#F7B731] font-bold">{entry.batchId}</td>
-                <td className="px-4 py-3 text-white">{entry.txCount}</td>
-                <td className="px-4 py-3 text-green-400">${entry.volumeUSDC.toLocaleString()}</td>
-                <td className="px-4 py-3 text-gray-500">{entry.merkleRoot}</td>
-                <td className="px-4 py-3 text-[#00D4FF]">{entry.nftId}</td>
-                <td className="px-4 py-3 text-gray-400">{entry.timestamp}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+      {/* Entries */}
+      <div className="divide-y divide-[#ffffff05]">
+        {entries.map((e) => (
+          <div key={e.batchId} className="px-4 py-3 hover:bg-[#ffffff03] transition-colors">
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="font-orbitron text-sm font-bold text-[#FF6B35]">
+                BUNDLE {e.batchId}
+              </span>
+              <span className="text-white/30 text-xs font-mono">{e.timestamp}</span>
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+              <div>
+                <span className="text-white/25 text-xs font-mono">txs </span>
+                <span className="text-white/70 text-xs font-mono font-semibold">{e.txCount}</span>
+              </div>
+              <div>
+                <span className="text-white/25 text-xs font-mono">vol </span>
+                <span className="text-[#F7B731] text-xs font-mono font-semibold">
+                  ${(e.volumeUSDC / 1_000_000).toFixed(2)}M
+                </span>
+              </div>
+              <div>
+                <span className="text-white/25 text-xs font-mono">nft </span>
+                <span className="text-[#9B30FF] text-xs font-mono">{e.nftId}</span>
+              </div>
+              <div className="overflow-hidden">
+                <span className="text-white/25 text-xs font-mono">∑ </span>
+                <span className="text-white/40 text-xs font-mono truncate">{e.merkleRoot}</span>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
+
       {entries.length === 0 && (
-        <div className="text-center text-gray-600 py-8 text-sm">Sin registros de auditoría aún</div>
+        <div className="text-center text-white/20 py-8 text-xs font-mono">
+          Sin bundles aún
+        </div>
       )}
     </div>
   );

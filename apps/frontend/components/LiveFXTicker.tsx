@@ -4,62 +4,93 @@ import { useEffect, useState } from 'react';
 
 interface FXRate {
   pair:   string;
+  flag:   string;
   rate:   number;
   change: number;
-  flag:   string;
+  rail:   string;
 }
 
-const BASE_RATES: FXRate[] = [
-  { pair: 'USDC/MXN', rate: 17.23, change:  0.12, flag: 'MX' },
-  { pair: 'USDC/BRL', rate:  5.61, change: -0.03, flag: 'BR' },
-  { pair: 'USDC/COP', rate: 3924,  change:  8.40, flag: 'CO' },
-  { pair: 'USDC/ARS', rate:  950,  change:  2.10, flag: 'AR' },
+const BASE: FXRate[] = [
+  { pair: 'USDC/MXN', flag: '🇲🇽', rate: 17.23,  change:  0.12, rail: 'SPEI' },
+  { pair: 'USDC/BRL', flag: '🇧🇷', rate:  5.61,  change: -0.03, rail: 'PIX'  },
+  { pair: 'USDC/COP', flag: '🇨🇴', rate: 3924.0, change:  8.40, rail: 'PSE'  },
+  { pair: 'USDC/ARS', flag: '🇦🇷', rate: 950.0,  change:  2.10, rail: 'CVU'  },
 ];
 
 export function LiveFXTicker() {
-  const [rates, setRates] = useState(BASE_RATES);
+  const [rates, setRates] = useState(BASE);
 
-  // Simulate live FX updates
   useEffect(() => {
-    const interval = setInterval(() => {
-      setRates(prev =>
-        prev.map(r => ({
-          ...r,
-          rate:   r.rate + (Math.random() - 0.5) * r.rate * 0.001,
-          change: r.change + (Math.random() - 0.5) * 0.02,
-        }))
-      );
+    const iv = setInterval(() => {
+      setRates(prev => prev.map(r => ({
+        ...r,
+        rate:   r.rate * (1 + (Math.random() - 0.5) * 0.001),
+        change: r.change + (Math.random() - 0.5) * 0.02,
+      })));
     }, 2500);
-    return () => clearInterval(interval);
+    return () => clearInterval(iv);
   }, []);
 
   return (
-    <div className="bg-[#1A2840] rounded-xl p-4 border border-[#00D4FF22]">
-      <div className="flex justify-between items-center mb-3">
-        <h3 className="text-[#F7B731] text-xs font-bold uppercase tracking-wider">FX en Vivo</h3>
-        <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+    <div className="glass clip-corner border-[#00D4FF18] p-4">
+      {/* Header */}
+      <div className="flex items-center justify-between pb-3 border-b border-[#00D4FF12] mb-3">
+        <span className="font-orbitron text-xs text-[#F7B731] uppercase tracking-widest">
+          FX Live — Bitso
+        </span>
+        <span className="flex items-center gap-1.5 text-xs font-mono text-[#00FF94]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#00FF94] animate-pulse" />
+          live
+        </span>
       </div>
-      <div className="space-y-2">
-        {rates.map(r => (
-          <div key={r.pair} className="flex justify-between items-center">
-            <span className="text-gray-400 text-xs">{r.pair}</span>
-            <div className="text-right">
-              <span className="text-white text-xs font-medium">
-                {r.rate < 100
-                  ? r.rate.toFixed(4)
-                  : r.rate.toFixed(0)}
-              </span>
+
+      <div className="space-y-2.5">
+        {rates.map((r) => {
+          const up     = r.change >= 0;
+          const rateStr = r.rate < 100 ? r.rate.toFixed(4) : r.rate.toFixed(1);
+          return (
+            <div key={r.pair} className="flex items-center gap-2">
+              <span className="text-base leading-none shrink-0">{r.flag}</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <span className="text-white/55 text-xs font-mono">{r.pair}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-orbitron text-xs font-bold text-white">{rateStr}</span>
+                    <span
+                      className="text-xs font-mono font-semibold"
+                      style={{ color: up ? '#00FF94' : '#FF3366' }}
+                    >
+                      {up ? '▲' : '▼'} {Math.abs(r.change).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+                {/* Mini sparkline bar */}
+                <div className="h-0.5 bg-[#ffffff06] rounded-full mt-1 overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-700"
+                    style={{
+                      width: `${40 + Math.random() * 40}%`,
+                      background: up
+                        ? 'linear-gradient(90deg, #00FF9444, #00FF94)'
+                        : 'linear-gradient(90deg, #FF336644, #FF3366)',
+                    }}
+                  />
+                </div>
+              </div>
               <span
-                className="ml-2 text-xs"
-                style={{ color: r.change >= 0 ? '#00FF88' : '#FF4444' }}
+                className="text-xs font-mono shrink-0 px-1.5 py-0.5 rounded"
+                style={{ color: '#00D4FF', background: '#00D4FF12', border: '1px solid #00D4FF25' }}
               >
-                {r.change >= 0 ? '+' : ''}{r.change.toFixed(2)}
+                {r.rail}
               </span>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
-      <p className="text-gray-600 text-xs mt-3">vía Bitso Business API</p>
+
+      <p className="text-white/20 text-xs font-mono mt-3 text-center">
+        vía Bitso Business API
+      </p>
     </div>
   );
 }
