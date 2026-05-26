@@ -1,0 +1,26 @@
+{
+  "name": "nexus-latam",
+  "version": "1.0.0",
+  "description": "NEXUS LATAM — Protocolo Autónomo de Financiamiento Comercial para Latinoamérica",
+  "private": true,
+  "workspaces": [
+    "apps/agents",
+    "apps/api",
+    "apps/frontend"
+  ],
+  "scripts": {
+    "dev:api":      "npm run dev --workspace=apps/api",
+    "dev:frontend": "npm run dev --workspace=apps/frontend",
+    "dev":          "concurrently \"npm run dev:api\" \"npm run dev:frontend\"",
+    "build":        "npm run build --workspaces",
+    "test":         "npm run test --workspaces",
+    "lint":         "npm run lint --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=22.0.0",
+    "npm":  ">=10.0.0"
+  }
+}

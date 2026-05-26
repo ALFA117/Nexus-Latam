@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(claude-api)",
+      "Skill(claude-api:*)",
+      "Bash(gh repo *)",
+      "Bash(npm --version)",
+      "Bash(npx next *)",
+      "Bash(npx vercel *)",
+      "Bash(vercel --version)",
+      "Bash(vercel whoami *)",
+      "Bash(vercel --yes --name nexus-latam)",
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "Bash(git config *)",
+      "Bash(git add *)"
+    ]
+  }
+}
