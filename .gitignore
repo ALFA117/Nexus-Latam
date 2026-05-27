@@ -32,3 +32,5 @@ Thumbs.db
 
 # Temp NFT images
 /tmp/*.svg
+
+.vercel

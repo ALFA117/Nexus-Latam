@@ -58,7 +58,7 @@ export default function TradesPage() {
     <div className="min-h-screen bg-[#060D17] text-white grid-bg">
       <Navbar />
 
-      <div className="pt-16 px-6 max-w-7xl mx-auto">
+      <div className="page-inner px-4 sm:px-6 max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-wrap items-end justify-between gap-4 py-8 border-b border-[#00D4FF12]">
           <div>
@@ -165,9 +165,9 @@ export default function TradesPage() {
 
               {/* Trade table */}
               {filtered.length > 0 ? (
-                <div className="space-y-3">
-                  {/* Header row */}
-                  <div className="grid grid-cols-6 gap-2 px-4 text-white/25 text-xs font-mono uppercase tracking-widest">
+                <div className="space-y-2">
+                  {/* Header row — oculto en mobile */}
+                  <div className="hidden sm:grid grid-cols-6 gap-2 px-4 text-white/25 text-xs font-mono uppercase tracking-widest pb-1">
                     <span>ID</span>
                     <span>Estado</span>
                     <span>Monto</span>
@@ -179,8 +179,9 @@ export default function TradesPage() {
                     const color = STATE_COLORS[trade.state] ?? '#fff';
                     return (
                       <Link key={trade.id} href={`/trades/${trade.id}`}>
+                        {/* Desktop: grid 6 cols */}
                         <div
-                          className="grid grid-cols-6 gap-2 glass clip-corner px-4 py-3 card-hover cursor-pointer"
+                          className="hidden sm:grid grid-cols-6 gap-2 glass clip-corner px-4 py-3 card-hover cursor-pointer"
                           style={{ borderColor: `${color}20` }}
                         >
                           <span className="font-mono text-xs text-white/70 truncate">{trade.id}</span>
@@ -191,18 +192,37 @@ export default function TradesPage() {
                             {trade.state}
                           </span>
                           <span className="font-orbitron text-sm font-bold text-white">{trade.amount}</span>
-                          <span className="text-xs font-mono text-white/50">
-                            {trade.country} · {trade.rail}
-                          </span>
-                          <span className="text-xs font-mono text-[#9B30FF]">
-                            {trade.nft}
-                          </span>
-                          <span
-                            className="text-xs font-mono font-bold"
-                            style={{ color: trade.time !== '--' ? '#00FF94' : 'rgba(255,255,255,0.25)' }}
-                          >
+                          <span className="text-xs font-mono text-white/50">{trade.country} · {trade.rail}</span>
+                          <span className="text-xs font-mono text-[#9B30FF]">{trade.nft}</span>
+                          <span className="text-xs font-mono font-bold"
+                            style={{ color: trade.time !== '--' ? '#00FF94' : 'rgba(255,255,255,0.25)' }}>
                             {trade.time}
                           </span>
+                        </div>
+                        {/* Mobile: card layout */}
+                        <div
+                          className="sm:hidden glass clip-corner px-4 py-3 card-hover cursor-pointer"
+                          style={{ borderColor: `${color}20` }}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-mono text-xs text-white/70">{trade.id}</span>
+                            <span
+                              className="text-xs font-orbitron font-bold clip-corner-sm px-2 py-0.5"
+                              style={{ color, background: `${color}15`, border: `1px solid ${color}35` }}
+                            >
+                              {trade.state}
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="font-orbitron text-base font-bold text-white">{trade.amount}</span>
+                            <div className="flex items-center gap-2 text-xs font-mono">
+                              <span className="text-white/40">{trade.country} · {trade.rail}</span>
+                              <span className="text-[#9B30FF]">{trade.nft}</span>
+                              <span style={{ color: trade.time !== '--' ? '#00FF94' : 'rgba(255,255,255,0.25)' }}>
+                                {trade.time}
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </Link>
                     );

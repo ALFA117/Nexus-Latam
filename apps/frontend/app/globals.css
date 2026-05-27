@@ -486,3 +486,50 @@ body {
 .agent-trade      { --accent: #F7B731; --accent-glow: rgba(247,183,49,0.3); }
 .agent-yield      { --accent: #00FF94; --accent-glow: rgba(0,255,148,0.3); }
 .agent-audit      { --accent: #FF6B35; --accent-glow: rgba(255,107,53,0.3); }
+
+/* ─── Page layout helpers ───────────────────────────────────────── */
+.page-inner {
+  padding-top: 80px;          /* navbar(64px) + breathing room */
+  min-height: 100vh;
+}
+
+/* ─── Responsive buttons ────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .btn-neon,
+  .btn-solid-cyan {
+    padding: 10px 20px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+  }
+}
+
+/* ─── Horizontal scroll containers ─────────────────────────────── */
+.scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,212,255,0.3) transparent;
+}
+
+.scroll-x::-webkit-scrollbar { height: 3px; }
+.scroll-x::-webkit-scrollbar-track { background: transparent; }
+.scroll-x::-webkit-scrollbar-thumb {
+  background: rgba(0,212,255,0.3);
+  border-radius: 2px;
+}
+
+/* ─── Truncate text safely ──────────────────────────────────────── */
+.text-truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* ─── Stack layout on mobile for flex rows ──────────────────────── */
+@media (max-width: 640px) {
+  .sm\:stack {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

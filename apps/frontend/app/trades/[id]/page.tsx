@@ -86,11 +86,13 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#060D17] grid-bg flex items-center justify-center">
+      <div className="min-h-screen bg-[#060D17] grid-bg">
         <Navbar />
-        <div className="flex items-center gap-3 text-[#00D4FF]">
-          <div className="w-5 h-5 border-2 border-[#00D4FF] border-t-transparent rounded-full animate-spin" />
-          <span className="font-orbitron text-sm">Cargando operación...</span>
+        <div className="page-inner flex items-center justify-center">
+          <div className="flex items-center gap-3 text-[#00D4FF]">
+            <div className="w-5 h-5 border-2 border-[#00D4FF] border-t-transparent rounded-full animate-spin" />
+            <span className="font-orbitron text-sm">Cargando operación...</span>
+          </div>
         </div>
       </div>
     );
@@ -98,11 +100,13 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
 
   if (!trade) {
     return (
-      <div className="min-h-screen bg-[#060D17] grid-bg flex items-center justify-center">
+      <div className="min-h-screen bg-[#060D17] grid-bg">
         <Navbar />
+        <div className="page-inner flex items-center justify-center">
         <div className="text-center">
           <p className="font-orbitron text-xl text-[#FF3366] mb-4">OPERACIÓN NO ENCONTRADA</p>
           <Link href="/trades" className="btn-neon text-xs">← VOLVER</Link>
+        </div>
         </div>
       </div>
     );
@@ -114,7 +118,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
     <div className="min-h-screen bg-[#060D17] text-white grid-bg">
       <Navbar />
 
-      <div className="pt-16 px-6 max-w-6xl mx-auto">
+      <div className="page-inner px-4 sm:px-6 max-w-6xl mx-auto">
         {/* Header */}
         <div className="py-8 border-b border-[#00D4FF12]">
           <Link href="/trades" className="text-white/30 text-xs font-mono hover:text-[#00D4FF] transition-colors">

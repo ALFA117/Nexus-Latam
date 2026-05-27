@@ -20,13 +20,13 @@ export default function AuditPage() {
     <div className="min-h-screen bg-[#060D17] text-white grid-bg">
       <Navbar />
 
-      <div className="pt-16 px-6 max-w-6xl mx-auto">
+      <div className="page-inner px-4 sm:px-6 max-w-6xl mx-auto">
         {/* Header */}
         <div className="py-8 border-b border-[#FF6B3520]">
           <Link href="/" className="text-white/30 text-xs font-mono hover:text-[#FF6B35] transition-colors">
             ← NEXUS LATAM
           </Link>
-          <div className="flex items-end justify-between mt-1">
+          <div className="flex flex-wrap items-end justify-between gap-3 mt-1">
             <div>
               <h1 className="font-orbitron text-2xl font-black">
                 AUDIT <span className="text-[#FF6B35]">TRAIL</span>
@@ -150,7 +150,7 @@ export default function AuditPage() {
                   </div>
 
                   {selected === b.id && (
-                    <div className="mt-4 pt-3 border-t border-[#FF6B3520] grid grid-cols-2 gap-2 text-xs font-mono">
+                    <div className="mt-4 pt-3 border-t border-[#FF6B3520] grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono">
                       <div className="flex justify-between">
                         <span className="text-white/30">Auditor</span>
                         <span className="text-[#FF6B35]">NEXUS_AUDIT_AGENT_V1</span>

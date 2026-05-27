@@ -52,13 +52,13 @@ export default function CompliancePage() {
     <div className="min-h-screen bg-[#060D17] text-white grid-bg">
       <Navbar />
 
-      <div className="pt-16 px-6 max-w-5xl mx-auto">
+      <div className="page-inner px-4 sm:px-6 max-w-5xl mx-auto">
         {/* Header */}
         <div className="py-8 border-b border-[#9B30FF20]">
           <Link href="/" className="text-white/30 text-xs font-mono hover:text-[#9B30FF] transition-colors">
             ← NEXUS LATAM
           </Link>
-          <div className="flex items-end justify-between mt-1">
+          <div className="flex flex-wrap items-end justify-between gap-3 mt-1">
             <div>
               <h1 className="font-orbitron text-2xl font-black">
                 COMPLIANCE <span className="text-[#9B30FF]">REGISTRY</span>
@@ -75,7 +75,7 @@ export default function CompliancePage() {
         </div>
 
         {/* Tier legend */}
-        <div className="grid grid-cols-3 gap-4 py-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 py-6">
           {Object.entries(TIER_META).map(([tier, meta]) => (
             <div
               key={tier}
@@ -96,9 +96,9 @@ export default function CompliancePage() {
           <p className="text-white/50 text-sm mb-4 font-mono">
             Consulta el NFT de cumplimiento KYC/AML de cualquier wallet en el protocolo.
           </p>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <input
-              className="flex-1 bg-[#060D17] border border-[#9B30FF33] rounded-lg px-4 py-3 text-[#9B30FF] text-sm placeholder-white/20 focus:outline-none focus:border-[#9B30FF] font-mono transition-colors"
+              className="flex-1 bg-[#060D17] border border-[#9B30FF33] rounded-lg px-4 py-3 text-[#9B30FF] text-sm placeholder-white/20 focus:outline-none focus:border-[#9B30FF] font-mono transition-colors min-w-0"
               placeholder="0x... wallet address"
               value={address}
               onChange={e => setAddress(e.target.value)}
@@ -107,7 +107,7 @@ export default function CompliancePage() {
             <button
               onClick={() => lookup()}
               disabled={loading || !address}
-              className="btn-solid-cyan disabled:opacity-40 text-sm px-6"
+              className="btn-solid-cyan disabled:opacity-40 text-sm px-6 shrink-0"
               style={{ background: '#9B30FF', borderColor: '#9B30FF', color: '#fff' }}
             >
               {loading ? (
