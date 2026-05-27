@@ -1,5 +1,5 @@
 # NEXUS LATAM — Lista de Puntos
-> Estado del proyecto al 2026-05-26 (rondas 1–6) · ETH México 2026 Hackathon
+> Estado del proyecto al 2026-05-26 (rondas 1–7) · ETH México 2026 Hackathon
 
 ---
 
@@ -96,6 +96,14 @@
 - [x] `Navbar` — link "Demo" añadido al menú de navegación
 - [x] `Footer` — "Demo Interactivo" en sección Protocolo
 
+### Frontend — Ronda 7
+- [x] `ToastProvider` — sistema global de notificaciones cyberpunk (success/error/info/warning) + `@keyframes toastIn`
+- [x] `TradeCreator` — toast success al crear operación + toast error en catch
+- [x] Landing — sección `DemoCallout` entre TerminalTrace y NFTShowcase; CTA final "▶ VER DEMO" primario
+- [x] `/yield` — `YieldSimulator`: input USDC + tabs 7d/30d/90d/1y + proyección con split 80/20
+- [x] `/demo` — keyboard navigation (← → + Space para play/pause) + botón "⎘ COMPARTIR" (clipboard)
+- [x] `/compliance` — scan-line animation durante loading + hint de teclado + texto más descriptivo
+
 ### CI/CD — Fixes
 - [x] GitHub Actions CI — `cache-dependency-path: package-lock.json` (root) correcto
 - [x] Vercel build — `npm install --include=dev` para incluir tailwindcss en build
@@ -139,7 +147,7 @@
 - [ ] **Wagmi hooks reales** — leer estado del contrato desde la chain (actualmente mock)
 - [ ] **ConnectButton modal** — animación de entry, QR code para WalletConnect
 - [ ] `/trades/[id]` — botón "Confirmar Entrega" que llama al contrato real
-- [ ] **Notificaciones toast** cuando una operación cambia de estado
+- [x] **Notificaciones toast** — ✅ implementado en ronda 7 (ToastProvider)
 - [ ] Modo oscuro total + transiciones de página (Framer Motion)
 - [ ] PWA manifest + service worker para uso offline
 - [ ] Tests con Playwright (E2E) y Vitest (unit)
@@ -175,8 +183,8 @@
 | DevOps / Deploy | ✅ 80% |
 | Hackathon materials | ❌ 10% |
 
-**Total estimado: ~75% completo para demo funcional completa**
+**Total estimado: ~80% completo para demo funcional completa**
 
 ---
 
-*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 6 completada)*
+*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 7 completada)*
