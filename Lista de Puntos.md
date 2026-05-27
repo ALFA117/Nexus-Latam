@@ -1,5 +1,5 @@
 # NEXUS LATAM — Lista de Puntos
-> Estado del proyecto al 2026-05-26 (rondas 1–5) · ETH México 2026 Hackathon
+> Estado del proyecto al 2026-05-26 (rondas 1–6) · ETH México 2026 Hackathon
 
 ---
 
@@ -88,6 +88,14 @@
 - [x] `TradeCreator` — result `cols-1 sm:cols-2` + botón "Ver operación" con link
 - [x] Footer — links de "Protocolo" ahora son `<Link>` con rutas reales
 
+### Frontend — Ronda 6
+- [x] `/demo` — página interactiva guiada 7 pasos: auto-play, terminal por agente, NFT badges, resultado final
+- [x] `HeroSection` — CTA primario "▶ VER DEMO" → `/demo`; "Agentes IA" → `/agents`
+- [x] `/trades/[id]` — NFT grid `cols-1 sm:cols-3`; banner "Confirmar Entrega" cuando state=FUNDED
+- [x] `AgentGrid` — orchestrator card con flow visual coloreado + métricas; CTA "Ver todos los agentes →"
+- [x] `Navbar` — link "Demo" añadido al menú de navegación
+- [x] `Footer` — "Demo Interactivo" en sección Protocolo
+
 ### CI/CD — Fixes
 - [x] GitHub Actions CI — `cache-dependency-path: package-lock.json` (root) correcto
 - [x] Vercel build — `npm install --include=dev` para incluir tailwindcss en build
@@ -135,6 +143,7 @@
 - [ ] Modo oscuro total + transiciones de página (Framer Motion)
 - [ ] PWA manifest + service worker para uso offline
 - [ ] Tests con Playwright (E2E) y Vitest (unit)
+- [ ] Botón "Confirmar Entrega" en `/trades/[id]` conectado al contrato real (actualmente muestra alert)
 
 ### Infraestructura
 - [ ] **Variables de entorno en Vercel** — configurar ANTHROPIC_API_KEY, BITSO_*, etc.
@@ -160,14 +169,14 @@
 | AI Agents (código) | ✅ 95% |
 | AI Agents (integración real) | 🔄 30% |
 | API REST | ✅ 90% |
-| Frontend (UI/UX) | ✅ 99% |
+| Frontend (UI/UX) | ✅ 100% |
 | Frontend (on-chain) | 🔄 20% |
 | Testing | 🔄 40% |
 | DevOps / Deploy | ✅ 80% |
 | Hackathon materials | ❌ 10% |
 
-**Total estimado: ~70% completo para demo funcional completa**
+**Total estimado: ~75% completo para demo funcional completa**
 
 ---
 
-*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 5 completada)*
+*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 6 completada)*
