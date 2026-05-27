@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 
 export function Footer() {
@@ -50,11 +51,18 @@ export function Footer() {
           <div>
             <p className="font-orbitron text-xs text-[#00D4FF] uppercase tracking-widest mb-4">Protocolo</p>
             <ul className="space-y-2">
-              {['Agentes IA', 'NFT Ecosystem', 'Smart Contracts', 'Yield Vault', 'Compliance'].map((item) => (
-                <li key={item}>
-                  <span className="text-white/40 hover:text-white/70 text-sm font-mono cursor-pointer transition-colors">
-                    {item}
-                  </span>
+              {[
+                { label: 'Agentes IA',      href: '/agents' },
+                { label: 'NFT Ecosystem',   href: '/#nfts' },
+                { label: 'Operaciones',     href: '/trades' },
+                { label: 'Yield Vault',     href: '/yield' },
+                { label: 'Compliance KYC',  href: '/compliance' },
+                { label: 'Audit Trail',     href: '/audit' },
+              ].map(item => (
+                <li key={item.label}>
+                  <Link href={item.href} className="text-white/40 hover:text-[#00D4FF] text-sm font-mono transition-colors">
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>

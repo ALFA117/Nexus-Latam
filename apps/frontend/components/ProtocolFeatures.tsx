@@ -85,7 +85,7 @@ export function ProtocolFeatures() {
           {FEATURES.map((f, i) => (
             <div
               key={f.title}
-              className="group glass clip-corner p-5 card-hover"
+              className="group glass clip-corner p-5 card-hover relative overflow-hidden"
               style={{
                 borderColor: `${f.color}22`,
                 animationDelay: `${i * 0.08}s`,

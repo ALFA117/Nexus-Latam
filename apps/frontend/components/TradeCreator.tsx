@@ -261,7 +261,7 @@ export function TradeCreator() {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
               {Object.entries(result).map(([k, v]) => (
                 <div
                   key={k}
@@ -275,12 +275,20 @@ export function TradeCreator() {
 
             <Terminal logs={logs} loading={false} logRef={logRef} />
 
-            <button
-              onClick={reset}
-              className="mt-4 btn-neon text-xs py-2 px-6"
-            >
-              + NUEVA OPERACIÓN
-            </button>
+            <div className="flex flex-wrap gap-3 mt-4">
+              <button
+                onClick={reset}
+                className="btn-neon text-xs py-2 px-6"
+              >
+                + NUEVA OPERACIÓN
+              </button>
+              <a
+                href={`/trades/${result.tradeId}`}
+                className="btn-solid-cyan text-xs py-2 px-6 inline-block"
+              >
+                VER OPERACIÓN →
+              </a>
+            </div>
           </div>
         )}
       </div>

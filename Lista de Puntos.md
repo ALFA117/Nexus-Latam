@@ -1,5 +1,5 @@
 # NEXUS LATAM — Lista de Puntos
-> Estado del proyecto al 2026-05-26 · ETH México 2026 Hackathon
+> Estado del proyecto al 2026-05-26 (rondas 1–5) · ETH México 2026 Hackathon
 
 ---
 
@@ -76,6 +76,21 @@
 - [x] `/audit` (Audit Trail) — bundles expandibles, Merkle details, event sidebar
 - [x] `/yield` (Yield Vault) — TVL, yield total, posiciones Aave V3, historial
 - [x] `not-found.tsx` (404) — página cyberpunk con terminal de error, CTAs de retorno
+- [x] `/agents` (Intelligence Layer) — vitrina de 5 agentes IA, tools, system prompts, métricas, flujo de orquestación
+
+### UI/UX — Fixes responsive (Ronda 4–5)
+- [x] Navbar breakpoints `lg:` — ya no se enciman en tablets (768–1024px)
+- [x] `.page-inner` utility — 80px padding superior sobre navbar fijo en todas las páginas
+- [x] Trades table — vista card en mobile, grid 6 cols en desktop
+- [x] Compliance — tier legend `cols-1 sm:cols-3`, buscador `flex-col sm:flex-row`
+- [x] Audit — bundle details `cols-1 sm:cols-2`
+- [x] `ProtocolFeatures` — `relative overflow-hidden` en cards para accent line
+- [x] `TradeCreator` — result `cols-1 sm:cols-2` + botón "Ver operación" con link
+- [x] Footer — links de "Protocolo" ahora son `<Link>` con rutas reales
+
+### CI/CD — Fixes
+- [x] GitHub Actions CI — `cache-dependency-path: package-lock.json` (root) correcto
+- [x] Vercel build — `npm install --include=dev` para incluir tailwindcss en build
 
 ### Deploy
 - [x] **Vercel** production: https://nexus-latam-kappa.vercel.app
@@ -145,14 +160,14 @@
 | AI Agents (código) | ✅ 95% |
 | AI Agents (integración real) | 🔄 30% |
 | API REST | ✅ 90% |
-| Frontend (UI/UX) | ✅ 95% |
+| Frontend (UI/UX) | ✅ 99% |
 | Frontend (on-chain) | 🔄 20% |
 | Testing | 🔄 40% |
-| DevOps / Deploy | ✅ 70% |
+| DevOps / Deploy | ✅ 80% |
 | Hackathon materials | ❌ 10% |
 
-**Total estimado: ~65% completo para demo funcional completa**
+**Total estimado: ~70% completo para demo funcional completa**
 
 ---
 
-*Actualizado por Claude Sonnet 4.6 · 2026-05-26*
+*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 5 completada)*
