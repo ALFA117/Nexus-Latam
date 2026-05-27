@@ -168,6 +168,14 @@
 - [x] `app/yield/page.tsx` — KPI cards con `ScaleIn` + `useVaultStats` integrado (TVL/APY on-chain con fallback a mock)
 - [x] `app/compliance/page.tsx` — tier legend y sample wallets con `ScaleIn` staggered
 
+### Frontend — Ronda 14 (sin credenciales)
+- [x] `app/trades/[id]/page.tsx` — `useTradeState` + `useConfirmDelivery` cableados: estado on-chain en badge con indicador "on-chain", `handleConfirmDelivery` llama contrato real cuando wallet conectada (fallback a simulación si no hay wallet)
+- [x] `app/compliance/page.tsx` — panel "Tu Estado On-Chain": `useComplianceStatus` + `useAccount` — muestra score/tier/compliant desde contrato cuando wallet conectada
+- [x] `app/compliance/loading.tsx` — skeleton loading: tier cards + search box + wallets de ejemplo
+- [x] `app/yield/loading.tsx` — skeleton loading: KPI strip + posiciones + simulador + historial
+- [x] `app/audit/loading.tsx` — skeleton loading: KPI strip + bundles + Merkle tree sidebar
+- [x] `__tests__/nexus-protocol.test.ts` — 33 tests nuevos: state labels, tier labels, APY bps→%, USDC bigint→display, yield split 80/20, fee 30bps, Merkle tree depth, bytes32 encoding (total: 45 tests, 45 ✅)
+
 ### CI/CD — Fixes
 - [x] GitHub Actions CI — `cache-dependency-path: package-lock.json` (root) correcto
 - [x] Vercel build — `npm install --include=dev` para incluir tailwindcss en build
@@ -242,12 +250,12 @@
 | AI Agents (integración real) | 🔄 30% |
 | API REST | ✅ 95% (ronda 11) |
 | Frontend (UI/UX) | ✅ 100% (ronda 10) |
-| Frontend (on-chain) | ✅ 70% (ronda 13: useContracts hooks) |
-| Testing | 🔄 55% (Vitest ronda 11) |
+| Frontend (on-chain) | ✅ 90% (ronda 14: hooks integrados en UI) |
+| Testing | ✅ 80% (ronda 14: 45 tests Vitest) |
 | DevOps / Deploy | ✅ 95% (PWA ronda 13) |
 | Hackathon materials | ❌ 10% |
 
-**Total estimado: ~93% completo para demo funcional completa**
+**Total estimado: ~95% completo para demo funcional completa**
 
 ---
 
@@ -273,4 +281,4 @@
 | **Demo video (2 min)** | Grabar pantalla del demo en producción |
 | **Submission ETH México 2026** | Cuenta en devfolio + proyecto final + equipo |
 
-*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 13 completada)*
+*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 14 completada — TODO sin credenciales terminado)*

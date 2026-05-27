@@ -1,10 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useNexusAPI }         from '../../../hooks/useNexusAPI';
-import { useToast }            from '../../../components/ToastProvider';
-import { Navbar }              from '../../../components/Navbar';
-import Link                    from 'next/link';
+import { useEffect, useState }                     from 'react';
+import { useAccount }                              from 'wagmi';
+import { useNexusAPI }                             from '../../../hooks/useNexusAPI';
+import { useToast }                                from '../../../components/ToastProvider';
+import { useTradeState, useConfirmDelivery }       from '../../../hooks/useContracts';
+import { FadeIn }                                  from '../../../components/FadeIn';
+import { Navbar }                                  from '../../../components/Navbar';
+import Link                                        from 'next/link';
+
+function toBytes32(str: string): `0x${string}` {
+  let hex = '';
+  for (let i = 0; i < Math.min(str.length, 32); i++)
+    hex += str.charCodeAt(i).toString(16).padStart(2, '0');
+  return `0x${hex.padEnd(64, '0')}` as `0x${string}`;
+}
 
 interface TradeDetail {
   id:             string;
@@ -76,9 +86,15 @@ const NFTS = [
 export default function TradeDetailPage({ params }: { params: { id: string } }) {
   const { getTradeStatus }           = useNexusAPI();
   const { toast }                    = useToast();
+  const { isConnected }              = useAccount();
   const [trade, setTrade]            = useState<TradeDetail | null>(null);
   const [loading, setLoading]        = useState(true);
   const [confirming, setConfirming]  = useState(false);
+
+  const tradeIdB32 = toBytes32(params.id);
+  const { stateLabel: chainState }                                              = useTradeState(tradeIdB32);
+  const { confirm: confirmOnChain, isPending: chainPending,
+          isSuccess: chainSuccess,  error: chainError }                         = useConfirmDelivery();
 
   useEffect(() => {
     getTradeStatus(params.id)
@@ -87,20 +103,44 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
       .finally(() => setLoading(false));
   }, [params.id]);
 
+  // React to on-chain confirmation
+  useEffect(() => {
+    if (chainSuccess && trade) {
+      setTrade(prev => prev ? { ...prev, state: 'SETTLED' } : prev);
+      toast('success', 'Settlement completo', `Fondos liberados vía ${trade.rail}. Audit-NFT acuñado.`);
+      setConfirming(false);
+    }
+  }, [chainSuccess]);
+
+  useEffect(() => {
+    if (chainError) {
+      toast('error', 'Error on-chain', chainError.message ?? 'Transacción rechazada');
+      setConfirming(false);
+    }
+  }, [chainError]);
+
   async function handleConfirmDelivery() {
     if (!trade) return;
     setConfirming(true);
     toast('info', 'TradeAgent activado', 'Procesando confirmación de entrega...');
-    // Simulate on-chain call (replace with real contract call when deployed)
+
+    if (isConnected) {
+      // Real on-chain call — state updates via useEffect above
+      confirmOnChain(tradeIdB32);
+      return;
+    }
+
+    // Simulation fallback (no wallet connected)
     await new Promise(r => setTimeout(r, 2200));
     setTrade(prev => prev ? { ...prev, state: 'DELIVERED' } : prev);
     toast('success', '¡Entrega confirmada!', `Operación ${trade.id} marcada como DELIVERED. Settlement iniciando...`);
     setConfirming(false);
-    // Simulate settlement completion
     await new Promise(r => setTimeout(r, 3500));
     setTrade(prev => prev ? { ...prev, state: 'SETTLED' } : prev);
     toast('success', 'Settlement completo', `Fondos liberados al vendedor vía ${trade.rail}. Audit-NFT acuñado.`);
   }
+
+  const isAnyConfirming = confirming || chainPending;
 
   if (loading) {
     return (
@@ -130,7 +170,8 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
     );
   }
 
-  const stateColor = STATE_COLOR[trade.state] ?? '#fff';
+  const displayState = chainState ?? trade.state;
+  const stateColor   = STATE_COLOR[displayState] ?? '#fff';
 
   return (
     <div className="min-h-screen bg-[#060D17] text-white grid-bg">
@@ -148,24 +189,36 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
               className="clip-corner-sm text-xs font-orbitron font-black px-3 py-1.5"
               style={{ color: stateColor, background: `${stateColor}18`, border: `1px solid ${stateColor}45` }}
             >
-              {trade.state}
+              {displayState}
             </span>
+            {chainState && (
+              <span className="text-xs font-mono text-[#00FF9480] flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00FF94] inline-block" />
+                on-chain
+              </span>
+            )}
             <span className="text-white/30 text-xs font-mono ml-auto">{trade.createdAt}</span>
           </div>
           {/* Confirmar Entrega — solo visible cuando está FUNDED */}
-          {trade.state === 'FUNDED' && (
+          {displayState === 'FUNDED' && (
+            <FadeIn>
             <div className="mt-4 p-4 glass border border-[#F7B73130] rounded-lg flex flex-wrap items-center gap-4">
               <div>
                 <p className="text-[#F7B731] font-orbitron text-xs uppercase tracking-widest">Acción requerida</p>
                 <p className="text-white/60 text-sm mt-0.5">El escrow está fondado. Confirma la entrega de los bienes para liberar los fondos al vendedor.</p>
+                {isConnected && (
+                  <p className="text-[#00FF9460] text-xs font-mono mt-1">
+                    ⬡ Wallet conectada — llamará al contrato real en Arbitrum Sepolia
+                  </p>
+                )}
               </div>
               <button
                 className="shrink-0 clip-corner text-xs font-orbitron font-black px-5 py-2.5 transition-all duration-200 hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2"
                 style={{ background: 'linear-gradient(135deg, #F7B731, #FF6B35)', color: '#060D17' }}
                 onClick={handleConfirmDelivery}
-                disabled={confirming}
+                disabled={isAnyConfirming}
               >
-                {confirming ? (
+                {isAnyConfirming ? (
                   <>
                     <span className="w-3.5 h-3.5 border-2 border-[#060D17] border-t-transparent rounded-full animate-spin" />
                     PROCESANDO...
@@ -173,6 +226,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
                 ) : '✓ CONFIRMAR ENTREGA'}
               </button>
             </div>
+            </FadeIn>
           )}
           {/* Quick stats */}
           <div className="flex flex-wrap gap-6 mt-4">

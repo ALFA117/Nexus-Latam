@@ -1,11 +1,13 @@
 'use client';
 
-import { useState }          from 'react';
-import { ComplianceNFTCard } from '../../components/ComplianceNFTCard';
-import { useNexusAPI }       from '../../hooks/useNexusAPI';
-import { Navbar }            from '../../components/Navbar';
-import { FadeIn, ScaleIn }   from '../../components/FadeIn';
-import Link                  from 'next/link';
+import { useState }               from 'react';
+import { useAccount }             from 'wagmi';
+import { ComplianceNFTCard }      from '../../components/ComplianceNFTCard';
+import { useNexusAPI }            from '../../hooks/useNexusAPI';
+import { useComplianceStatus }    from '../../hooks/useContracts';
+import { Navbar }                 from '../../components/Navbar';
+import { FadeIn, ScaleIn }        from '../../components/FadeIn';
+import Link                       from 'next/link';
 
 const SAMPLE_WALLETS = [
   { addr: '0x1a2b3c4d...', country: 'MX', tier: 'VERIFIED', score: 891 },
@@ -24,6 +26,11 @@ export default function CompliancePage() {
   const [result, setResult]   = useState<Record<string, unknown> | null>(null);
   const [loading, setLoading] = useState(false);
   const { getComplianceNFT }  = useNexusAPI();
+
+  const { address: walletAddress, isConnected } = useAccount();
+  const { score, tier, compliant, isLoading: compLoading } = useComplianceStatus(
+    isConnected ? walletAddress : undefined
+  );
 
   const lookup = async (addr?: string) => {
     const target = addr ?? address;
@@ -92,6 +99,46 @@ export default function CompliancePage() {
             </ScaleIn>
           ))}
         </div>
+
+        {/* On-chain status — visible only when wallet is connected */}
+        {isConnected && (
+          <FadeIn>
+          <div className="glass clip-corner border-[#9B30FF30] p-5 mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <p className="font-orbitron text-xs text-[#9B30FF] uppercase tracking-widest">
+                Tu Estado On-Chain
+              </p>
+              <span className="flex items-center gap-1.5 text-xs font-mono text-[#00FF9480]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00FF94]" />
+                Arbitrum Sepolia
+              </span>
+            </div>
+            {compLoading ? (
+              <div className="flex items-center gap-2 text-white/40 text-xs font-mono">
+                <span className="w-3 h-3 border border-[#9B30FF] border-t-transparent rounded-full animate-spin" />
+                Leyendo contrato...
+              </div>
+            ) : score !== undefined ? (
+              <div className="grid grid-cols-3 gap-4 text-center">
+                {[
+                  { label: 'Score',    value: String(score),                                 color: TIER_META[tier ?? 'BASIC']?.color ?? '#9B30FF' },
+                  { label: 'Tier',     value: tier ?? 'UNKNOWN',                             color: TIER_META[tier ?? 'BASIC']?.color ?? '#9B30FF' },
+                  { label: 'Estado',   value: compliant ? 'COMPLIANT' : 'NON-COMP',          color: compliant ? '#00FF94' : '#FF3366' },
+                ].map(s => (
+                  <div key={s.label} className="glass clip-corner-sm p-3" style={{ borderColor: `${s.color}20` }}>
+                    <p className="font-orbitron text-lg font-black" style={{ color: s.color }}>{s.value}</p>
+                    <p className="text-white/30 text-xs font-mono mt-0.5">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-white/30 text-xs font-mono">
+                Wallet conectada · Contrato pendiente de deploy en Sepolia
+              </p>
+            )}
+          </div>
+          </FadeIn>
+        )}
 
         {/* Search box */}
         <div className="glass clip-corner p-6 mb-6 border-[#9B30FF25] relative overflow-hidden">
