@@ -92,32 +92,47 @@ export default function CompliancePage() {
         </div>
 
         {/* Search box */}
-        <div className="glass clip-corner p-6 mb-6 border-[#9B30FF25]">
+        <div className="glass clip-corner p-6 mb-6 border-[#9B30FF25] relative overflow-hidden">
+          {/* Scan animation while loading */}
+          {loading && <div className="scan-line-anim" />}
+
           <p className="text-white/50 text-sm mb-4 font-mono">
             Consulta el NFT de cumplimiento KYC/AML de cualquier wallet en el protocolo.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
-            <input
-              className="flex-1 bg-[#060D17] border border-[#9B30FF33] rounded-lg px-4 py-3 text-[#9B30FF] text-sm placeholder-white/20 focus:outline-none focus:border-[#9B30FF] font-mono transition-colors min-w-0"
-              placeholder="0x... wallet address"
-              value={address}
-              onChange={e => setAddress(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && lookup()}
-            />
+            <div className="relative flex-1">
+              <input
+                className="w-full bg-[#060D17] border border-[#9B30FF33] rounded-lg px-4 py-3 text-[#9B30FF] text-sm placeholder-white/20 focus:outline-none focus:border-[#9B30FF] font-mono transition-colors"
+                placeholder="0x... wallet address"
+                value={address}
+                onChange={e => setAddress(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && lookup()}
+              />
+              {loading && (
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <div className="w-4 h-4 border-2 border-[#9B30FF] border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
+            </div>
             <button
               onClick={() => lookup()}
               disabled={loading || !address}
-              className="btn-solid-cyan disabled:opacity-40 text-sm px-6 shrink-0"
-              style={{ background: '#9B30FF', borderColor: '#9B30FF', color: '#fff' }}
+              className="btn-solid-cyan disabled:opacity-40 text-sm px-6 shrink-0 transition-all"
+              style={{ background: loading ? '#9B30FF80' : '#9B30FF', borderColor: '#9B30FF', color: '#fff' }}
             >
               {loading ? (
                 <span className="flex items-center gap-2">
                   <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Buscando
+                  Verificando KYC...
                 </span>
-              ) : 'BUSCAR'}
+              ) : 'VERIFICAR KYC'}
             </button>
           </div>
+
+          {/* Hint */}
+          <p className="text-white/20 text-xs font-mono mt-3">
+            ↵ Enter · o haz click en una wallet de ejemplo ↓
+          </p>
         </div>
 
         {/* Result */}

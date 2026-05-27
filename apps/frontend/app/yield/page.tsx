@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Navbar }  from '../../components/Navbar';
 import Link        from 'next/link';
 
@@ -39,6 +39,98 @@ const totalTVL       = POSITIONS.reduce((s, p) => s + p.amount, 0);
 const totalEarned    = POSITIONS.reduce((s, p) => s + p.earned, 0);
 const avgAPY         = POSITIONS.reduce((s, p) => s + p.apy, 0) / POSITIONS.length;
 const activePositions = POSITIONS.filter(p => p.state !== 'SETTLED').length;
+
+function YieldSimulator() {
+  const DURATIONS = [
+    { label: '7d',  days: 7 },
+    { label: '30d', days: 30 },
+    { label: '90d', days: 90 },
+    { label: '1y',  days: 365 },
+  ];
+  const [amount, setAmount]   = useState('10000');
+  const [durIdx, setDurIdx]   = useState(1);
+  const apy                   = 4.2;
+  const principal             = parseFloat(amount.replace(/,/g, '')) || 0;
+  const days                  = DURATIONS[durIdx].days;
+  const yieldAmt              = principal * (apy / 100) * (days / 365);
+  const sellerYield           = yieldAmt * 0.8;
+  const protocolYield         = yieldAmt * 0.2;
+  const effectiveRate         = principal > 0 ? (yieldAmt / principal) * 100 : 0;
+
+  return (
+    <div className="glass clip-corner border-[#00FF9420] p-5">
+      <p className="font-orbitron text-xs text-[#00FF94] uppercase tracking-widest mb-4">
+        Simulador de Rendimiento
+      </p>
+
+      {/* Amount */}
+      <label className="text-white/40 text-xs font-mono block mb-1.5">
+        Principal (USDC)
+      </label>
+      <input
+        type="number"
+        value={amount}
+        onChange={e => setAmount(e.target.value)}
+        placeholder="10000"
+        className="w-full bg-[#060D17] border border-[#00FF9422] focus:border-[#00FF9466] rounded-lg px-3 py-2.5 text-[#00FF94] text-sm placeholder-white/15 focus:outline-none font-mono transition-colors mb-4"
+      />
+
+      {/* Duration tabs */}
+      <label className="text-white/40 text-xs font-mono block mb-2">Duración</label>
+      <div className="flex gap-2 mb-5">
+        {DURATIONS.map((d, i) => (
+          <button
+            key={d.label}
+            onClick={() => setDurIdx(i)}
+            className="flex-1 py-1.5 text-xs font-orbitron font-bold rounded transition-all"
+            style={{
+              background: durIdx === i ? '#00FF9420' : 'transparent',
+              color:      durIdx === i ? '#00FF94' : 'rgba(255,255,255,0.3)',
+              border:     `1px solid ${durIdx === i ? '#00FF9440' : 'rgba(255,255,255,0.08)'}`,
+            }}
+          >
+            {d.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Result */}
+      <div
+        className="clip-corner-sm p-4 space-y-2"
+        style={{ background: 'rgba(0,255,148,0.05)', border: '1px solid rgba(0,255,148,0.2)' }}
+      >
+        <div className="flex justify-between text-xs font-mono">
+          <span className="text-white/40">APY</span>
+          <span className="text-[#00D4FF] font-bold">{apy}%</span>
+        </div>
+        <div className="flex justify-between text-xs font-mono">
+          <span className="text-white/40">Yield total</span>
+          <span className="text-[#00FF94] font-bold">+${yieldAmt.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between text-xs font-mono">
+          <span className="text-white/40">Tu parte (80%)</span>
+          <span className="text-[#00FF94] font-bold">+${sellerYield.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between text-xs font-mono">
+          <span className="text-white/40">Protocolo (20%)</span>
+          <span className="text-[#9B30FF]">${protocolYield.toFixed(2)}</span>
+        </div>
+        <div className="pt-2 border-t border-[#00FF9420]">
+          <div className="flex justify-between">
+            <span className="text-white/40 text-xs font-mono">Return efectivo</span>
+            <span className="font-orbitron text-sm font-black text-[#00FF94]">
+              {effectiveRate.toFixed(3)}%
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <p className="text-white/20 text-xs font-mono mt-3 text-center">
+        Tasas indicativas · Aave V3 · Arbitrum
+      </p>
+    </div>
+  );
+}
 
 export default function YieldPage() {
   const [selected, setSelected] = useState<string | null>(null);
@@ -214,9 +306,11 @@ export default function YieldPage() {
             })}
           </div>
 
-          {/* History sidebar */}
-          <div>
-            <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-3">
+          {/* Simulator + history */}
+          <div className="space-y-4">
+            <YieldSimulator />
+
+            <p className="text-white/30 text-xs font-mono uppercase tracking-widest">
               Historial de Yield
             </p>
             <div className="glass clip-corner border-[#00FF9415] overflow-hidden">

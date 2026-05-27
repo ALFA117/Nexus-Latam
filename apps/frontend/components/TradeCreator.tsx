@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useToast } from './ToastProvider';
 
 type Step = 'form' | 'compliance' | 'escrow' | 'confirmed';
 
@@ -50,6 +51,7 @@ function delay(ms: number) {
 }
 
 export function TradeCreator() {
+  const { toast }                 = useToast();
   const [step, setStep]           = useState<Step>('form');
   const [tradeData, setTradeData] = useState<TradeData>({
     sellerAddress: '', amountUSDC: '', destinationCountry: 'MX', deadlineDays: '30',
@@ -135,8 +137,10 @@ export function TradeCreator() {
 
       setStep('confirmed');
       addLog(`✓ OPERACIÓN ${tradeId} CREADA EXITOSAMENTE`, 'success', 'SYSTEM');
+      toast('success', `Operación ${tradeId} creada`, `LC-NFT #${lcId} · ComplianceNFT #${compNft} acuñados`);
     } catch (err) {
       addLog(`ERROR: ${err}`, 'error', 'SYSTEM');
+      toast('error', 'Error al crear operación', String(err));
     } finally {
       setLoading(false);
     }

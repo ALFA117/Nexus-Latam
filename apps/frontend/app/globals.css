@@ -533,3 +533,25 @@ body {
     align-items: stretch;
   }
 }
+
+/* ─── Toast notification ────────────────────────────────────────── */
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(24px) scale(0.95); }
+  to   { opacity: 1; transform: translateX(0)    scale(1); }
+}
+
+/* ─── Scan animation for compliance lookup ──────────────────────── */
+@keyframes scan-down {
+  0%   { top: 0; opacity: 1; }
+  90%  { top: 100%; opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+.scan-line-anim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #9B30FF, #00D4FF, transparent);
+  animation: scan-down 1.4s ease-in-out infinite;
+  pointer-events: none;
+}

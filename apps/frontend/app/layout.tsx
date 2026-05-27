@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { WagmiProvider } from '../components/WagmiProvider';
+import { WagmiProvider }   from '../components/WagmiProvider';
+import { ToastProvider }   from '../components/ToastProvider';
 
 export const metadata: Metadata = {
   title:       'NEXUS LATAM — Protocolo Autónomo de Financiamiento Comercial',
@@ -26,7 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <WagmiProvider>
-          {children}
+          <ToastProvider>
+            {children}
+          </ToastProvider>
         </WagmiProvider>
       </body>
     </html>

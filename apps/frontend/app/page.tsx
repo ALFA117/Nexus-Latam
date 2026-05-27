@@ -211,6 +211,63 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── 5.5. DEMO CALLOUT ───────────────────────────────────── */}
+      <section className="py-14 px-6 relative overflow-hidden">
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,212,255,0.05) 0%, transparent 70%)' }}
+        />
+        <div className="max-w-5xl mx-auto relative z-10">
+          <div
+            className="clip-corner-lg p-8 md:p-12 text-center"
+            style={{
+              background: 'linear-gradient(135deg, rgba(0,212,255,0.04) 0%, rgba(155,48,255,0.04) 50%, rgba(0,255,148,0.04) 100%)',
+              border: '1px solid rgba(0,212,255,0.18)',
+              boxShadow: '0 0 60px rgba(0,212,255,0.06)',
+            }}
+          >
+            <div className="inline-flex items-center gap-2 mb-6 glass border-cyan rounded-full px-4 py-1.5 text-xs font-mono text-[#00D4FF] uppercase tracking-widest">
+              <span className="status-dot status-online" />
+              Demo Interactivo · Auto-play disponible
+            </div>
+
+            <h2 className="font-orbitron text-3xl md:text-4xl font-black mb-4">
+              <span className="text-white">PRUEBA EL PROTOCOLO </span>
+              <span className="gradient-text-cyan">EN VIVO</span>
+            </h2>
+            <p className="text-white/50 max-w-xl mx-auto text-sm leading-relaxed mb-8">
+              Sigue el flujo completo paso a paso: KYC → Escrow → LC-NFT → Yield → Settlement → Audit.
+              <span className="text-[#F7B731] font-semibold"> 7 pasos · 5 agentes IA · 3 NFTs on-chain.</span>
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
+              {[
+                { l: 'KYC/AML',    c: '#9B30FF' },
+                { l: 'Escrow',     c: '#F7B731' },
+                { l: 'LC-NFT',     c: '#F7B731' },
+                { l: 'Aave V3',    c: '#00FF94' },
+                { l: 'Settlement', c: '#00D4FF' },
+                { l: 'Audit-NFT',  c: '#FF6B35' },
+              ].map(s => (
+                <span
+                  key={s.l}
+                  className="clip-corner-sm text-xs font-orbitron font-bold px-3 py-1"
+                  style={{ color: s.c, border: `1px solid ${s.c}40`, background: `${s.c}12` }}
+                >
+                  {s.l}
+                </span>
+              ))}
+            </div>
+
+            <Link href="/demo">
+              <button className="btn-solid-cyan text-sm px-12 py-4">
+                ▶ INICIAR DEMO — 60 SEGUNDOS
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ── 6. NFT SHOWCASE ─────────────────────────────────────── */}
       <NFTShowcase />
 
@@ -250,8 +307,13 @@ export default function LandingPage() {
             y accessible para las 40M+ PYMEs de América Latina.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link href="/trades">
+            <Link href="/demo">
               <button className="btn-solid-cyan text-sm px-10 py-4">
+                ▶ VER DEMO
+              </button>
+            </Link>
+            <Link href="/trades">
+              <button className="btn-neon text-sm px-10 py-4">
                 ABRIR DASHBOARD
               </button>
             </Link>
@@ -259,10 +321,9 @@ export default function LandingPage() {
               href="https://github.com/ALFA117/Nexus-Latam"
               target="_blank"
               rel="noopener noreferrer"
+              className="text-white/40 hover:text-white/70 text-sm font-mono transition-colors border border-white/10 hover:border-white/20 px-8 py-4 rounded"
             >
-              <button className="btn-neon text-sm px-10 py-4">
-                VER CÓDIGO
-              </button>
+              VER CÓDIGO
             </a>
           </div>
 
