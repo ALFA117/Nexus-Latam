@@ -113,6 +113,20 @@
 - [x] `Navbar` — link "Pitch" añadido; `Footer` — "Pitch Deck" en sección Protocolo
 - [x] Landing CTA final: "PITCH DECK" como botón secundario destacado
 
+### Frontend — Ronda 9
+- [x] `app/layout.tsx` — metadata enriquecida: title template `%s | NEXUS LATAM`, OG completo, Twitter Card, appleWebApp; `viewport` export con `themeColor` (fix warning Next.js 14)
+- [x] `public/manifest.json` — PWA manifest: installable, shortcuts a /demo /trades /agents, screenshots, orientación portrait
+- [x] `app/demo/layout.tsx` — metadata por ruta: title "Demo Interactivo" + OG/Twitter específico
+- [x] `app/pitch/layout.tsx` — metadata: "Pitch Deck · ETH México 2026" + OG/Twitter
+- [x] `app/agents/layout.tsx` — metadata: "Agentes IA · Claude Opus 4.7" + OG/Twitter
+- [x] `app/trades/layout.tsx` — metadata: "Command Center · Operaciones B2B" + OG/Twitter
+- [x] `app/yield/layout.tsx` — metadata: "Yield Vault · Aave V3" + OG/Twitter
+- [x] `app/compliance/layout.tsx` — metadata: "KYC Registry · Compliance On-Chain" + OG/Twitter
+- [x] `app/audit/layout.tsx` — metadata: "Audit Trail · Merkle Bundles" + OG/Twitter
+- [x] `ConnectButton` — click-outside para cerrar dropdown + botón ⎘ copiar address (con feedback "Copiado!") + caret animado + animación `dropdownIn`
+- [x] `LiveFXTicker` — 2 pares nuevos: USDC/PEN (CCI) y USDC/CLP (TEF) + fila ETH/USD en tiempo real + timestamp de última actualización
+- [x] `globals.css` — `@keyframes dropdownIn` para menús desplegables
+
 ### CI/CD — Fixes
 - [x] GitHub Actions CI — `cache-dependency-path: package-lock.json` (root) correcto
 - [x] Vercel build — `npm install --include=dev` para incluir tailwindcss en build
@@ -158,7 +172,7 @@
 - [ ] `/trades/[id]` — botón "Confirmar Entrega" que llama al contrato real
 - [x] **Notificaciones toast** — ✅ implementado en ronda 7 (ToastProvider)
 - [ ] Modo oscuro total + transiciones de página (Framer Motion)
-- [ ] PWA manifest + service worker para uso offline
+- [x] **PWA manifest** — ✅ implementado en ronda 9 (public/manifest.json)
 - [ ] Tests con Playwright (E2E) y Vitest (unit)
 - [ ] Botón "Confirmar Entrega" en `/trades/[id]` conectado al contrato real (actualmente muestra alert)
 
@@ -186,7 +200,7 @@
 | AI Agents (código) | ✅ 95% |
 | AI Agents (integración real) | 🔄 30% |
 | API REST | ✅ 90% |
-| Frontend (UI/UX) | ✅ 100% |
+| Frontend (UI/UX) | ✅ 100% (ronda 9) |
 | Frontend (on-chain) | 🔄 20% |
 | Testing | 🔄 40% |
 | DevOps / Deploy | ✅ 80% |
@@ -196,4 +210,4 @@
 
 ---
 
-*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 8 completada)*
+*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 9 completada)*

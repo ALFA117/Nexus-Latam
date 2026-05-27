@@ -1,0 +1,54 @@
+{
+  "name": "NEXUS LATAM — Protocolo B2B",
+  "short_name": "NEXUS LATAM",
+  "description": "El primer protocolo autónomo de financiamiento comercial B2B para América Latina. 5 agentes IA, Arbitrum Stylus, <60s settlement.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060D17",
+  "theme_color": "#00D4FF",
+  "orientation": "portrait-primary",
+  "categories": ["finance", "business", "productivity"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "NEXUS LATAM Command Center"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Demo Interactivo",
+      "short_name": "Demo",
+      "url": "/demo",
+      "description": "Ver el flujo completo del protocolo"
+    },
+    {
+      "name": "Command Center",
+      "short_name": "Trades",
+      "url": "/trades",
+      "description": "Operaciones en tiempo real"
+    },
+    {
+      "name": "Agentes IA",
+      "short_name": "Agentes",
+      "url": "/agents",
+      "description": "Los 5 agentes del protocolo"
+    }
+  ]
+}
