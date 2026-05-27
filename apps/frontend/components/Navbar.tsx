@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { ConnectButton } from './ConnectButton';
 
 const NAV_LINKS = [
+  { href: '/demo',        label: 'Demo' },
   { href: '/agents',      label: 'Agentes' },
-  { href: '#nfts',        label: 'NFTs' },
   { href: '/trades',      label: 'Trades' },
   { href: '/yield',       label: 'Yield' },
   { href: '/compliance',  label: 'KYC' },

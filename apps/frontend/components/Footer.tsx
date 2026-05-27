@@ -52,12 +52,12 @@ export function Footer() {
             <p className="font-orbitron text-xs text-[#00D4FF] uppercase tracking-widest mb-4">Protocolo</p>
             <ul className="space-y-2">
               {[
-                { label: 'Agentes IA',      href: '/agents' },
-                { label: 'NFT Ecosystem',   href: '/#nfts' },
-                { label: 'Operaciones',     href: '/trades' },
-                { label: 'Yield Vault',     href: '/yield' },
-                { label: 'Compliance KYC',  href: '/compliance' },
-                { label: 'Audit Trail',     href: '/audit' },
+                { label: 'Demo Interactivo', href: '/demo' },
+                { label: 'Agentes IA',       href: '/agents' },
+                { label: 'Operaciones',      href: '/trades' },
+                { label: 'Yield Vault',      href: '/yield' },
+                { label: 'Compliance KYC',   href: '/compliance' },
+                { label: 'Audit Trail',      href: '/audit' },
               ].map(item => (
                 <li key={item.label}>
                   <Link href={item.href} className="text-white/40 hover:text-[#00D4FF] text-sm font-mono transition-colors">

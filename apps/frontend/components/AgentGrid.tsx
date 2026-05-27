@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 const AGENTS = [
   {
@@ -224,35 +225,59 @@ export function AgentGrid() {
                 <div>
                   <p className="text-[#00D4FF] font-orbitron text-xs uppercase tracking-widest mb-1">NEXUS ORCHESTRATOR</p>
                   <h3 className="text-white font-bold text-xl">Flow de Operación Completo</h3>
-                  <p className="text-white/40 text-sm mt-1">Todos los agentes operan en cadena coordinados por el Orchestrator</p>
+                  <p className="text-white/40 text-sm mt-1">Todos los agentes operan en cadena coordinados por el Orchestrator via Claude Opus 4.7 con adaptive thinking</p>
                 </div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  {['Router', '→', 'Compliance', '→', 'Trade', '→', 'Yield', '→', 'Audit'].map((step, i) => (
-                    <span
-                      key={i}
-                      className={`text-sm font-mono ${step === '→' ? 'text-[#00D4FF33]' : 'font-bold text-white/70'}`}
-                    >
-                      {step}
-                    </span>
+
+                {/* Flow visual */}
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {[
+                    { label: 'Router',     color: '#00D4FF' },
+                    { label: '→',          color: '#ffffff20' },
+                    { label: 'Compliance', color: '#9B30FF' },
+                    { label: '→',          color: '#ffffff20' },
+                    { label: 'Trade',      color: '#F7B731' },
+                    { label: '→',          color: '#ffffff20' },
+                    { label: 'Yield',      color: '#00FF94' },
+                    { label: '→',          color: '#ffffff20' },
+                    { label: 'Audit',      color: '#FF6B35' },
+                  ].map((s, i) => (
+                    s.label === '→'
+                      ? <span key={i} className="text-sm font-mono" style={{ color: s.color }}>→</span>
+                      : <span
+                          key={i}
+                          className="text-xs font-orbitron font-bold px-2.5 py-1 rounded clip-corner-sm"
+                          style={{ color: s.color, background: `${s.color}15`, border: `1px solid ${s.color}35` }}
+                        >{s.label}</span>
                   ))}
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-center">
-                    <p className="font-orbitron text-xl font-black text-[#00D4FF]">58s</p>
-                    <p className="text-white/30 text-xs font-mono">E2E avg</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="font-orbitron text-xl font-black text-[#00FF94]">99.97%</p>
-                    <p className="text-white/30 text-xs font-mono">uptime</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="font-orbitron text-xl font-black text-[#9B30FF]">Claude</p>
-                    <p className="text-white/30 text-xs font-mono">Opus 4.7</p>
-                  </div>
+
+                <div className="flex items-center gap-5 shrink-0">
+                  {[
+                    { v: '58s',    l: 'E2E avg',  c: '#00D4FF' },
+                    { v: '99.97%', l: 'uptime',   c: '#00FF94' },
+                    { v: '4.7',    l: 'Claude Opus', c: '#9B30FF' },
+                    { v: '$1.2M',  l: 'vol 24h',  c: '#F7B731' },
+                  ].map(s => (
+                    <div key={s.l} className="text-center">
+                      <p className="font-orbitron text-lg font-black" style={{ color: s.c }}>{s.v}</p>
+                      <p className="text-white/30 text-xs font-mono">{s.l}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* CTA a página de agentes */}
+        <div className="text-center mt-10">
+          <Link href="/agents">
+            <button className="inline-flex items-center gap-3 glass border border-[#9B30FF30] hover:border-[#9B30FF60] text-white/60 hover:text-[#9B30FF] px-8 py-3 font-orbitron text-xs uppercase tracking-widest transition-all duration-300 clip-corner group">
+              <span className="text-[#9B30FF] group-hover:scale-110 transition-transform">◈</span>
+              Ver todos los agentes en detalle
+              <span className="text-[#9B30FF]">→</span>
+            </button>
+          </Link>
         </div>
       </div>
     </section>

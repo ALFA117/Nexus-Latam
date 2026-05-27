@@ -134,6 +134,22 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
             </span>
             <span className="text-white/30 text-xs font-mono ml-auto">{trade.createdAt}</span>
           </div>
+          {/* Confirmar Entrega — solo visible cuando está FUNDED */}
+          {trade.state === 'FUNDED' && (
+            <div className="mt-4 p-4 glass border border-[#F7B73130] rounded-lg flex flex-wrap items-center gap-4">
+              <div>
+                <p className="text-[#F7B731] font-orbitron text-xs uppercase tracking-widest">Acción requerida</p>
+                <p className="text-white/60 text-sm mt-0.5">El escrow está fondado. Confirma la entrega de los bienes para liberar los fondos al vendedor.</p>
+              </div>
+              <button
+                className="shrink-0 clip-corner text-xs font-orbitron font-black px-5 py-2.5 transition-all duration-200 hover:scale-105"
+                style={{ background: 'linear-gradient(135deg, #F7B731, #FF6B35)', color: '#060D17' }}
+                onClick={() => alert('Función on-chain disponible con contrato desplegado en Sepolia')}
+              >
+                ✓ CONFIRMAR ENTREGA
+              </button>
+            </div>
+          )}
           {/* Quick stats */}
           <div className="flex flex-wrap gap-6 mt-4">
             {[
@@ -161,7 +177,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
               <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-3">
                 NFTs Acuñados en Esta Operación
               </p>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {NFTS.map((n) => (
                   <div
                     key={n.type}
