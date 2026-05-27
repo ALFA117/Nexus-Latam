@@ -1,5 +1,5 @@
 # NEXUS LATAM — Lista de Puntos
-> Estado del proyecto al 2026-05-26 (rondas 1–7) · ETH México 2026 Hackathon
+> Estado del proyecto al 2026-05-26 (rondas 1–8) · ETH México 2026 Hackathon
 
 ---
 
@@ -104,6 +104,15 @@
 - [x] `/demo` — keyboard navigation (← → + Space para play/pause) + botón "⎘ COMPARTIR" (clipboard)
 - [x] `/compliance` — scan-line animation durante loading + hint de teclado + texto más descriptivo
 
+### Frontend — Ronda 8
+- [x] `/pitch` (NUEVA) — Pitch deck completo para jueces: problema/solución/métricas/tech stack/roadmap
+- [x] `/trades` — buscador por texto (ID/wallet/país) con contador de resultados
+- [x] `AgentStatusPanel` — live event feed rotativo con timestamps + fade por antigüedad
+- [x] `/audit` — visualización Merkle tree CSS: Root → niveles → 500 hojas + stats
+- [x] `/agents` — panel `AgentQueryPanel`: 3 queries de muestra + input libre + typewriter response
+- [x] `Navbar` — link "Pitch" añadido; `Footer` — "Pitch Deck" en sección Protocolo
+- [x] Landing CTA final: "PITCH DECK" como botón secundario destacado
+
 ### CI/CD — Fixes
 - [x] GitHub Actions CI — `cache-dependency-path: package-lock.json` (root) correcto
 - [x] Vercel build — `npm install --include=dev` para incluir tailwindcss en build
@@ -183,8 +192,8 @@
 | DevOps / Deploy | ✅ 80% |
 | Hackathon materials | ❌ 10% |
 
-**Total estimado: ~80% completo para demo funcional completa**
+**Total estimado: ~85% completo para demo funcional completa**
 
 ---
 
-*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 7 completada)*
+*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 8 completada)*
