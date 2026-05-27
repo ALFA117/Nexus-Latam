@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { WagmiProvider } from '../components/WagmiProvider';
 
 export const metadata: Metadata = {
   title:       'NEXUS LATAM — Protocolo Autónomo de Financiamiento Comercial',
@@ -23,7 +24,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <WagmiProvider>
+          {children}
+        </WagmiProvider>
+      </body>
     </html>
   );
 }

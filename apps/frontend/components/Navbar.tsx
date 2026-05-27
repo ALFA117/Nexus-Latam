@@ -2,12 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { ConnectButton } from './ConnectButton';
 
 const NAV_LINKS = [
   { href: '#agents',   label: 'Agentes' },
   { href: '#nfts',     label: 'NFTs' },
-  { href: '#protocol', label: 'Protocolo' },
-  { href: '/trades',   label: 'Dashboard' },
+  { href: '/trades',   label: 'Trades' },
+  { href: '/yield',    label: 'Yield' },
+  { href: '/compliance', label: 'KYC' },
+  { href: '/audit',    label: 'Audit' },
 ];
 
 export function Navbar() {
@@ -64,12 +67,13 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* CTA + status */}
-        <div className="hidden md:flex items-center gap-4">
+        {/* CTA + wallet */}
+        <div className="hidden md:flex items-center gap-3">
           <div className="flex items-center gap-2 text-xs font-mono text-[#00FF94]">
             <span className="status-dot status-online" />
             <span>Sepolia Live</span>
           </div>
+          <ConnectButton />
           <Link href="/trades">
             <button className="btn-solid-cyan text-xs py-2 px-5">
               LAUNCH APP
