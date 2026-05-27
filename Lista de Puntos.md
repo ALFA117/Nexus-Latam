@@ -1,5 +1,5 @@
 # NEXUS LATAM — Lista de Puntos
-> Estado del proyecto al 2026-05-26 (rondas 1–8) · ETH México 2026 Hackathon
+> Estado del proyecto al 2026-05-26 (rondas 1–13) · ETH México 2026 Hackathon
 
 ---
 
@@ -161,6 +161,13 @@
 - [x] `lib/nexus-client.ts` — retry exponencial automático (2 reintentos, backoff 400ms/800ms) + AbortSignal en todos los endpoints + tipo `PaginatedTrades`
 - [x] `hooks/useNexusAPI.ts` — AbortController por request, cancelación al desmontar componente, método `cancel()` expuesto
 
+### Frontend — Ronda 13
+- [x] `next.config.mjs` — PWA real con `@ducanh2912/next-pwa` + workbox runtime caching: Google Fonts (CacheFirst 1y), API health/fx (StaleWhileRevalidate 60s), Next.js static (CacheFirst 30d)
+- [x] `hooks/useContracts.ts` — hooks wagmi para todos los contratos: `useTradeState`, `useComplianceStatus`, `useVaultStats`, `useConfirmDelivery` + ABIs mínimos + NEXT_PUBLIC_* env vars
+- [x] `app/audit/page.tsx` — KPI cards animadas con `ScaleIn` staggered (delay i*0.07)
+- [x] `app/yield/page.tsx` — KPI cards con `ScaleIn` + `useVaultStats` integrado (TVL/APY on-chain con fallback a mock)
+- [x] `app/compliance/page.tsx` — tier legend y sample wallets con `ScaleIn` staggered
+
 ### CI/CD — Fixes
 - [x] GitHub Actions CI — `cache-dependency-path: package-lock.json` (root) correcto
 - [x] Vercel build — `npm install --include=dev` para incluir tailwindcss en build
@@ -201,7 +208,7 @@
 - [x] **Rate limiting API** — ✅ implementado ronda 11 (express-rate-limit: 120/min global, 10 POST/min)
 
 ### Frontend
-- [ ] **Wagmi hooks reales** — leer estado del contrato desde la chain (actualmente mock)
+- [x] **Wagmi hooks reales** — ✅ `useContracts.ts` ronda 13: `useTradeState`, `useComplianceStatus`, `useVaultStats`, `useConfirmDelivery`
 - [ ] **ConnectButton modal** — animación de entry, QR code para WalletConnect
 - [ ] `/trades/[id]` — botón "Confirmar Entrega" que llama al contrato real
 - [x] **Notificaciones toast** — ✅ implementado en ronda 7 (ToastProvider)
@@ -235,15 +242,35 @@
 | AI Agents (integración real) | 🔄 30% |
 | API REST | ✅ 95% (ronda 11) |
 | Frontend (UI/UX) | ✅ 100% (ronda 10) |
-| Frontend (on-chain) | 🔄 20% |
+| Frontend (on-chain) | ✅ 70% (ronda 13: useContracts hooks) |
 | Testing | 🔄 55% (Vitest ronda 11) |
-| DevOps / Deploy | ✅ 90% (Docker ronda 10) |
+| DevOps / Deploy | ✅ 95% (PWA ronda 13) |
 | Hackathon materials | ❌ 10% |
 
-**Total estimado: ~85% completo para demo funcional completa**
+**Total estimado: ~93% completo para demo funcional completa**
 
 ---
 
-**Total estimado: ~92% completo para demo funcional completa**
+## ❗ QUÉ FALTA EXACTAMENTE
 
-*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 12 completada)*
+### Se puede completar SIN credenciales externas
+| # | Tarea | Esfuerzo | Impacto |
+|---|-------|----------|---------|
+| 1 | Integrar `useTradeState` en `/trades/[id]` — leer estado on-chain y mostrarlo en la UI | ~30 min | Alto |
+| 2 | Integrar `useComplianceStatus` en `/compliance` — score/tier desde contrato cuando wallet conectada | ~30 min | Alto |
+| 3 | `/trades/[id]` — botón "Confirmar Entrega" llama a `useConfirmDelivery()` real (hook ya existe) | ~20 min | Alto |
+| 4 | Más tests Vitest — componentes `Skeleton`, `TradeCard`, `ComplianceNFTCard` | ~1h | Medio |
+| 5 | `/compliance/loading.tsx` + `/yield/loading.tsx` + `/audit/loading.tsx` — skeleton pages | ~30 min | Medio |
+
+### BLOQUEADO — requiere credenciales externas
+| Bloqueador | Qué falta para desbloquearlo |
+|------------|------------------------------|
+| **Deploy contratos Arbitrum Sepolia** | `PRIVATE_KEY` de wallet + ETH del faucet (arbitrum.faucet.dev) |
+| **Bitso Business API real** | Cuenta Business aprobada + `BITSO_API_KEY` + `BITSO_API_SECRET` |
+| **Rare Protocol minting real** | CLI configurado + wallet con MATIC/ETH en Sepolia |
+| **ANTHROPIC_API_KEY en Vercel** | Ingresar al dashboard Vercel → Settings → Env Vars |
+| **Testnet USDC para demo** | Solicitar en faucet: circle.com/faucet o aave.com testnet |
+| **Demo video (2 min)** | Grabar pantalla del demo en producción |
+| **Submission ETH México 2026** | Cuenta en devfolio + proyecto final + equipo |
+
+*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 13 completada)*

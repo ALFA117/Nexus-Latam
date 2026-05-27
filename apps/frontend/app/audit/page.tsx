@@ -1,9 +1,10 @@
 'use client';
 
-import { useState }          from 'react';
-import { AuditTrailTable }   from '../../components/AuditTrailTable';
-import { Navbar }            from '../../components/Navbar';
-import Link                  from 'next/link';
+import { useState }               from 'react';
+import { AuditTrailTable }        from '../../components/AuditTrailTable';
+import { Navbar }                 from '../../components/Navbar';
+import { FadeIn, ScaleIn }        from '../../components/FadeIn';
+import Link                       from 'next/link';
 
 const BUNDLES = [
   { id: 42, txs: 500,  volume: '$1,250,000', merkle: '0xabc123...', ts: '2026-05-26 14:32', status: 'FINALIZED' },
@@ -49,10 +50,10 @@ export default function AuditPage() {
             { label: 'Transacciones',  value: '21,000+', color: '#F7B731', icon: '⚡' },
             { label: 'Volumen total',  value: '$24.5M',  color: '#00D4FF', icon: '📊' },
             { label: 'Txs/Bundle',     value: '500',     color: '#00FF94', icon: '⬡' },
-          ].map((k) => (
+          ].map((k, i) => (
+            <ScaleIn key={k.label} delay={i * 0.07}>
             <div
-              key={k.label}
-              className="glass clip-corner p-4 flex items-center gap-3"
+              className="glass clip-corner p-4 flex items-center gap-3 h-full"
               style={{ borderColor: `${k.color}22` }}
             >
               <div
@@ -66,6 +67,7 @@ export default function AuditPage() {
                 <p className="text-white/35 text-xs font-mono">{k.label}</p>
               </div>
             </div>
+            </ScaleIn>
           ))}
         </div>
 

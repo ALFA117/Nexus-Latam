@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Navbar }  from '../../components/Navbar';
-import Link        from 'next/link';
+import { Navbar }          from '../../components/Navbar';
+import { FadeIn, ScaleIn } from '../../components/FadeIn';
+import { useVaultStats }   from '../../hooks/useContracts';
+import Link                from 'next/link';
 
 /* ── Mock positions ──────────────────────────────────────────────── */
 const POSITIONS = [
@@ -134,6 +136,11 @@ function YieldSimulator() {
 
 export default function YieldPage() {
   const [selected, setSelected] = useState<string | null>(null);
+  const { tvlUSDC, apyPct, isLoading: vaultLoading } = useVaultStats();
+
+  // Use on-chain data when available, fall back to mock aggregates
+  const displayTVL = tvlUSDC ?? totalTVL;
+  const displayAPY = apyPct  ?? avgAPY;
 
   return (
     <div className="min-h-screen bg-[#060D17] text-white grid-bg">
@@ -164,12 +171,13 @@ export default function YieldPage() {
         {/* KPI strip */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 py-6">
           {[
-            { label: 'TVL en Escrow',    icon: '⬡', value: totalTVL,    prefix: '$', suffix: ' USDC', color: '#00FF94' },
+            { label: 'TVL en Escrow',    icon: '⬡', value: displayTVL,    prefix: '$', suffix: ' USDC', color: '#00FF94' },
             { label: 'Yield Total',      icon: '📈', value: totalEarned, prefix: '$', suffix: ' USDC', color: '#F7B731' },
-            { label: 'APY Promedio',     icon: '⚡', value: null,  display: `${avgAPY.toFixed(1)}%`,   color: '#00D4FF' },
+            { label: 'APY Promedio',     icon: '⚡', value: null,  display: vaultLoading ? '...' : `${displayAPY.toFixed(1)}%`,   color: '#00D4FF' },
             { label: 'Posiciones activas',icon: '◉', value: null, display: `${activePositions}`,        color: '#9B30FF' },
-          ].map((k) => (
-            <div key={k.label} className="glass clip-corner p-4" style={{ borderColor: `${k.color}22` }}>
+          ].map((k, i) => (
+            <ScaleIn key={k.label} delay={i * 0.07}>
+            <div className="glass clip-corner p-4 h-full" style={{ borderColor: `${k.color}22` }}>
               <div className="flex items-center gap-2 mb-2">
                 <div
                   className="w-9 h-9 rounded-lg flex items-center justify-center text-base"
@@ -184,6 +192,7 @@ export default function YieldPage() {
                 {k.suffix && <span className="text-xs text-white/30 font-mono ml-1">{k.suffix}</span>}
               </p>
             </div>
+            </ScaleIn>
           ))}
         </div>
 

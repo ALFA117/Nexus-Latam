@@ -4,6 +4,7 @@ import { useState }          from 'react';
 import { ComplianceNFTCard } from '../../components/ComplianceNFTCard';
 import { useNexusAPI }       from '../../hooks/useNexusAPI';
 import { Navbar }            from '../../components/Navbar';
+import { FadeIn, ScaleIn }   from '../../components/FadeIn';
 import Link                  from 'next/link';
 
 const SAMPLE_WALLETS = [
@@ -76,10 +77,10 @@ export default function CompliancePage() {
 
         {/* Tier legend */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 py-6">
-          {Object.entries(TIER_META).map(([tier, meta]) => (
+          {Object.entries(TIER_META).map(([tier, meta], i) => (
+            <ScaleIn key={tier} delay={i * 0.08}>
             <div
-              key={tier}
-              className="glass clip-corner-sm p-3 flex items-center gap-3"
+              className="glass clip-corner-sm p-3 flex items-center gap-3 h-full"
               style={{ borderColor: `${meta.color}25` }}
             >
               <span className="text-xl" style={{ color: meta.color }}>{meta.icon}</span>
@@ -88,6 +89,7 @@ export default function CompliancePage() {
                 <p className="text-white/35 text-xs font-mono">{meta.desc}</p>
               </div>
             </div>
+            </ScaleIn>
           ))}
         </div>
 
@@ -148,13 +150,13 @@ export default function CompliancePage() {
             Wallets de ejemplo — click para consultar
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {SAMPLE_WALLETS.map((w) => {
+            {SAMPLE_WALLETS.map((w, i) => {
               const meta = TIER_META[w.tier];
               return (
+                <ScaleIn key={w.addr} delay={i * 0.1}>
                 <button
-                  key={w.addr}
                   onClick={() => { setAddress(w.addr); lookup(w.addr); }}
-                  className="glass clip-corner-sm p-3 text-left card-hover transition-all"
+                  className="w-full glass clip-corner-sm p-3 text-left card-hover transition-all"
                   style={{ borderColor: `${meta.color}25` }}
                 >
                   <div className="flex items-center justify-between mb-1">
@@ -179,6 +181,7 @@ export default function CompliancePage() {
                   </div>
                   <p className="text-white/25 text-xs font-mono mt-1">{w.country}</p>
                 </button>
+                </ScaleIn>
               );
             })}
           </div>
