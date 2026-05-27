@@ -150,6 +150,17 @@
 - [x] `app/pitch/page.tsx` — secciones animadas con `FadeIn`, `ScaleIn`, `SlideIn` al entrar en viewport
 - [x] `app/agents/page.tsx` — header animado con `FadeIn`
 
+### Frontend — Ronda 12
+- [x] `app/loading.tsx` — pantalla de carga global cyberpunk: rings animados + shimmer bar
+- [x] `app/error.tsx` — error boundary global: terminal de error + botón reintentar + CTA inicio
+- [x] `app/trades/loading.tsx` — skeleton loading específico: KPI cards + trade cards
+- [x] `app/agents/loading.tsx` — skeleton loading específico: tabs + agent detail layout
+- [x] `.github/workflows/ci.yml` — step `npm test` (Vitest) añadido al pipeline CI antes del build
+- [x] `app/page.tsx` — landing animada: stats cards con `ScaleIn` staggered, AgentGrid/NFTShowcase/ProtocolFeatures con `FadeIn`
+- [x] `app/demo/page.tsx` — barra countdown por step durante auto-play + panel de celebración al completar con métricas (58s / +$312 / 0.3% / 3NFTs) + toast final + botón "REPETIR DEMO"
+- [x] `lib/nexus-client.ts` — retry exponencial automático (2 reintentos, backoff 400ms/800ms) + AbortSignal en todos los endpoints + tipo `PaginatedTrades`
+- [x] `hooks/useNexusAPI.ts` — AbortController por request, cancelación al desmontar componente, método `cancel()` expuesto
+
 ### CI/CD — Fixes
 - [x] GitHub Actions CI — `cache-dependency-path: package-lock.json` (root) correcto
 - [x] Vercel build — `npm install --include=dev` para incluir tailwindcss en build
@@ -233,4 +244,6 @@
 
 ---
 
-*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 11 completada)*
+**Total estimado: ~92% completo para demo funcional completa**
+
+*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 12 completada)*

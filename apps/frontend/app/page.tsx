@@ -9,6 +9,7 @@ import { AgentGrid }         from '../components/AgentGrid';
 import { NFTShowcase }       from '../components/NFTShowcase';
 import { ProtocolFeatures }  from '../components/ProtocolFeatures';
 import { Footer }            from '../components/Footer';
+import { FadeIn, ScaleIn }   from '../components/FadeIn';
 
 /* ── Animated counter ──────────────────────────────────────────── */
 function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
@@ -161,10 +162,10 @@ export default function LandingPage() {
                 color: '#00FF94',
                 icon: '📈',
               },
-            ].map((stat) => (
+            ].map((stat, i) => (
+              <ScaleIn key={stat.label} delay={i * 0.08}>
               <div
-                key={stat.label}
-                className="glass clip-corner p-6 text-center card-hover"
+                className="glass clip-corner p-6 text-center card-hover h-full"
                 style={{ borderColor: `${stat.color}22` }}
               >
                 <div
@@ -182,13 +183,16 @@ export default function LandingPage() {
                 <p className="text-white font-semibold text-sm mb-1">{stat.label}</p>
                 <p className="text-white/35 text-xs font-mono">{stat.sub}</p>
               </div>
+              </ScaleIn>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── 4. AGENTS ───────────────────────────────────────────── */}
-      <AgentGrid />
+      <FadeIn y={30}>
+        <AgentGrid />
+      </FadeIn>
 
       {/* ── 5. LIVE TERMINAL ────────────────────────────────────── */}
       <section className="py-20 px-6">
@@ -269,10 +273,14 @@ export default function LandingPage() {
       </section>
 
       {/* ── 6. NFT SHOWCASE ─────────────────────────────────────── */}
-      <NFTShowcase />
+      <FadeIn y={24}>
+        <NFTShowcase />
+      </FadeIn>
 
       {/* ── 7. PROTOCOL FEATURES & STACK ────────────────────────── */}
-      <ProtocolFeatures />
+      <FadeIn y={24} delay={0.05}>
+        <ProtocolFeatures />
+      </FadeIn>
 
       {/* ── 8. CTA FINAL ────────────────────────────────────────── */}
       <section className="py-28 px-6 relative overflow-hidden">

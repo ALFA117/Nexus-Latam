@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { Navbar } from '../../components/Navbar';
-import Link from 'next/link';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { Navbar }   from '../../components/Navbar';
+import { useToast } from '../../components/ToastProvider';
+import Link         from 'next/link';
 
 /* ── Demo steps ────────────────────────────────────────────────────── */
 const STEPS = [
@@ -201,12 +202,16 @@ function NFTBadge({ nft }: { nft: NonNullable<typeof STEPS[0]['nft']> }) {
 
 /* ── Main demo ─────────────────────────────────────────────────────── */
 export default function DemoPage() {
-  const [current, setCurrent]     = useState(0);
-  const [playing, setPlaying]     = useState(false);
-  const [logKey, setLogKey]       = useState(0);
-  const [mintedNfts, setMintedNfts] = useState<typeof STEPS[0]['nft'][]>([]);
-  const [copied, setCopied]       = useState(false);
-  const intervalRef               = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { toast }                        = useToast();
+  const [current, setCurrent]            = useState(0);
+  const [playing, setPlaying]            = useState(false);
+  const [logKey, setLogKey]              = useState(0);
+  const [mintedNfts, setMintedNfts]      = useState<typeof STEPS[0]['nft'][]>([]);
+  const [copied, setCopied]              = useState(false);
+  const [completed, setCompleted]        = useState(false);
+  const [stepProgress, setStepProgress]  = useState(0); // 0-100 countdown within a step
+  const intervalRef                      = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const progressRef                      = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const step = STEPS[current];
 
@@ -220,30 +225,58 @@ export default function DemoPage() {
     }
   };
 
+  const stopProgress = useCallback(() => {
+    if (progressRef.current) { clearInterval(progressRef.current); progressRef.current = null; }
+  }, []);
+
+  const startProgress = useCallback(() => {
+    stopProgress();
+    setStepProgress(0);
+    const tick = 50; // ms
+    const steps = TOTAL_DURATION / tick;
+    let i = 0;
+    progressRef.current = setInterval(() => {
+      i++;
+      setStepProgress(Math.min(100, (i / steps) * 100));
+      if (i >= steps) stopProgress();
+    }, tick);
+  }, [stopProgress]);
+
   const startAutoPlay = () => {
     if (playing) {
       setPlaying(false);
+      stopProgress();
       if (intervalRef.current) clearTimeout(intervalRef.current);
       return;
     }
     setPlaying(true);
+    setCompleted(false);
     setMintedNfts([]);
     goTo(0);
+    startProgress();
 
     let idx = 0;
     const next = () => {
       idx++;
       if (idx >= STEPS.length) {
         setPlaying(false);
+        setCompleted(true);
+        stopProgress();
+        setStepProgress(100);
+        toast('success', '¡Demo completado!', 'Flujo completo: KYC → Escrow → LC-NFT → Yield → Settlement → Audit en 58s');
         return;
       }
       goTo(idx);
+      startProgress();
       intervalRef.current = setTimeout(next, TOTAL_DURATION);
     };
     intervalRef.current = setTimeout(next, TOTAL_DURATION);
   };
 
-  useEffect(() => () => { if (intervalRef.current) clearTimeout(intervalRef.current); }, []);
+  useEffect(() => () => {
+    if (intervalRef.current) clearTimeout(intervalRef.current);
+    stopProgress();
+  }, [stopProgress]);
 
   /* Keyboard navigation */
   useEffect(() => {
@@ -324,7 +357,8 @@ export default function DemoPage() {
               {step.agent}
             </span>
           </div>
-          <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+          {/* Main progress bar */}
+          <div className="h-1.5 bg-white/5 rounded-full overflow-hidden mb-2">
             <div
               className="h-full rounded-full transition-all duration-500"
               style={{
@@ -333,6 +367,19 @@ export default function DemoPage() {
               }}
             />
           </div>
+          {/* Step countdown bar (only during auto-play) */}
+          {playing && (
+            <div className="h-0.5 bg-white/5 rounded-full overflow-hidden">
+              <div
+                className="h-full rounded-full"
+                style={{
+                  width: `${stepProgress}%`,
+                  background: `${step.color}80`,
+                  transition: 'width 50ms linear',
+                }}
+              />
+            </div>
+          )}
         </div>
 
         {/* Step selector */}
@@ -465,17 +512,40 @@ export default function DemoPage() {
               )}
             </div>
 
-            {/* Tiempo total */}
-            {current === STEPS.length - 1 && (
+            {/* Resultado final — celebración */}
+            {completed && (
               <div
-                className="glass clip-corner p-4 text-center"
-                style={{ borderColor: '#00FF9430', boxShadow: '0 0 30px rgba(0,255,148,0.1)' }}
+                className="glass clip-corner p-5 text-center space-y-3"
+                style={{ borderColor: '#00FF9440', boxShadow: '0 0 40px rgba(0,255,148,0.12)' }}
               >
-                <p className="text-[#00FF94] font-orbitron text-2xl font-black mb-1">58s</p>
-                <p className="text-white/40 text-xs font-mono">Tiempo total E2E</p>
-                <p className="text-[#F7B731] font-orbitron text-lg font-black mt-3">+$312</p>
-                <p className="text-white/40 text-xs font-mono">Yield generado (Aave V3)</p>
-                <p className="text-[#00FF94] text-xs font-mono mt-3">✓ OPERACIÓN COMPLETADA</p>
+                <div
+                  className="w-14 h-14 rounded-2xl mx-auto flex items-center justify-center text-2xl"
+                  style={{ background: '#00FF9415', border: '2px solid #00FF9450' }}
+                >
+                  🎉
+                </div>
+                <p className="font-orbitron text-xs text-[#00FF94] uppercase tracking-widest">
+                  Demo completado
+                </p>
+                <div className="grid grid-cols-2 gap-2 text-center">
+                  {[
+                    { l: 'Tiempo E2E', v: '58s',    c: '#00FF94' },
+                    { l: 'Yield',      v: '+$312',   c: '#F7B731' },
+                    { l: 'Fee total',  v: '0.3%',    c: '#9B30FF' },
+                    { l: 'NFTs',       v: '3 / 3',   c: '#00D4FF' },
+                  ].map(({ l, v, c }) => (
+                    <div key={l} className="glass p-2 rounded-lg">
+                      <p className="font-orbitron text-base font-black" style={{ color: c }}>{v}</p>
+                      <p className="text-white/30 text-xs font-mono">{l}</p>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => { setCompleted(false); setMintedNfts([]); goTo(0); }}
+                  className="w-full btn-neon text-xs py-2"
+                >
+                  ↺ REPETIR DEMO
+                </button>
               </div>
             )}
           </div>

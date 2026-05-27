@@ -50,7 +50,9 @@ export default function TradesPage() {
   const [tab, setTab]                 = useState<'list' | 'new'>('list');
 
   useEffect(() => {
-    getTrades().then(setTrades).catch(() => setTrades(MOCK_TRADES));
+    getTrades({ page: 1, limit: 50 })
+      .then(r => setTrades(r.data ?? []))
+      .catch(() => setTrades(MOCK_TRADES));
   }, []);
 
   const displayTrades = (trades.length > 0 ? trades : MOCK_TRADES) as typeof MOCK_TRADES;
