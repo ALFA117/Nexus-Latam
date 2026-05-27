@@ -45,6 +45,7 @@ export default function TradesPage() {
   const { loading, error, getTrades } = useNexusAPI();
   const [trades, setTrades]           = useState<unknown[]>([]);
   const [filter, setFilter]           = useState<string>('ALL');
+  const [search, setSearch]           = useState('');
   const [tab, setTab]                 = useState<'list' | 'new'>('list');
 
   useEffect(() => {
@@ -52,7 +53,12 @@ export default function TradesPage() {
   }, []);
 
   const displayTrades = (trades.length > 0 ? trades : MOCK_TRADES) as typeof MOCK_TRADES;
-  const filtered = displayTrades.filter(t => filter === 'ALL' || t.state === filter);
+  const filtered = displayTrades.filter(t => {
+    const matchState   = filter === 'ALL' || t.state === filter;
+    const q            = search.toLowerCase();
+    const matchSearch  = !q || t.id.toLowerCase().includes(q) || t.buyer.toLowerCase().includes(q) || t.seller.toLowerCase().includes(q) || t.country.toLowerCase().includes(q);
+    return matchState && matchSearch;
+  });
 
   return (
     <div className="min-h-screen bg-[#060D17] text-white grid-bg">
@@ -132,6 +138,29 @@ export default function TradesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 pb-12">
             {/* Main trades list — 3 cols */}
             <div className="lg:col-span-3">
+              {/* Search + count */}
+              <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                <div className="relative flex-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/25 text-xs font-mono">⌕</span>
+                  <input
+                    type="text"
+                    placeholder="Buscar por ID, wallet, país..."
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    className="w-full bg-[#060D17] border border-[#00D4FF18] focus:border-[#00D4FF44] rounded-lg pl-8 pr-4 py-2.5 text-white/70 text-xs placeholder-white/20 focus:outline-none font-mono transition-colors"
+                  />
+                  {search && (
+                    <button
+                      onClick={() => setSearch('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 text-xs"
+                    >×</button>
+                  )}
+                </div>
+                <span className="self-center text-white/25 text-xs font-mono shrink-0">
+                  {filtered.length} / {displayTrades.length} ops
+                </span>
+              </div>
+
               {/* Filter chips */}
               <div className="flex flex-wrap gap-2 mb-5">
                 {Object.keys(STATE_LABELS).map((f) => (

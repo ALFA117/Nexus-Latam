@@ -29,15 +29,43 @@ const OPS_MESSAGES: Record<string, string[]> = {
   AuditAgent:      ['Bundle #42 sellado', 'Merkle root generado', '500 txs procesadas', 'NFT IPFS pinned'],
 };
 
+interface LiveEvent {
+  id:    string;
+  color: string;
+  agent: string;
+  msg:   string;
+  ts:    string;
+}
+
+const ALL_EVENTS = [
+  { agent: 'NexusRouter',     color: '#00D4FF', msg: 'LC $8,200 MX→CO enrutado via PSE' },
+  { agent: 'ComplianceAgent', color: '#9B30FF', msg: 'KYC score 912 · PREMIUM · acuñado NC-91234' },
+  { agent: 'TradeAgent',      color: '#F7B731', msg: 'Escrow 0xf3a1... fondado · 15,000 USDC' },
+  { agent: 'YieldAgent',      color: '#00FF94', msg: 'APY 4.2% activo · $15,000 en Aave V3' },
+  { agent: 'AuditAgent',      color: '#FF6B35', msg: 'Bundle #42: 499/500 txs · casi lleno' },
+  { agent: 'TradeAgent',      color: '#F7B731', msg: 'LC-NFT #8822 acuñado · mercado secundario' },
+  { agent: 'NexusRouter',     color: '#00D4FF', msg: 'SETTLED en 54s · $8,200 via PSE liquidado' },
+  { agent: 'ComplianceAgent', color: '#9B30FF', msg: 'OFAC check OK · 0 coincidencias' },
+  { agent: 'YieldAgent',      color: '#00FF94', msg: '+$87 USDC distribuido al seller 0x1a2b...' },
+  { agent: 'AuditAgent',      color: '#FF6B35', msg: 'Bundle #42 sellado · Merkle 0xabc123...' },
+];
+
+function nowTs() {
+  return new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
 export function AgentStatusPanel() {
-  const [agents, setAgents] = useState(INITIAL);
-  const [tick, setTick]     = useState(0);
+  const [agents, setAgents]     = useState(INITIAL);
+  const [tick, setTick]         = useState(0);
+  const [feed, setFeed]         = useState<LiveEvent[]>(() =>
+    ALL_EVENTS.slice(0, 4).map((e, i) => ({ ...e, id: `init-${i}`, ts: nowTs() }))
+  );
 
   useEffect(() => {
     const iv = setInterval(() => {
       setTick(t => t + 1);
       setAgents(prev => prev.map(a => {
-        const msgs = OPS_MESSAGES[a.name];
+        const msgs    = OPS_MESSAGES[a.name];
         const running = a.status === 'RUNNING';
         return {
           ...a,
@@ -46,6 +74,13 @@ export function AgentStatusPanel() {
           lastOp:   running ? msgs[Math.floor(Math.random() * msgs.length)] : a.lastOp,
         };
       }));
+
+      /* Live event feed */
+      const ev = ALL_EVENTS[Math.floor(Math.random() * ALL_EVENTS.length)];
+      setFeed(prev => [
+        { ...ev, id: Math.random().toString(36).slice(2), ts: nowTs() },
+        ...prev.slice(0, 6),
+      ]);
     }, 2800);
     return () => clearInterval(iv);
   }, []);
@@ -125,6 +160,32 @@ export function AgentStatusPanel() {
           </div>
         </div>
       ))}
+
+      {/* Live event feed */}
+      <div className="mt-3 pt-3 border-t border-[#00D4FF08]">
+        <div className="flex items-center justify-between mb-2">
+          <span className="font-orbitron text-xs text-white/30 uppercase tracking-widest">Live Feed</span>
+          <span className="flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00FF94] animate-pulse" />
+            <span className="text-[#00FF94] text-xs font-mono">live</span>
+          </span>
+        </div>
+        <div className="space-y-1.5 max-h-[140px] overflow-hidden">
+          {feed.slice(0, 5).map((e, i) => (
+            <div
+              key={e.id}
+              className="flex gap-2 text-xs font-mono transition-all duration-500"
+              style={{ opacity: 1 - i * 0.18 }}
+            >
+              <span className="shrink-0 text-white/15">{e.ts}</span>
+              <span className="shrink-0 font-bold" style={{ color: e.color }}>
+                [{e.agent.replace('Agent', '').replace('Nexus', '')}]
+              </span>
+              <span className="text-white/40 truncate">{e.msg}</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Footer */}
       <div className="pt-2 flex items-center justify-between">

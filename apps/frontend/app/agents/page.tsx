@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Navbar } from '../../components/Navbar';
 import Link from 'next/link';
 
@@ -438,20 +438,175 @@ export default function AgentsPage() {
           </div>
         </div>
 
+        {/* Interactive query panel */}
+        <AgentQueryPanel agent={agent} />
+
         {/* CTA */}
         <div className="flex flex-wrap items-center justify-center gap-4 mt-10">
-          <Link href="/trades">
+          <Link href="/demo">
             <button className="btn-solid-cyan text-sm px-8 py-3">
-              VER OPERACIONES EN VIVO
+              ▶ VER DEMO
             </button>
           </Link>
-          <Link href="/compliance">
+          <Link href="/trades">
             <button className="btn-neon text-sm px-8 py-3">
-              VERIFICAR KYC
+              COMMAND CENTER
+            </button>
+          </Link>
+          <Link href="/pitch">
+            <button className="text-white/40 hover:text-white/60 text-sm font-mono transition-colors border border-white/10 hover:border-white/20 px-6 py-3 rounded">
+              PITCH DECK
             </button>
           </Link>
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ── Interactive Query Panel ──────────────────────────────────────── */
+const SAMPLE_QUERIES: Record<string, string[]> = {
+  router:     ['¿Cuántas operaciones están en cola ahora?', 'Ruta óptima para pago $50K MX→AR', '¿Qué agente maneja disputas?'],
+  compliance: ['¿Cuál es el score mínimo para VERIFIED?', 'Verificar wallet 0x1a2b3c...', '¿Qué datos requiere el KYC?'],
+  trade:      ['¿Cuánto cuesta crear un escrow?', 'Estado del LC-NFT #8821', '¿Qué ocurre si expira el plazo?'],
+  yield:      ['¿Cuál es el APY actual en Aave V3?', 'Proyección de yield a 30 días por $25K', '¿Cuándo se distribuye el yield?'],
+  audit:      ['¿Cuántas transacciones faltan para el Bundle #43?', '¿Cómo verificar el Merkle root?', 'Historial de auditoría de NEXUS-8821'],
+};
+
+const MOCK_RESPONSES: Record<string, string[]> = {
+  router: [
+    'Hay 3 operaciones en cola ahora. Prioridad: 2 FUNDED esperando confirm_delivery, 1 PENDING en compliance. ETA máximo: 58s.',
+    'Ruta calculada: Arbitrum USDC → Bitso FX MX/AR → CVU BRL. Fee: 0.3% (30 bps). ETA estimado: <45s. Aprobado ✓',
+    'Las disputas las maneja TradeAgent con asistencia del NexusOrchestrator. Se activa cuando confirm_delivery no llega antes del deadline.',
+  ],
+  compliance: [
+    'Score mínimo para VERIFIED: 700/1000. Para PREMIUM se requiere ≥900 + due diligence avanzado. BASIC acepta 500-699 con límite $5K/op.',
+    'Iniciando KYC para 0x1a2b3c... Verificando contra OFAC, SAT, DIAN. Procesando... Score: 891 · Tier: VERIFIED ✓ ComplianceNFT listo.',
+    'KYC requiere: wallet address + empresa registrada + RFC/CNPJ/NIT según país + dirección fiscal. Todo on-chain con encriptación HMAC-SHA256.',
+  ],
+  trade: [
+    'Crear un escrow cuesta 0.3% del monto (30 bps). Ejemplo: $25,000 USDC → fee $75 USDC. Gas en Arbitrum: ~$0.02. Total real: $75.02.',
+    'LC-NFT #8821: SETTLED ✓ — $25,000 USDC liquidados en 58s via SPEI. Yield generado: +$312 USDC. Audit: Bundle #42.',
+    'Si el plazo expira sin confirm_delivery, el escrow entra en DISPUTED. TradeAgent notifica a ambas partes y escala al NexusOrchestrator.',
+  ],
+  yield: [
+    'APY actual en Aave V3 Arbitrum pool USDC: 4.2%. Este dato se actualiza en tiempo real cada 15 minutos via NexusVault.getAPY().',
+    'Proyección para $25,000 USDC a 30 días al 4.2% APY: +$86.30 USDC. Split: $69.04 al seller (80%) + $17.26 al protocolo (20%).',
+    'El yield se distribuye automáticamente cuando TradeAgent ejecuta release_funds() en el settlement. Sin acción manual requerida.',
+  ],
+  audit: [
+    'Bundle #43 tiene 87/500 transacciones. Al llegar a 500, AuditAgent genera el Merkle root SHA-256 y acuña el Audit-NFT automáticamente.',
+    'Para verificar el Merkle root: keccak256(merkle_root) debe coincidir con el tokenURI del Audit-NFT en Arbitrum. Verificable on-chain.',
+    'Historial NEXUS-8821: Step 1→NexusRouter 14:32:01, Step 2→ComplianceAgent 14:32:21 (score 891), Step 9→Settlement 14:33:29. Total: 58s.',
+  ],
+};
+
+function AgentQueryPanel({ agent }: { agent: { id: string; color: string; name: string; icon: string } }) {
+  const [query, setQuery]     = useState('');
+  const [response, setResp]   = useState('');
+  const [typing, setTyping]   = useState(false);
+  const [displayed, setDisp]  = useState('');
+  const timerRef              = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const samples = SAMPLE_QUERIES[agent.id] ?? [];
+  const responses = MOCK_RESPONSES[agent.id] ?? [];
+
+  const sendQuery = (q: string) => {
+    if (!q.trim() || typing) return;
+    const resp = responses[Math.floor(Math.random() * responses.length)];
+    setQuery(q);
+    setResp('');
+    setDisp('');
+    setTyping(true);
+
+    let i = 0;
+    const tick = () => {
+      if (i <= resp.length) {
+        setDisp(resp.slice(0, i));
+        i++;
+        timerRef.current = setTimeout(tick, 18);
+      } else {
+        setTyping(false);
+        setResp(resp);
+      }
+    };
+    tick();
+  };
+
+  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
+  return (
+    <div className="mt-10 glass clip-corner-lg p-6" style={{ borderColor: `${agent.color}25` }}>
+      <div className="flex items-center gap-3 mb-5">
+        <span className="text-xl" style={{ color: agent.color }}>{agent.icon}</span>
+        <div>
+          <p className="font-orbitron text-sm font-black" style={{ color: agent.color }}>
+            Consultar {agent.name}
+          </p>
+          <p className="text-white/35 text-xs font-mono">Simulación de respuesta del agente</p>
+        </div>
+        <div className="ml-auto flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: agent.color }} />
+          <span className="text-xs font-mono" style={{ color: agent.color }}>ONLINE</span>
+        </div>
+      </div>
+
+      {/* Sample queries */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        {samples.map((s) => (
+          <button
+            key={s}
+            onClick={() => sendQuery(s)}
+            className="text-xs font-mono px-3 py-1.5 rounded-lg transition-all hover:scale-105"
+            style={{
+              background: `${agent.color}10`,
+              border:     `1px solid ${agent.color}30`,
+              color:      `${agent.color}cc`,
+            }}
+          >
+            {s}
+          </button>
+        ))}
+      </div>
+
+      {/* Input */}
+      <div className="flex gap-2 mb-4">
+        <input
+          type="text"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && sendQuery(query)}
+          placeholder={`Pregunta a ${agent.name}...`}
+          className="flex-1 bg-[#060D17] rounded-lg px-4 py-2.5 text-white/70 text-xs placeholder-white/20 focus:outline-none font-mono transition-colors"
+          style={{ border: `1px solid ${agent.color}25` }}
+        />
+        <button
+          onClick={() => sendQuery(query)}
+          disabled={typing || !query.trim()}
+          className="px-5 py-2.5 rounded-lg text-xs font-orbitron font-black transition-all disabled:opacity-40"
+          style={{ background: `${agent.color}25`, color: agent.color, border: `1px solid ${agent.color}50` }}
+        >
+          SEND
+        </button>
+      </div>
+
+      {/* Response */}
+      {(displayed || typing) && (
+        <div
+          className="terminal rounded-lg p-4 text-xs font-mono leading-relaxed"
+          style={{ borderColor: `${agent.color}25` }}
+        >
+          <div className="flex items-center gap-2 mb-2 pb-2 border-b" style={{ borderColor: `${agent.color}20` }}>
+            <span style={{ color: agent.color }}>[{agent.name}]</span>
+            <span className="text-white/25">→ respuesta</span>
+            {typing && <span className="ml-auto text-xs font-mono animate-pulse" style={{ color: agent.color }}>typing...</span>}
+          </div>
+          <p style={{ color: `${agent.color}cc` }}>
+            {displayed}
+            {typing && <span className="blink text-white/60">█</span>}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

@@ -53,6 +53,7 @@ export function Footer() {
             <ul className="space-y-2">
               {[
                 { label: 'Demo Interactivo', href: '/demo' },
+                { label: 'Pitch Deck',       href: '/pitch' },
                 { label: 'Agentes IA',       href: '/agents' },
                 { label: 'Operaciones',      href: '/trades' },
                 { label: 'Yield Vault',      href: '/yield' },

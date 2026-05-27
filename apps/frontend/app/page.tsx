@@ -312,19 +312,16 @@ export default function LandingPage() {
                 ▶ VER DEMO
               </button>
             </Link>
-            <Link href="/trades">
+            <Link href="/pitch">
               <button className="btn-neon text-sm px-10 py-4">
-                ABRIR DASHBOARD
+                PITCH DECK
               </button>
             </Link>
-            <a
-              href="https://github.com/ALFA117/Nexus-Latam"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/40 hover:text-white/70 text-sm font-mono transition-colors border border-white/10 hover:border-white/20 px-8 py-4 rounded"
-            >
-              VER CÓDIGO
-            </a>
+            <Link href="/trades">
+              <button className="text-white/40 hover:text-white/70 text-sm font-mono transition-colors border border-white/10 hover:border-white/20 px-8 py-4 rounded">
+                DASHBOARD
+              </button>
+            </Link>
           </div>
 
           {/* Hackathon badges */}

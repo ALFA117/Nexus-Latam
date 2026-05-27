@@ -174,12 +174,120 @@ export default function AuditPage() {
             ))}
           </div>
 
-          {/* Sidebar: recent events */}
-          <div>
-            <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-3">
-              Eventos Recientes
-            </p>
-            <AuditTrailTable />
+          {/* Sidebar: Merkle + events */}
+          <div className="space-y-5">
+            {/* Merkle tree visual */}
+            <div>
+              <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-3">
+                Merkle Tree — Bundle #42
+              </p>
+              <div className="glass clip-corner border-[#FF6B3520] p-4">
+                {/* Root */}
+                <div className="flex justify-center mb-3">
+                  <div
+                    className="px-3 py-1.5 rounded text-xs font-mono font-bold text-center"
+                    style={{ background: '#FF6B3520', border: '1px solid #FF6B3550', color: '#FF6B35' }}
+                  >
+                    ROOT<br/>
+                    <span className="text-white/40 font-normal text-xs">0xabc123...</span>
+                  </div>
+                </div>
+
+                {/* Level 1 connector */}
+                <div className="flex justify-center mb-1">
+                  <div className="w-px h-4 bg-[#FF6B3530]" />
+                </div>
+                <div className="flex items-center justify-center gap-1 mb-1">
+                  <div className="flex-1 h-px bg-[#FF6B3530]" />
+                  <div className="w-px h-0" />
+                  <div className="flex-1 h-px bg-[#FF6B3530]" />
+                </div>
+
+                {/* Level 1: 2 nodes */}
+                <div className="flex gap-2 justify-center mb-3">
+                  {['0xL1a...', '0xL1b...'].map((h, i) => (
+                    <div
+                      key={i}
+                      className="flex-1 px-2 py-1 rounded text-xs font-mono text-center"
+                      style={{ background: '#9B30FF15', border: '1px solid #9B30FF35', color: '#9B30FF' }}
+                    >
+                      {h}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Level 2 connectors */}
+                <div className="flex gap-2 justify-center mb-1">
+                  {[0, 1].map(i => (
+                    <div key={i} className="flex-1 flex justify-center">
+                      <div className="w-px h-3 bg-[#9B30FF30]" />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Level 2: 4 nodes */}
+                <div className="flex gap-1 justify-center mb-3">
+                  {['0x1a...', '0x2b...', '0x3c...', '0x4d...'].map((h, i) => (
+                    <div
+                      key={i}
+                      className="flex-1 px-1 py-1 rounded text-center"
+                      style={{ background: '#00D4FF10', border: '1px solid #00D4FF25' }}
+                    >
+                      <span className="text-[#00D4FF] text-xs font-mono">{h}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Dots indicating more levels */}
+                <div className="text-center mb-2">
+                  <span className="text-white/20 text-xs font-mono">· · · 9 niveles · · ·</span>
+                </div>
+
+                {/* Leaf row hint */}
+                <div className="flex gap-0.5">
+                  {Array.from({ length: 16 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="flex-1 h-3 rounded-sm"
+                      style={{
+                        background: i % 3 === 0 ? '#00FF9425' : i % 3 === 1 ? '#F7B73120' : '#00D4FF18',
+                        border: '1px solid rgba(255,255,255,0.05)',
+                      }}
+                    />
+                  ))}
+                </div>
+                <p className="text-white/20 text-xs font-mono text-center mt-1">
+                  500 hojas (transacciones)
+                </p>
+
+                {/* Stats */}
+                <div className="mt-3 pt-3 border-t border-[#FF6B3515] grid grid-cols-2 gap-2 text-xs font-mono">
+                  <div className="flex justify-between">
+                    <span className="text-white/30">Algoritmo</span>
+                    <span className="text-[#00FF94]">SHA-256</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-white/30">Niveles</span>
+                    <span className="text-[#F7B731]">9</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-white/30">Hojas</span>
+                    <span className="text-[#00D4FF]">500</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-white/30">Nodos</span>
+                    <span className="text-[#9B30FF]">1,023</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-3">
+                Eventos Recientes
+              </p>
+              <AuditTrailTable />
+            </div>
           </div>
         </div>
       </div>
