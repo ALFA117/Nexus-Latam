@@ -204,4 +204,5 @@ Proyecto presentado en el **Arbitrum Track** de ETH México 2026.
 
 ## 📄 Licencia
 
+Mongli_Dao 2026
 MIT — © 2026 NEXUS LATAM
