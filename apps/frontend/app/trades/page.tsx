@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useNexusAPI }         from '../../hooks/useNexusAPI';
-import { TradeCard }           from '../../components/TradeCard';
-import { Navbar }              from '../../components/Navbar';
-import { TradeCreator }        from '../../components/TradeCreator';
-import { AgentStatusPanel }    from '../../components/AgentStatusPanel';
-import Link                    from 'next/link';
+import { useNexusAPI }                       from '../../hooks/useNexusAPI';
+import { TradeCard }                         from '../../components/TradeCard';
+import { Navbar }                            from '../../components/Navbar';
+import { TradeCreator }                      from '../../components/TradeCreator';
+import { AgentStatusPanel }                  from '../../components/AgentStatusPanel';
+import { TradeCardSkeleton, KPICardSkeleton } from '../../components/Skeleton';
+import Link                                  from 'next/link';
 
 const STATE_LABELS: Record<string, string> = {
   ALL:       'Todas',
@@ -94,7 +95,9 @@ export default function TradesPage() {
 
         {/* KPI strip */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 py-6">
-          {KPI.map((k) => (
+          {loading
+            ? Array.from({ length: 4 }).map((_, i) => <KPICardSkeleton key={i} />)
+            : KPI.map((k) => (
             <div
               key={k.label}
               className="glass clip-corner p-4 flex items-center gap-3"
@@ -117,6 +120,7 @@ export default function TradesPage() {
         </div>
 
         {/* Tab nav */}
+
         <div className="flex gap-1 mb-6 border-b border-[#00D4FF12]">
           {(['list', 'new'] as const).map((t) => (
             <button
@@ -180,9 +184,8 @@ export default function TradesPage() {
               </div>
 
               {loading && (
-                <div className="flex items-center gap-3 py-16 justify-center text-[#00D4FF]">
-                  <div className="w-4 h-4 border-2 border-[#00D4FF] border-t-transparent rounded-full animate-spin" />
-                  <span className="font-mono text-sm">Cargando operaciones...</span>
+                <div className="space-y-3">
+                  {Array.from({ length: 4 }).map((_, i) => <TradeCardSkeleton key={i} />)}
                 </div>
               )}
 

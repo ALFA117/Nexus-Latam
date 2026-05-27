@@ -90,4 +90,48 @@ router.get('/health', (_req, res) => {
   });
 });
 
+// SSE clients registry
+const sseClients = new Set<Response>();
+
+// Broadcast a single agent event to all connected SSE clients
+export function broadcastAgentEvent(event: {
+  agent:   string;
+  type:    'start' | 'progress' | 'success' | 'error';
+  message: string;
+  tradeId?: string;
+}) {
+  const payload = JSON.stringify({ ...event, ts: Date.now() });
+  for (const client of sseClients) {
+    try {
+      client.write(`data: ${payload}\n\n`);
+    } catch {
+      sseClients.delete(client);
+    }
+  }
+}
+
+// GET /api/v1/events — SSE stream de eventos de agentes
+router.get('/events', (req, res) => {
+  res.setHeader('Content-Type',  'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection',    'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.flushHeaders();
+
+  // Send heartbeat immediately so the client knows it's connected
+  res.write(`data: ${JSON.stringify({ type: 'connected', ts: Date.now() })}\n\n`);
+
+  sseClients.add(res);
+
+  // Heartbeat every 25s to prevent proxy timeout
+  const hb = setInterval(() => {
+    try { res.write(': heartbeat\n\n'); } catch { clearInterval(hb); }
+  }, 25_000);
+
+  req.on('close', () => {
+    sseClients.delete(res);
+    clearInterval(hb);
+  });
+});
+
 export default router;

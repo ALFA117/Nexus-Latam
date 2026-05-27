@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  # ── API REST (Express) ─────────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: nexus-api
+    ports:
+      - '3001:3001'
+    environment:
+      NODE_ENV:         development
+      PORT:             3001
+      FRONTEND_URL:     http://localhost:3000
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      BITSO_API_KEY:    ${BITSO_API_KEY:-demo}
+      BITSO_API_SECRET: ${BITSO_API_SECRET:-demo}
+      ARBITRUM_RPC_URL: ${ARBITRUM_RPC_URL:-https://sepolia-rollup.arbitrum.io/rpc}
+      PRIVATE_KEY:      ${PRIVATE_KEY:-0x0000000000000000000000000000000000000000000000000000000000000001}
+    healthcheck:
+      test:     ['CMD', 'curl', '-f', 'http://localhost:3001/api/v1/health']
+      interval: 15s
+      timeout:  5s
+      retries:  3
+    restart: unless-stopped
+
+  # ── Frontend (Next.js) ────────────────────────────────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    container_name: nexus-frontend
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV:              production
+      NEXT_PUBLIC_API_URL:   http://api:3001
+      NEXT_PUBLIC_CHAIN_ID:  421614
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  default:
+    name: nexus-network

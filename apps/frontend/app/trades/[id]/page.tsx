@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useNexusAPI }         from '../../../hooks/useNexusAPI';
+import { useToast }            from '../../../components/ToastProvider';
 import { Navbar }              from '../../../components/Navbar';
 import Link                    from 'next/link';
 
@@ -73,9 +74,11 @@ const NFTS = [
 ];
 
 export default function TradeDetailPage({ params }: { params: { id: string } }) {
-  const { getTradeStatus } = useNexusAPI();
-  const [trade, setTrade]  = useState<TradeDetail | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { getTradeStatus }           = useNexusAPI();
+  const { toast }                    = useToast();
+  const [trade, setTrade]            = useState<TradeDetail | null>(null);
+  const [loading, setLoading]        = useState(true);
+  const [confirming, setConfirming]  = useState(false);
 
   useEffect(() => {
     getTradeStatus(params.id)
@@ -83,6 +86,21 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
       .catch(() => setTrade({ ...MOCK, id: params.id }))
       .finally(() => setLoading(false));
   }, [params.id]);
+
+  async function handleConfirmDelivery() {
+    if (!trade) return;
+    setConfirming(true);
+    toast('info', 'TradeAgent activado', 'Procesando confirmación de entrega...');
+    // Simulate on-chain call (replace with real contract call when deployed)
+    await new Promise(r => setTimeout(r, 2200));
+    setTrade(prev => prev ? { ...prev, state: 'DELIVERED' } : prev);
+    toast('success', '¡Entrega confirmada!', `Operación ${trade.id} marcada como DELIVERED. Settlement iniciando...`);
+    setConfirming(false);
+    // Simulate settlement completion
+    await new Promise(r => setTimeout(r, 3500));
+    setTrade(prev => prev ? { ...prev, state: 'SETTLED' } : prev);
+    toast('success', 'Settlement completo', `Fondos liberados al vendedor vía ${trade.rail}. Audit-NFT acuñado.`);
+  }
 
   if (loading) {
     return (
@@ -142,11 +160,17 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
                 <p className="text-white/60 text-sm mt-0.5">El escrow está fondado. Confirma la entrega de los bienes para liberar los fondos al vendedor.</p>
               </div>
               <button
-                className="shrink-0 clip-corner text-xs font-orbitron font-black px-5 py-2.5 transition-all duration-200 hover:scale-105"
+                className="shrink-0 clip-corner text-xs font-orbitron font-black px-5 py-2.5 transition-all duration-200 hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2"
                 style={{ background: 'linear-gradient(135deg, #F7B731, #FF6B35)', color: '#060D17' }}
-                onClick={() => alert('Función on-chain disponible con contrato desplegado en Sepolia')}
+                onClick={handleConfirmDelivery}
+                disabled={confirming}
               >
-                ✓ CONFIRMAR ENTREGA
+                {confirming ? (
+                  <>
+                    <span className="w-3.5 h-3.5 border-2 border-[#060D17] border-t-transparent rounded-full animate-spin" />
+                    PROCESANDO...
+                  </>
+                ) : '✓ CONFIRMAR ENTREGA'}
               </button>
             </div>
           )}
