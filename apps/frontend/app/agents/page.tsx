@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Navbar } from '../../components/Navbar';
-import Link from 'next/link';
+import { Navbar }   from '../../components/Navbar';
+import { FadeIn, ScaleIn } from '../../components/FadeIn';
+import Link         from 'next/link';
 
 const AGENTS = [
   {
@@ -166,6 +167,7 @@ export default function AgentsPage() {
           <Link href="/" className="text-white/30 text-xs font-mono hover:text-[#9B30FF] transition-colors">
             ← NEXUS LATAM
           </Link>
+          <FadeIn>
           <div className="flex flex-wrap items-end justify-between gap-3 mt-2">
             <div>
               <h1 className="font-orbitron text-2xl sm:text-3xl font-black">
@@ -190,6 +192,7 @@ export default function AgentsPage() {
               </div>
             </div>
           </div>
+          </FadeIn>
         </div>
 
         {/* Agent selector tabs */}

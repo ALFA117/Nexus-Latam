@@ -139,6 +139,17 @@
 - [x] `/trades` — KPI strip y lista de operaciones muestran skeletons durante loading
 - [x] `globals.css` — `@keyframes skeleton-pulse` + `skeleton-shimmer` para skeleton screens
 
+### Frontend — Ronda 11
+- [x] `next.config.mjs` — `output: 'standalone'` para Docker multi-stage + `headers()` con CSP, X-Frame-Options, Referrer-Policy, Permissions-Policy
+- [x] `AgentStatusPanel` — integrado con `useAgentEvents` hook: feed live via SSE cuando API conectada, fallback a mock cuando offline; indicador "SSE" / "sim" en header
+- [x] `apps/api/index.ts` — rate limiting: 120 req/min global + 10 POST/min en /trades con `express-rate-limit`
+- [x] `apps/api/routes/nexus.routes.ts` — `GET /api/v1/trades` con paginación: `?page=&limit=&state=` + meta `{total, totalPages, hasNext, hasPrev}`
+- [x] `nexus.orchestrator.ts` — `listTrades()` método + `tradeRegistry` Map en-memoria para persistir trades en sesión
+- [x] `vitest.config.ts` + `vitest.setup.ts` — Vitest + React Testing Library + jsdom configurados
+- [x] `__tests__/utils.test.ts` — 12 tests: fmtRate, shortAddr, fmtUSDC, trade state machine, Merkle hashing (12/12 ✅)
+- [x] `app/pitch/page.tsx` — secciones animadas con `FadeIn`, `ScaleIn`, `SlideIn` al entrar en viewport
+- [x] `app/agents/page.tsx` — header animado con `FadeIn`
+
 ### CI/CD — Fixes
 - [x] GitHub Actions CI — `cache-dependency-path: package-lock.json` (root) correcto
 - [x] Vercel build — `npm install --include=dev` para incluir tailwindcss en build
@@ -174,9 +185,9 @@
 
 ### API
 - [x] **SSE events** — ✅ implementado en ronda 10 (GET /api/v1/events + useAgentEvents hook)
-- [ ] **Paginación** en GET /trades (actualmente sin límite)
+- [x] **Paginación GET /trades** — ✅ implementado ronda 11 (?page, ?limit, ?state + meta)
 - [ ] **Auth JWT** — proteger endpoints con wallet signature
-- [ ] Rate limiting / throttle en endpoints públicos
+- [x] **Rate limiting API** — ✅ implementado ronda 11 (express-rate-limit: 120/min global, 10 POST/min)
 
 ### Frontend
 - [ ] **Wagmi hooks reales** — leer estado del contrato desde la chain (actualmente mock)
@@ -185,7 +196,7 @@
 - [x] **Notificaciones toast** — ✅ implementado en ronda 7 (ToastProvider)
 - [x] **Transiciones de página Framer Motion** — ✅ implementado en ronda 10 (app/template.tsx)
 - [x] **PWA manifest** — ✅ implementado en ronda 9 (public/manifest.json)
-- [ ] Tests con Playwright (E2E) y Vitest (unit)
+- [x] **Vitest unit tests** — ✅ implementado ronda 11 (12 tests, 12 pasando)
 - [x] **Botón "Confirmar Entrega"** — ✅ funcional en ronda 10 (flujo FUNDED→DELIVERED→SETTLED con toasts)
 
 ### Infraestructura
@@ -211,10 +222,10 @@
 | Smart Contracts (deploy) | ❌ 0% |
 | AI Agents (código) | ✅ 95% |
 | AI Agents (integración real) | 🔄 30% |
-| API REST | ✅ 90% |
+| API REST | ✅ 95% (ronda 11) |
 | Frontend (UI/UX) | ✅ 100% (ronda 10) |
 | Frontend (on-chain) | 🔄 20% |
-| Testing | 🔄 40% |
+| Testing | 🔄 55% (Vitest ronda 11) |
 | DevOps / Deploy | ✅ 90% (Docker ronda 10) |
 | Hackathon materials | ❌ 10% |
 
@@ -222,4 +233,4 @@
 
 ---
 
-*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 10 completada)*
+*Actualizado por Claude Sonnet 4.6 · 2026-05-26 (ronda 11 completada)*

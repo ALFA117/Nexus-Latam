@@ -1,8 +1,9 @@
 'use client';
 
-import { Navbar }  from '../../components/Navbar';
-import { Footer }  from '../../components/Footer';
-import Link        from 'next/link';
+import { Navbar }              from '../../components/Navbar';
+import { Footer }              from '../../components/Footer';
+import { FadeIn, ScaleIn, SlideIn } from '../../components/FadeIn';
+import Link                    from 'next/link';
 
 const PROBLEM_POINTS = [
   { stat: '40M+',   label: 'PYMEs en LATAM sin acceso a trade finance formal', color: '#FF3366' },
@@ -70,15 +71,17 @@ export default function PitchPage() {
 
         {/* ── Problema ────────────────────────────────────────────── */}
         <section className="py-12">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-1 h-8 bg-[#FF3366] rounded-full" />
-            <h2 className="font-orbitron text-2xl font-black text-white">EL PROBLEMA</h2>
-          </div>
+          <FadeIn>
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-1 h-8 bg-[#FF3366] rounded-full" />
+              <h2 className="font-orbitron text-2xl font-black text-white">EL PROBLEMA</h2>
+            </div>
+          </FadeIn>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {PROBLEM_POINTS.map((p) => (
+            {PROBLEM_POINTS.map((p, i) => (
+              <ScaleIn key={p.stat} delay={i * 0.08}>
               <div
-                key={p.stat}
-                className="glass clip-corner p-5 flex items-start gap-4"
+                className="glass clip-corner p-5 flex items-start gap-4 h-full"
                 style={{ borderColor: `${p.color}25` }}
               >
                 <p className="font-orbitron text-3xl font-black shrink-0" style={{ color: p.color }}>
@@ -86,24 +89,27 @@ export default function PitchPage() {
                 </p>
                 <p className="text-white/60 text-sm leading-relaxed">{p.label}</p>
               </div>
+              </ScaleIn>
             ))}
           </div>
         </section>
 
         {/* ── Solución ────────────────────────────────────────────── */}
         <section className="py-12 border-t border-[#00D4FF08]">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-1 h-8 bg-[#00D4FF] rounded-full" />
-            <h2 className="font-orbitron text-2xl font-black text-white">LA SOLUCIÓN</h2>
-          </div>
-          <p className="text-white/50 text-sm mb-8 max-w-2xl">
-            NEXUS LATAM usa 5 agentes IA coordinados por Claude Opus 4.7 para automatizar
-            completamente el flujo de una Carta de Crédito B2B, desde KYC hasta auditoría.
-          </p>
+          <FadeIn>
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-1 h-8 bg-[#00D4FF] rounded-full" />
+              <h2 className="font-orbitron text-2xl font-black text-white">LA SOLUCIÓN</h2>
+            </div>
+            <p className="text-white/50 text-sm mb-8 max-w-2xl">
+              NEXUS LATAM usa 5 agentes IA coordinados por Claude Opus 4.7 para automatizar
+              completamente el flujo de una Carta de Crédito B2B, desde KYC hasta auditoría.
+            </p>
+          </FadeIn>
           <div className="space-y-3">
             {SOLUTION_POINTS.map((s, i) => (
+              <SlideIn key={s.title} delay={i * 0.07}>
               <div
-                key={s.title}
                 className="glass clip-corner p-4 flex items-center gap-4"
                 style={{ borderColor: `${s.color}25` }}
               >
@@ -126,6 +132,7 @@ export default function PitchPage() {
                   <span className="text-white/15 text-lg">→</span>
                 )}
               </div>
+              </SlideIn>
             ))}
           </div>
         </section>

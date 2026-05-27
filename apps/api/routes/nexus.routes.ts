@@ -39,6 +39,31 @@ router.post('/trades', asyncHandler(async (req, res) => {
   });
 }));
 
+// GET /api/v1/trades — Listar operaciones con paginación
+router.get('/trades', asyncHandler(async (req, res) => {
+  const page    = Math.max(1, parseInt(String(req.query.page  ?? '1'), 10));
+  const limit   = Math.min(100, Math.max(1, parseInt(String(req.query.limit ?? '20'), 10)));
+  const state   = req.query.state as string | undefined;
+  const offset  = (page - 1) * limit;
+
+  // Retrieve from orchestrator (returns full list; we paginate here)
+  const allTrades = await orchestrator.listTrades().catch(() => []);
+  const filtered  = state ? allTrades.filter((t: { state: string }) => t.state === state) : allTrades;
+  const items     = filtered.slice(offset, offset + limit);
+
+  res.json({
+    data:  items,
+    meta: {
+      page,
+      limit,
+      total:      filtered.length,
+      totalPages: Math.ceil(filtered.length / limit),
+      hasNext:    offset + limit < filtered.length,
+      hasPrev:    page > 1,
+    },
+  });
+}));
+
 // GET /api/v1/trades/:id — Status de operación
 router.get('/trades/:id', asyncHandler(async (req, res) => {
   const status = await orchestrator.getTradeStatus(req.params.id);

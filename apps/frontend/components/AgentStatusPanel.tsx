@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useAgentEvents }      from '../hooks/useAgentEvents';
 
 interface AgentStatus {
   name:     string;
@@ -54,12 +55,41 @@ function nowTs() {
   return new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
 
+const AGENT_COLOR: Record<string, string> = {
+  NexusRouter:     '#00D4FF',
+  ComplianceAgent: '#9B30FF',
+  TradeAgent:      '#F7B731',
+  YieldAgent:      '#00FF94',
+  AuditAgent:      '#FF6B35',
+};
+
 export function AgentStatusPanel() {
   const [agents, setAgents]     = useState(INITIAL);
   const [tick, setTick]         = useState(0);
   const [feed, setFeed]         = useState<LiveEvent[]>(() =>
     ALL_EVENTS.slice(0, 4).map((e, i) => ({ ...e, id: `init-${i}`, ts: nowTs() }))
   );
+
+  // Real SSE events — merged with mock feed when connected
+  const { events: sseEvents, connected: sseConnected } = useAgentEvents(10);
+
+  useEffect(() => {
+    if (!sseEvents.length) return;
+    const latest = sseEvents[0];
+    const color  = AGENT_COLOR[latest.agent] ?? '#00D4FF';
+    setFeed(prev => [
+      { agent: latest.agent, color, msg: latest.message, id: String(latest.ts), ts: nowTs() },
+      ...prev.slice(0, 6),
+    ]);
+    // Update agent status if the SSE event references a known agent
+    if (latest.agent in AGENT_COLOR) {
+      setAgents(prev => prev.map(a =>
+        a.name === latest.agent
+          ? { ...a, status: latest.type === 'error' ? 'ERROR' : latest.type === 'start' ? 'RUNNING' : a.status, lastOp: latest.message }
+          : a
+      ));
+    }
+  }, [sseEvents]);
 
   useEffect(() => {
     const iv = setInterval(() => {
@@ -75,15 +105,17 @@ export function AgentStatusPanel() {
         };
       }));
 
-      /* Live event feed */
-      const ev = ALL_EVENTS[Math.floor(Math.random() * ALL_EVENTS.length)];
-      setFeed(prev => [
-        { ...ev, id: Math.random().toString(36).slice(2), ts: nowTs() },
-        ...prev.slice(0, 6),
-      ]);
+      // Only add mock events if SSE is not connected
+      if (!sseConnected) {
+        const ev = ALL_EVENTS[Math.floor(Math.random() * ALL_EVENTS.length)];
+        setFeed(prev => [
+          { ...ev, id: Math.random().toString(36).slice(2), ts: nowTs() },
+          ...prev.slice(0, 6),
+        ]);
+      }
     }, 2800);
     return () => clearInterval(iv);
-  }, []);
+  }, [sseConnected]);
 
   return (
     <div className="glass clip-corner border-[#00D4FF18] p-4 space-y-1">
@@ -93,8 +125,10 @@ export function AgentStatusPanel() {
           Agent Monitor
         </span>
         <div className="flex items-center gap-1.5">
-          <span className="status-dot status-online" />
-          <span className="text-[#00FF94] text-xs font-mono">5 / 5 online</span>
+          <span className={`status-dot ${sseConnected ? 'status-online' : 'status-warning'}`} />
+          <span className={`text-xs font-mono ${sseConnected ? 'text-[#00FF94]' : 'text-[#F7B731]'}`}>
+            {sseConnected ? '5 / 5 online · SSE' : '5 / 5 online · sim'}
+          </span>
         </div>
       </div>
 

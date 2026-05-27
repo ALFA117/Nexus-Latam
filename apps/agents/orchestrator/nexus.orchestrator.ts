@@ -294,7 +294,7 @@ Determina si puede operar en NEXUS y su nivel de confianza.`,
     // 4. Yield strategy
     const yieldInfo = await this.runYieldAgent(tradeId, input.amountUSDC, input.deadlineDays);
 
-    return {
+    const result: TradeResult = {
       id:                  tradeId,
       complianceNFT:       compliance.nftId ?? 'N/A',
       lcNFT:               tradeResult.lcNftId,
@@ -304,6 +304,8 @@ Determina si puede operar en NEXUS y su nivel de confianza.`,
       totalCostBps:        routerDecision.estimatedCostBps,
       yieldAPY:            `${yieldInfo.estimatedAPY}%`,
     };
+    this.tradeRegistry.set(tradeId, 'FUNDED');
+    return result;
   }
 
   async getTradeStatus(tradeId: string): Promise<{ tradeId: string; state: string }> {
@@ -330,6 +332,14 @@ Determina si puede operar en NEXUS y su nivel de confianza.`,
   async getAuditTrail(tradeId: string) {
     return { tradeId, events: [], message: 'Audit trail from on-chain NFTs' };
   }
+
+  async listTrades(): Promise<{ tradeId: string; state: string }[]> {
+    // Returns in-memory trade registry; replace with DB query when available
+    return Array.from(this.tradeRegistry.entries()).map(([id, state]) => ({ tradeId: id, state }));
+  }
+
+  // ─── In-memory trade registry (keyed by tradeId → state) ─────────────────
+  private tradeRegistry = new Map<string, string>();
 
   // ─── Helpers ─────────────────────────────────────────────────────────────
 
