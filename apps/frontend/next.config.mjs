@@ -5,6 +5,23 @@ const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
 
+  // @coinbase/cdp-sdk (pulled in transitively via wagmi's baseAccount
+  // connector -> @base-org/account) statically imports optional x402
+  // payment-signing packages (@x402/core, @x402/evm, @x402/svm) that this
+  // app never installs or uses -- nothing here calls Coinbase's x402 flow.
+  // Without this, a clean `npm install` + build fails with
+  // "Module not found" for those paths (it doesn't fail locally only
+  // because an existing node_modules already had them cached/resolved).
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@x402/core/client': false,
+      '@x402/svm/exact/client': false,
+      '@x402/evm': false,
+    };
+    return config;
+  },
+
   async headers() {
     return [
       {
