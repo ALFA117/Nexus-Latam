@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useToast } from './ToastProvider';
+import { DemoBadge } from './DemoBadge';
 
 type Step = 'form' | 'compliance' | 'escrow' | 'confirmed';
 
@@ -152,6 +153,11 @@ export function TradeCreator() {
 
   return (
     <div className="glass clip-corner border-[#00D4FF18] overflow-hidden">
+      {/* Persistent across every step -- the "CREADA EXITOSAMENTE" screen at
+          the end needs this just as much as the form does. */}
+      <div className="flex justify-end px-4 pt-3">
+        <DemoBadge label="Simulación, sin backend real" />
+      </div>
       {/* Step progress bar */}
       <div className="flex border-b border-[#00D4FF12]">
         {STEPS_META.map((s, i) => {
@@ -180,9 +186,12 @@ export function TradeCreator() {
         {/* STEP: Form */}
         {step === 'form' && (
           <div className="max-w-lg">
-            <h2 className="font-orbitron text-base font-black text-[#F7B731] mb-5 uppercase tracking-wide">
+            <h2 className="font-orbitron text-base font-black text-[#F7B731] mb-2 uppercase tracking-wide">
               Nueva Operación Comercial
             </h2>
+            <p className="text-white/30 text-xs font-mono mb-4">
+              El flujo de abajo es un guion local (setTimeout): no llama a ningún backend ni firma nada on-chain.
+            </p>
             <div className="space-y-4">
               {[
                 { label: 'Dirección del Vendedor', key: 'sellerAddress', placeholder: '0x...', type: 'text' },
@@ -314,7 +323,7 @@ function Terminal({ logs, loading, logRef }: {
           <div className="w-2.5 h-2.5 rounded-full bg-[#F7B731]" />
           <div className="w-2.5 h-2.5 rounded-full bg-[#00FF94]" />
         </div>
-        <span className="text-white/25 text-xs font-mono ml-2">nexus-protocol — agent-trace</span>
+        <span className="text-white/25 text-xs font-mono ml-2">nexus-protocol — demo-trace</span>
         {loading && (
           <span className="ml-auto flex items-center gap-1.5 text-xs font-mono text-[#00D4FF]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#00D4FF] animate-pulse" />

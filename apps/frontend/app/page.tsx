@@ -10,6 +10,7 @@ import { NFTShowcase }       from '../components/NFTShowcase';
 import { ProtocolFeatures }  from '../components/ProtocolFeatures';
 import { Footer }            from '../components/Footer';
 import { FadeIn, ScaleIn }   from '../components/FadeIn';
+import { DemoBadge }         from '../components/DemoBadge';
 
 /* ── Animated counter ──────────────────────────────────────────── */
 function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
@@ -74,7 +75,8 @@ function TerminalTrace() {
         <div className="w-3 h-3 rounded-full bg-[#FF3366]" />
         <div className="w-3 h-3 rounded-full bg-[#F7B731]" />
         <div className="w-3 h-3 rounded-full bg-[#00FF94]" />
-        <span className="ml-3 text-white/30 text-xs font-mono">nexus-protocol — live-trace</span>
+        <span className="ml-3 text-white/30 text-xs font-mono">nexus-protocol — demo-trace</span>
+        <span className="ml-auto"><DemoBadge label="SCRIPT, SIN BACKEND" /></span>
       </div>
 
       <div className="space-y-1.5">
@@ -124,12 +126,15 @@ export default function LandingPage() {
         />
         <div className="max-w-7xl mx-auto">
           {/* Divider label */}
-          <div className="flex items-center gap-4 mb-14 justify-center">
+          <div className="flex items-center gap-4 mb-3 justify-center">
             <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#00D4FF33]" />
             <span className="font-orbitron text-xs text-white/30 uppercase tracking-widest px-4">
               Métricas del Protocolo
             </span>
             <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#00D4FF33]" />
+          </div>
+          <div className="flex justify-center mb-11">
+            <DemoBadge label="Datos de demo, no del protocolo en vivo" />
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">

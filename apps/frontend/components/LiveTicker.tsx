@@ -1,5 +1,7 @@
 'use client';
 
+import { DemoBadge } from './DemoBadge';
+
 const TICKERS = [
   { label: 'MXN/USDC', value: '17.3241', change: '+0.12%', up: true },
   { label: 'BRL/USDC', value: '5.1890',  change: '-0.08%', up: false },
@@ -25,6 +27,9 @@ export function LiveTicker() {
         style={{ background: 'linear-gradient(90deg, #060D17, transparent)' }} />
       <div className="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
         style={{ background: 'linear-gradient(-90deg, #060D17, transparent)' }} />
+      <div className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-[#060D17] pr-2">
+        <DemoBadge />
+      </div>
 
       <div className="flex ticker-track whitespace-nowrap" style={{ width: 'max-content' }}>
         {doubled.map((t, i) => (

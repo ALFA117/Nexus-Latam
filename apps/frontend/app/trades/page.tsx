@@ -7,6 +7,7 @@ import { Navbar }                            from '../../components/Navbar';
 import { TradeCreator }                      from '../../components/TradeCreator';
 import { AgentStatusPanel }                  from '../../components/AgentStatusPanel';
 import { TradeCardSkeleton, KPICardSkeleton } from '../../components/Skeleton';
+import { DemoBadge }                         from '../../components/DemoBadge';
 import Link                                  from 'next/link';
 
 const STATE_LABELS: Record<string, string> = {
@@ -45,14 +46,22 @@ const KPI = [
 export default function TradesPage() {
   const { loading, error, getTrades } = useNexusAPI();
   const [trades, setTrades]           = useState<unknown[]>([]);
+  const [usingMock, setUsingMock]     = useState(false);
   const [filter, setFilter]           = useState<string>('ALL');
   const [search, setSearch]           = useState('');
   const [tab, setTab]                 = useState<'list' | 'new'>('list');
 
   useEffect(() => {
     getTrades({ page: 1, limit: 50 })
-      .then(r => setTrades(r.data ?? []))
-      .catch(() => setTrades(MOCK_TRADES));
+      .then(r => {
+        const data = r.data ?? [];
+        setTrades(data);
+        setUsingMock(data.length === 0);
+      })
+      .catch(() => {
+        setTrades([]);
+        setUsingMock(true);
+      });
   }, []);
 
   const displayTrades = (trades.length > 0 ? trades : MOCK_TRADES) as typeof MOCK_TRADES;
@@ -82,10 +91,7 @@ export default function TradesPage() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1.5 text-xs font-mono text-[#00FF94]">
-              <span className="status-dot status-online" />
-              5 agentes online
-            </span>
+            {usingMock && <DemoBadge label="Datos de ejemplo, sin backend" />}
             <button
               onClick={() => setTab('new')}
               className="btn-solid-cyan text-xs py-2 px-5"
@@ -95,8 +101,11 @@ export default function TradesPage() {
           </div>
         </div>
 
-        {/* KPI strip */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 py-6">
+        {/* KPI strip -- always illustrative, no endpoint backs these numbers */}
+        <div className="pt-6 flex justify-end">
+          <DemoBadge label="KPIs de ejemplo" />
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-2 pb-6">
           {loading
             ? Array.from({ length: 4 }).map((_, i) => <KPICardSkeleton key={i} />)
             : KPI.map((k) => (
