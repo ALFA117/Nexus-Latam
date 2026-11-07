@@ -556,10 +556,10 @@ export default function DemoPage() {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <p className="font-orbitron text-sm font-black text-white mb-1">
-                ¿Listo para crear una operación real?
+                ¿Quieres armar tu propia operación?
               </p>
               <p className="text-white/40 text-xs font-mono">
-                Conecta tu wallet en Arbitrum Sepolia y lanza el protocolo
+                Lanza el protocolo y recorre el flujo con tus datos (simulado, sin contratos desplegados)
               </p>
             </div>
             <div className="flex flex-wrap gap-3">

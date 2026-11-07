@@ -39,7 +39,7 @@ const METRICS = [
 ];
 
 const TIMELINE = [
-  { phase: 'Hackathon',     date: 'Mayo 2026',   desc: 'MVP funcional en Arbitrum Sepolia',       done: true  },
+  { phase: 'Hackathon',     date: 'Mayo 2026',   desc: 'MVP: frontend demo + contratos Stylus (sin desplegar)', done: true  },
   { phase: 'Beta Privada',  date: 'Q3 2026',     desc: 'Primeras empresas piloto MX/BR/CO',       done: false },
   { phase: 'Mainnet',       date: 'Q4 2026',     desc: 'Lanzamiento en Arbitrum One + Bitso B2B', done: false },
   { phase: 'Expansión',     date: 'Q1-Q2 2027',  desc: '6 países + integración bancaria',         done: false },

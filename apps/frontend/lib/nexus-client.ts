@@ -1,4 +1,15 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
+const CONFIGURED_API = process.env.NEXT_PUBLIC_API_URL;
+const BASE_URL = CONFIGURED_API ?? 'http://localhost:3001/api/v1';
+
+// apps/api is not deployed with the public frontend (vercel.json only ships
+// apps/frontend). Without an explicit NEXT_PUBLIC_API_URL, only try the local
+// default when the page itself is served from this machine; on the public site
+// every call failed against the visitor's own localhost and filled the console.
+function apiReachable(): boolean {
+  if (CONFIGURED_API) return true;
+  if (typeof window === 'undefined') return false;
+  return ['localhost', '127.0.0.1'].includes(window.location.hostname);
+}
 
 // Exponential back-off retry for transient network errors
 async function fetchWithRetry(
@@ -26,6 +37,7 @@ async function request<T>(
   path: string,
   options?: RequestInit & { signal?: AbortSignal },
 ): Promise<T> {
+  if (!apiReachable()) throw new Error('API no desplegada en esta demo');
   const res = await fetchWithRetry(
     `${BASE_URL}${path}`,
     {

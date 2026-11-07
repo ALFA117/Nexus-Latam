@@ -242,11 +242,11 @@ export default function LandingPage() {
 
             <h2 className="font-orbitron text-3xl md:text-4xl font-black mb-4">
               <span className="text-white">PRUEBA EL PROTOCOLO </span>
-              <span className="gradient-text-cyan">EN VIVO</span>
+              <span className="gradient-text-cyan">EN DEMO</span>
             </h2>
             <p className="text-white/50 max-w-xl mx-auto text-sm leading-relaxed mb-8">
               Sigue el flujo completo paso a paso: KYC → Escrow → LC-NFT → Yield → Settlement → Audit.
-              <span className="text-[#F7B731] font-semibold"> 7 pasos · 5 agentes IA · 3 NFTs on-chain.</span>
+              <span className="text-[#F7B731] font-semibold"> 7 pasos · 5 agentes IA · 3 NFTs (simulados).</span>
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-2 mb-8">

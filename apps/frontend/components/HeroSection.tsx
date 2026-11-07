@@ -151,7 +151,7 @@ export function HeroSection() {
         {/* Badge */}
         <div className="inline-flex items-center gap-2 mb-8 glass border-cyan rounded-full px-4 py-2 text-xs font-mono text-[#00D4FF] uppercase tracking-widest">
           <span className="status-dot status-online" />
-          ETH México 2026 · Arbitrum Track · Live on Sepolia
+          ETH México 2026 · Arbitrum Track · Demo simulada
         </div>
 
         {/* Main title */}
@@ -214,11 +214,12 @@ export function HeroSection() {
           </a>
         </div>
 
-        {/* Live stats bar */}
+        {/* Stats bar — design targets, not live protocol numbers: the contracts and
+            the API were never deployed, so there is no real volume to show. */}
         <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12">
           {[
-            { value: '$1.2M+', label: 'Volumen 24h', color: '#00D4FF' },
-            { value: '60s',     label: 'Settlement avg', color: '#F7B731' },
+            { value: 'Demo',   label: 'Sin volumen real', color: '#00D4FF' },
+            { value: '<60s',    label: 'Settlement objetivo', color: '#F7B731' },
             { value: '5',       label: 'Agentes IA',     color: '#9B30FF' },
             { value: '0.3%',    label: 'Fee protocolo',  color: '#00FF94' },
           ].map((s) => (

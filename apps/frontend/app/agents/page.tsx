@@ -323,7 +323,7 @@ export default function AgentsPage() {
             {/* Metrics */}
             <div className="glass clip-corner p-4" style={{ borderColor: `${agent.color}20` }}>
               <p className="font-orbitron text-xs uppercase tracking-widest mb-4 text-white/40">
-                Métricas en Vivo
+                Métricas de ejemplo
               </p>
               <div className="space-y-3">
                 {Object.entries(agent.metrics).map(([k, v]) => (
