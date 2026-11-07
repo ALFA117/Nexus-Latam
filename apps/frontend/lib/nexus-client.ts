@@ -5,7 +5,7 @@ const BASE_URL = CONFIGURED_API ?? 'http://localhost:3001/api/v1';
 // apps/frontend). Without an explicit NEXT_PUBLIC_API_URL, only try the local
 // default when the page itself is served from this machine; on the public site
 // every call failed against the visitor's own localhost and filled the console.
-function apiReachable(): boolean {
+export function apiReachable(): boolean {
   if (CONFIGURED_API) return true;
   if (typeof window === 'undefined') return false;
   return ['localhost', '127.0.0.1'].includes(window.location.hostname);

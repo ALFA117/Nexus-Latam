@@ -1,8 +1,16 @@
 import type { Metadata, Viewport } from 'next';
+import { Space_Grotesk, JetBrains_Mono, Orbitron } from 'next/font/google';
 import './globals.css';
 import { WagmiProvider }   from '../components/WagmiProvider';
 import { ToastProvider }   from '../components/ToastProvider';
 import { AmbientBackground } from '../components/AmbientBackground';
+
+// Self-hosted at build time: no runtime request to fonts.googleapis.com, which
+// the CSP (connect-src) blocked once the PWA service worker took over the page,
+// so returning visitors fell back to system fonts.
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-space-grotesk', display: 'swap' });
+const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], weight: ['400', '500', '700'], variable: '--font-jetbrains-mono', display: 'swap' });
+const orbitron = Orbitron({ subsets: ['latin'], weight: ['400', '700', '900'], variable: '--font-orbitron', display: 'swap' });
 
 export const viewport: Viewport = {
   themeColor: '#060D17',
@@ -43,15 +51,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className="dark">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@400;700;900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="es" className={`dark ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${orbitron.variable}`}>
       <body>
         <AmbientBackground />
         <WagmiProvider>

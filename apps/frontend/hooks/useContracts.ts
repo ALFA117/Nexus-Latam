@@ -11,6 +11,24 @@ const ADDRESSES = {
   batchPayment:       (process.env.NEXT_PUBLIC_BATCH_PAYMENT_ADDRESS        ?? '0x0000000000000000000000000000000000000000') as `0x${string}`,
 };
 
+// The Stylus contracts have never been deployed (no NEXT_PUBLIC_*_ADDRESS is
+// set), so every address above is the zero address. Reading it only sent RPC
+// calls to address(0) from each visitor's browser and left the UI on "..."
+// until they timed out; writing to it would ask a connected wallet to sign a
+// transaction to address(0). Hooks are disabled until a real address exists.
+const ZERO = '0x0000000000000000000000000000000000000000';
+const isDeployed = (addr: string) => /^0x[0-9a-fA-F]{40}$/.test(addr) && addr.toLowerCase() !== ZERO;
+
+export const DEPLOYED = {
+  tradeEscrow:        isDeployed(ADDRESSES.tradeEscrow),
+  complianceRegistry: isDeployed(ADDRESSES.complianceRegistry),
+  nexusVault:         isDeployed(ADDRESSES.nexusVault),
+  batchPayment:       isDeployed(ADDRESSES.batchPayment),
+};
+
+/** True only when every protocol contract has a real address configured. */
+export const CONTRACTS_DEPLOYED = Object.values(DEPLOYED).every(Boolean);
+
 // Minimal ABIs — only the functions we actually call from the frontend
 const TRADE_ESCROW_ABI = [
   { name: 'getState',   type: 'function', stateMutability: 'view',       inputs: [{ name: 'tradeId', type: 'bytes32' }], outputs: [{ name: '', type: 'uint8' }] },
@@ -41,7 +59,7 @@ export function useTradeState(tradeId: `0x${string}` | undefined) {
     functionName: 'getState',
     args:         tradeId ? [tradeId] : undefined,
     chainId:      arbitrumSepolia.id,
-    query: { enabled: Boolean(tradeId) },
+    query: { enabled: DEPLOYED.tradeEscrow && Boolean(tradeId) },
   });
 
   return {
@@ -58,19 +76,19 @@ export function useComplianceStatus(walletAddress: `0x${string}` | undefined) {
   const { data: score,    isLoading: loadingScore }    = useReadContract({
     address: ADDRESSES.complianceRegistry, abi: COMPLIANCE_ABI, functionName: 'getComplianceScore',
     args: walletAddress ? [walletAddress] : undefined, chainId: arbitrumSepolia.id,
-    query: { enabled: Boolean(walletAddress) },
+    query: { enabled: DEPLOYED.complianceRegistry && Boolean(walletAddress) },
   });
 
   const { data: tierNum,  isLoading: loadingTier }     = useReadContract({
     address: ADDRESSES.complianceRegistry, abi: COMPLIANCE_ABI, functionName: 'getTier',
     args: walletAddress ? [walletAddress] : undefined, chainId: arbitrumSepolia.id,
-    query: { enabled: Boolean(walletAddress) },
+    query: { enabled: DEPLOYED.complianceRegistry && Boolean(walletAddress) },
   });
 
   const { data: compliant, isLoading: loadingCompliant } = useReadContract({
     address: ADDRESSES.complianceRegistry, abi: COMPLIANCE_ABI, functionName: 'isCompliant',
     args: walletAddress ? [walletAddress] : undefined, chainId: arbitrumSepolia.id,
-    query: { enabled: Boolean(walletAddress) },
+    query: { enabled: DEPLOYED.complianceRegistry && Boolean(walletAddress) },
   });
 
   return {
@@ -84,9 +102,11 @@ export function useComplianceStatus(walletAddress: `0x${string}` | undefined) {
 export function useVaultStats() {
   const { data: tvl,  isLoading: loadingTvl }  = useReadContract({
     address: ADDRESSES.nexusVault, abi: NEXUS_VAULT_ABI, functionName: 'getTVL', chainId: arbitrumSepolia.id,
+    query: { enabled: DEPLOYED.nexusVault },
   });
   const { data: apy,  isLoading: loadingApy }  = useReadContract({
     address: ADDRESSES.nexusVault, abi: NEXUS_VAULT_ABI, functionName: 'getAPY', chainId: arbitrumSepolia.id,
+    query: { enabled: DEPLOYED.nexusVault },
   });
 
   return {
@@ -102,7 +122,8 @@ export function useConfirmDelivery() {
   const { writeContract, data: hash, isPending, error } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  const confirm = (tradeId: `0x${string}`) =>
+  const confirm = (tradeId: `0x${string}`) => {
+    if (!DEPLOYED.tradeEscrow) throw new Error('TradeEscrow no está desplegado');
     writeContract({
       address:      ADDRESSES.tradeEscrow,
       abi:          TRADE_ESCROW_ABI,
@@ -110,6 +131,7 @@ export function useConfirmDelivery() {
       args:         [tradeId],
       chainId:      arbitrumSepolia.id,
     });
+  };
 
-  return { confirm, hash, isPending: isPending || isConfirming, isSuccess, error };
+  return { confirm, available: DEPLOYED.tradeEscrow, hash, isPending: isPending || isConfirming, isSuccess, error };
 }

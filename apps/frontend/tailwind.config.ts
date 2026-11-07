@@ -19,9 +19,9 @@ const config: Config = {
         'nexus-green':   '#00FF94',
       },
       fontFamily: {
-        sans:     ['Space Grotesk', 'sans-serif'],
-        mono:     ['JetBrains Mono', 'monospace'],
-        orbitron: ['Orbitron', 'sans-serif'],
+        sans:     ['var(--font-space-grotesk)', 'Space Grotesk', 'sans-serif'],
+        mono:     ['var(--font-jetbrains-mono)', 'JetBrains Mono', 'monospace'],
+        orbitron: ['var(--font-orbitron)', 'Orbitron', 'sans-serif'],
       },
       animation: {
         'spin-slow': 'spin 20s linear infinite',

@@ -58,16 +58,6 @@ export default withPWA({
     disableDevLogs: true,
     runtimeCaching: [
       {
-        // Cache Google Fonts
-        urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
-        handler:    'CacheFirst',
-        options: {
-          cacheName:        'google-fonts',
-          expiration:       { maxEntries: 10, maxAgeSeconds: 365 * 24 * 60 * 60 },
-          cacheableResponse: { statuses: [0, 200] },
-        },
-      },
-      {
         // Cache API health & FX quotes (short TTL)
         urlPattern: /^http:\/\/localhost:3001\/api\/v1\/(health|fx)\/.*/i,
         handler:    'StaleWhileRevalidate',

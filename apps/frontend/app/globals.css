@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@400;700;900&display=swap');
+/* Fonts are self-hosted by next/font in app/layout.tsx (no request to Google at runtime). */
 
 /* ─── Design Tokens ─────────────────────────────────────────────── */
 :root {
@@ -32,7 +32,7 @@ html { scroll-behavior: smooth; }
 body {
   background-color: var(--dark);
   color: white;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-space-grotesk), 'Space Grotesk', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -43,8 +43,8 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--cyan-glow); border-radius: 2px; }
 
 /* ─── Typography ────────────────────────────────────────────────── */
-.font-orbitron { font-family: 'Orbitron', sans-serif; }
-.font-mono     { font-family: 'JetBrains Mono', monospace; }
+.font-orbitron { font-family: var(--font-orbitron), 'Orbitron', sans-serif; }
+.font-mono     { font-family: var(--font-jetbrains-mono), 'JetBrains Mono', monospace; }
 
 /* ─── Grid Background ───────────────────────────────────────────── */
 .grid-bg {
@@ -150,7 +150,7 @@ body {
   color: var(--cyan);
   border: 1px solid var(--cyan);
   padding: 12px 32px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: var(--font-orbitron), 'Orbitron', sans-serif;
   font-size: 13px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -191,7 +191,7 @@ body {
   color: var(--dark);
   border: 1px solid var(--cyan);
   padding: 12px 32px;
-  font-family: 'Orbitron', sans-serif;
+  font-family: var(--font-orbitron), 'Orbitron', sans-serif;
   font-size: 13px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -437,7 +437,7 @@ body {
 .terminal {
   background: rgba(6, 13, 23, 0.95);
   border: 1px solid rgba(0, 212, 255, 0.2);
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
   font-size: 13px;
 }
 
@@ -611,7 +611,7 @@ body { isolation: isolate; }
   display: grid;
   place-items: center;
   border: 1.5px solid currentColor;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
   letter-spacing: 0.08em;
   /* Nervaduras de contenedor: franjas verticales del mismo color */
   background:
