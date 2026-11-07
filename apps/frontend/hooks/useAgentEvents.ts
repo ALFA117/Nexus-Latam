@@ -21,6 +21,13 @@ export function useAgentEvents(maxEvents = 20) {
   }, [maxEvents]);
 
   useEffect(() => {
+    // apps/api is not deployed with the public site. Without an explicit
+    // NEXT_PUBLIC_API_URL, only open the stream when the page itself runs on
+    // this machine; otherwise EventSource retried the visitor's localhost
+    // forever while the panel shows its labelled simulated feed anyway.
+    const local = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    if (!process.env.NEXT_PUBLIC_API_URL && !local) return;
+
     const es = new EventSource(`${API_URL}/api/v1/events`);
 
     es.onopen = () => setConnected(true);
