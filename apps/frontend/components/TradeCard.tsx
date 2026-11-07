@@ -57,7 +57,7 @@ export function TradeCard({ trade }: { trade: Trade; stateColors?: Record<string
                 {trade.id}
               </p>
               {trade.country && (
-                <p className="text-white/30 text-xs font-mono mt-0.5">
+                <p className="text-white/55 text-xs font-mono mt-0.5">
                   {trade.country} · {trade.rail}
                 </p>
               )}
@@ -77,7 +77,7 @@ export function TradeCard({ trade }: { trade: Trade; stateColors?: Record<string
           {trade.amount && (
             <p className="font-orbitron text-xl font-black text-white mb-3">
               {trade.amount}
-              <span className="text-white/30 text-xs font-mono ml-1">USDC</span>
+              <span className="text-white/55 text-xs font-mono ml-1">USDC</span>
             </p>
           )}
 
@@ -85,25 +85,25 @@ export function TradeCard({ trade }: { trade: Trade; stateColors?: Record<string
           <div className="space-y-1.5 text-xs">
             {trade.nft && (
               <div className="flex justify-between">
-                <span className="text-white/30 font-mono">LC-NFT</span>
+                <span className="text-white/55 font-mono">LC-NFT</span>
                 <span className="font-mono text-[#9B30FF] font-semibold">{trade.nft}</span>
               </div>
             )}
             {trade.lcNFT && (
               <div className="flex justify-between">
-                <span className="text-white/30 font-mono">LC-NFT</span>
+                <span className="text-white/55 font-mono">LC-NFT</span>
                 <span className="font-mono text-[#9B30FF] font-semibold">{trade.lcNFT}</span>
               </div>
             )}
             {trade.yieldAPY && (
               <div className="flex justify-between">
-                <span className="text-white/30 font-mono">Yield APY</span>
+                <span className="text-white/55 font-mono">Yield APY</span>
                 <span className="font-mono text-[#00FF94] font-semibold">{trade.yieldAPY}</span>
               </div>
             )}
             {trade.time && trade.time !== '--' && (
               <div className="flex justify-between">
-                <span className="text-white/30 font-mono">Settlement</span>
+                <span className="text-white/55 font-mono">Settlement</span>
                 <span className="font-mono font-bold" style={{ color: '#00FF94' }}>{trade.time}</span>
               </div>
             )}
@@ -111,7 +111,7 @@ export function TradeCard({ trade }: { trade: Trade; stateColors?: Record<string
 
           {/* CTA */}
           <div className="flex items-center justify-between mt-4 pt-3 border-t border-[#ffffff06]">
-            <span className="text-white/20 text-xs font-mono">Ver detalle</span>
+            <span className="text-white/55 text-xs font-mono">Ver detalle</span>
             <span
               className="text-xs font-mono font-bold group-hover:translate-x-1 transition-transform"
               style={{ color }}

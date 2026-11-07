@@ -2,7 +2,7 @@ import { KPICardSkeleton, TradeCardSkeleton } from '../../components/Skeleton';
 
 export default function TradesLoading() {
   return (
-    <div className="min-h-screen bg-[#060D17] text-white grid-bg">
+    <div className="min-h-screen text-white">
       {/* Navbar placeholder */}
       <div className="h-16 border-b border-[#00D4FF10]" />
 

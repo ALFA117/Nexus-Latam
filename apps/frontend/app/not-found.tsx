@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-[#060D17] text-white grid-bg flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen text-white flex items-center justify-center relative overflow-hidden">
       {/* Scan line */}
       <div className="scan-line" />
 
@@ -50,7 +50,7 @@ export default function NotFound() {
         <h1 className="font-orbitron text-xl md:text-2xl font-black text-white mt-4 mb-2">
           OPERACIÓN FALLIDA
         </h1>
-        <p className="text-white/40 text-sm font-mono max-w-sm mx-auto mb-8">
+        <p className="text-white/60 text-sm font-mono max-w-sm mx-auto mb-8">
           El agente no pudo resolver esta ruta en el protocolo.
           Verifica el ID de operación o vuelve al dashboard.
         </p>

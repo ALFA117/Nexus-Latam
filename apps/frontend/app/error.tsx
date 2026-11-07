@@ -15,7 +15,7 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-[#060D17] grid-bg flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-lg w-full text-center space-y-6">
         {/* Glitch icon */}
         <div className="relative w-24 h-24 mx-auto">
@@ -38,7 +38,7 @@ export default function GlobalError({
           <h1 className="font-orbitron text-2xl font-black text-[#FF3366] tracking-widest">
             PROTOCOL ERROR
           </h1>
-          <p className="text-white/40 text-sm font-mono">
+          <p className="text-white/60 text-sm font-mono">
             Un error inesperado interrumpió el protocolo NEXUS LATAM
           </p>
         </div>
@@ -52,7 +52,7 @@ export default function GlobalError({
             {error.message || 'Unknown error'}
           </p>
           {error.digest && (
-            <p className="text-white/25 text-xs font-mono">digest: {error.digest}</p>
+            <p className="text-white/55 text-xs font-mono">digest: {error.digest}</p>
           )}
         </div>
 
@@ -69,7 +69,7 @@ export default function GlobalError({
           </Link>
         </div>
 
-        <p className="text-white/15 text-xs font-mono">
+        <p className="text-white/55 text-xs font-mono">
           NEXUS LATAM · Protocolo B2B Autónomo
         </p>
       </div>

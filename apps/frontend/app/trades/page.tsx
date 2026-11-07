@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNexusAPI }                       from '../../hooks/useNexusAPI';
 import { TradeCard }                         from '../../components/TradeCard';
 import { Navbar }                            from '../../components/Navbar';
@@ -9,6 +9,7 @@ import { AgentStatusPanel }                  from '../../components/AgentStatusP
 import { TradeCardSkeleton, KPICardSkeleton } from '../../components/Skeleton';
 import { DemoBadge }                         from '../../components/DemoBadge';
 import Link                                  from 'next/link';
+import { Glyph } from '../../components/Glyph';
 
 const STATE_LABELS: Record<string, string> = {
   ALL:       'Todas',
@@ -51,7 +52,7 @@ export default function TradesPage() {
   const [search, setSearch]           = useState('');
   const [tab, setTab]                 = useState<'list' | 'new'>('list');
 
-  useEffect(() => {
+  const load = useCallback(() => {
     getTrades({ page: 1, limit: 50 })
       .then(r => {
         const data = r.data ?? [];
@@ -62,7 +63,9 @@ export default function TradesPage() {
         setTrades([]);
         setUsingMock(true);
       });
-  }, []);
+  }, [getTrades]);
+
+  useEffect(() => { load(); }, [load]);
 
   const displayTrades = (trades.length > 0 ? trades : MOCK_TRADES) as typeof MOCK_TRADES;
   const filtered = displayTrades.filter(t => {
@@ -73,20 +76,20 @@ export default function TradesPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#060D17] text-white grid-bg">
+    <div className="min-h-screen text-white">
       <Navbar />
 
       <div className="page-inner px-4 sm:px-6 max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-wrap items-end justify-between gap-4 py-8 border-b border-[#00D4FF12]">
           <div>
-            <Link href="/" className="text-white/30 text-xs font-mono hover:text-[#00D4FF] transition-colors">
+            <Link href="/" className="text-white/55 text-xs font-mono hover:text-[#00D4FF] transition-colors">
               ← NEXUS LATAM
             </Link>
             <h1 className="font-orbitron text-2xl font-black text-white mt-1">
               COMMAND <span className="text-[#00D4FF]">CENTER</span>
             </h1>
-            <p className="text-white/40 text-xs font-mono mt-1">
+            <p className="text-white/60 text-xs font-mono mt-1">
               Operaciones comerciales B2B en tiempo real
             </p>
           </div>
@@ -118,13 +121,13 @@ export default function TradesPage() {
                 className="w-10 h-10 rounded-lg flex items-center justify-center text-lg shrink-0"
                 style={{ background: `${k.color}15`, border: `1px solid ${k.color}30` }}
               >
-                {k.icon}
+                <span style={{ color: k.color }}><Glyph icon={k.icon} /></span>
               </div>
               <div>
                 <p className="font-orbitron text-lg font-black" style={{ color: k.color }}>
                   {k.value}
                 </p>
-                <p className="text-white/35 text-xs font-mono">{k.label}</p>
+                <p className="text-white/55 text-xs font-mono">{k.label}</p>
               </div>
             </div>
           ))}
@@ -140,7 +143,7 @@ export default function TradesPage() {
               className={`px-5 py-2.5 text-xs font-orbitron uppercase tracking-widest transition-all border-b-2 -mb-px ${
                 tab === t
                   ? 'text-[#00D4FF] border-[#00D4FF]'
-                  : 'text-white/30 border-transparent hover:text-white/60'
+                  : 'text-white/55 border-transparent hover:text-white/60'
               }`}
             >
               {t === 'list' ? 'OPERACIONES' : 'NUEVA OP'}
@@ -156,7 +159,7 @@ export default function TradesPage() {
               {/* Search + count */}
               <div className="flex flex-col sm:flex-row gap-3 mb-4">
                 <div className="relative flex-1">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/25 text-xs font-mono">⌕</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/55 text-xs font-mono">⌕</span>
                   <input
                     type="text"
                     placeholder="Buscar por ID, wallet, país..."
@@ -167,11 +170,11 @@ export default function TradesPage() {
                   {search && (
                     <button
                       onClick={() => setSearch('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 text-xs"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-white/55 hover:text-white/60 text-xs"
                     >×</button>
                   )}
                 </div>
-                <span className="self-center text-white/25 text-xs font-mono shrink-0">
+                <span className="self-center text-white/55 text-xs font-mono shrink-0">
                   {filtered.length} / {displayTrades.length} ops
                 </span>
               </div>
@@ -201,8 +204,15 @@ export default function TradesPage() {
               )}
 
               {error && (
-                <div className="glass border-[#FF336640] p-4 rounded mb-4 text-[#FF3366] text-sm font-mono">
-                  ⚠ {error}
+                <div role="alert" className="glass border-[#FF336640] p-4 rounded mb-4 flex flex-col sm:flex-row sm:items-center gap-3">
+                  <p className="text-[#FF6688] text-sm font-mono flex-1">{error}</p>
+                  <button
+                    type="button"
+                    onClick={load}
+                    className="min-h-11 px-4 border border-[#FF336660] text-[#FF6688] text-xs font-mono uppercase tracking-widest hover:bg-[#FF336615] active:scale-[0.97] transition"
+                  >
+                    Reintentar
+                  </button>
                 </div>
               )}
 
@@ -210,7 +220,7 @@ export default function TradesPage() {
               {filtered.length > 0 ? (
                 <div className="space-y-2">
                   {/* Header row — oculto en mobile */}
-                  <div className="hidden sm:grid grid-cols-6 gap-2 px-4 text-white/25 text-xs font-mono uppercase tracking-widest pb-1">
+                  <div className="hidden sm:grid grid-cols-6 gap-2 px-4 text-white/55 text-xs font-mono uppercase tracking-widest pb-1">
                     <span>ID</span>
                     <span>Estado</span>
                     <span>Monto</span>
@@ -259,7 +269,7 @@ export default function TradesPage() {
                           <div className="flex items-center justify-between">
                             <span className="font-orbitron text-base font-bold text-white">{trade.amount}</span>
                             <div className="flex items-center gap-2 text-xs font-mono">
-                              <span className="text-white/40">{trade.country} · {trade.rail}</span>
+                              <span className="text-white/60">{trade.country} · {trade.rail}</span>
                               <span className="text-[#9B30FF]">{trade.nft}</span>
                               <span style={{ color: trade.time !== '--' ? '#00FF94' : 'rgba(255,255,255,0.25)' }}>
                                 {trade.time}
@@ -272,7 +282,7 @@ export default function TradesPage() {
                   })}
                 </div>
               ) : (
-                <div className="text-center py-20 text-white/25">
+                <div className="text-center py-20 text-white/55">
                   <p className="font-orbitron text-xl mb-3">SIN OPERACIONES</p>
                   <button
                     onClick={() => setTab('new')}

@@ -1,5 +1,7 @@
 'use client';
 
+import { Glyph } from './Glyph';
+
 const FEATURES = [
   {
     icon: '⚡',
@@ -101,7 +103,7 @@ export function ProtocolFeatures() {
                     boxShadow: `0 0 20px ${f.color}20`,
                   }}
                 >
-                  {f.icon}
+                  <span style={{ color: f.color }}><Glyph icon={f.icon} /></span>
                 </div>
                 <div>
                   <h3 className="font-orbitron font-black text-sm text-white mb-0.5 tracking-wide">
@@ -144,7 +146,7 @@ export function ProtocolFeatures() {
         {/* Tech stack */}
         <div className="divider-neon mb-12" />
         <div className="text-center mb-8">
-          <p className="font-orbitron text-sm text-white/40 uppercase tracking-widest">Tech Stack</p>
+          <p className="font-orbitron text-sm text-white/60 uppercase tracking-widest">Tech Stack</p>
         </div>
         <div className="flex flex-wrap justify-center gap-4">
           {STACK.map((s) => (
@@ -158,7 +160,7 @@ export function ProtocolFeatures() {
                 style={{ background: s.color, boxShadow: `0 0 6px ${s.color}` }}
               />
               <span className="font-orbitron text-sm font-bold" style={{ color: s.color }}>{s.name}</span>
-              <span className="text-white/30 text-xs font-mono">{s.role}</span>
+              <span className="text-white/55 text-xs font-mono">{s.role}</span>
             </div>
           ))}
         </div>

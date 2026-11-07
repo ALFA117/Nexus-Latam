@@ -50,26 +50,26 @@ export function AuditTrailTable({ tradeId }: { tradeId?: string }) {
               <span className="font-orbitron text-sm font-bold text-[#FF6B35]">
                 BUNDLE {e.batchId}
               </span>
-              <span className="text-white/30 text-xs font-mono">{e.timestamp}</span>
+              <span className="text-white/55 text-xs font-mono">{e.timestamp}</span>
             </div>
             <div className="grid grid-cols-2 gap-x-4 gap-y-1">
               <div>
-                <span className="text-white/25 text-xs font-mono">txs </span>
+                <span className="text-white/55 text-xs font-mono">txs </span>
                 <span className="text-white/70 text-xs font-mono font-semibold">{e.txCount}</span>
               </div>
               <div>
-                <span className="text-white/25 text-xs font-mono">vol </span>
+                <span className="text-white/55 text-xs font-mono">vol </span>
                 <span className="text-[#F7B731] text-xs font-mono font-semibold">
                   ${(e.volumeUSDC / 1_000_000).toFixed(2)}M
                 </span>
               </div>
               <div>
-                <span className="text-white/25 text-xs font-mono">nft </span>
+                <span className="text-white/55 text-xs font-mono">nft </span>
                 <span className="text-[#9B30FF] text-xs font-mono">{e.nftId}</span>
               </div>
               <div className="overflow-hidden">
-                <span className="text-white/25 text-xs font-mono">∑ </span>
-                <span className="text-white/40 text-xs font-mono truncate">{e.merkleRoot}</span>
+                <span className="text-white/55 text-xs font-mono">∑ </span>
+                <span className="text-white/60 text-xs font-mono truncate">{e.merkleRoot}</span>
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@ export function AuditTrailTable({ tradeId }: { tradeId?: string }) {
       </div>
 
       {entries.length === 0 && (
-        <div className="text-center text-white/20 py-8 text-xs font-mono">
+        <div className="text-center text-white/55 py-8 text-xs font-mono">
           Sin bundles aún
         </div>
       )}

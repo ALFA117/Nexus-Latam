@@ -1,6 +1,6 @@
 export default function GlobalLoading() {
   return (
-    <div className="min-h-screen bg-[#060D17] grid-bg flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="text-center space-y-6">
         {/* Animated rings */}
         <div className="relative w-20 h-20 mx-auto">
@@ -25,7 +25,7 @@ export default function GlobalLoading() {
           <p className="font-orbitron text-sm text-[#00D4FF] tracking-widest uppercase">
             NEXUS LATAM
           </p>
-          <p className="text-white/30 text-xs font-mono">Inicializando protocolo...</p>
+          <p className="text-white/55 text-xs font-mono">Inicializando protocolo...</p>
         </div>
 
         {/* Shimmer bar */}

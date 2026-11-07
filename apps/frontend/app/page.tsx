@@ -11,6 +11,7 @@ import { ProtocolFeatures }  from '../components/ProtocolFeatures';
 import { Footer }            from '../components/Footer';
 import { FadeIn, ScaleIn }   from '../components/FadeIn';
 import { DemoBadge }         from '../components/DemoBadge';
+import { Glyph } from '../components/Glyph';
 
 /* ── Animated counter ──────────────────────────────────────────── */
 function Counter({ to, suffix = '' }: { to: number; suffix?: string }) {
@@ -75,7 +76,7 @@ function TerminalTrace() {
         <div className="w-3 h-3 rounded-full bg-[#FF3366]" />
         <div className="w-3 h-3 rounded-full bg-[#F7B731]" />
         <div className="w-3 h-3 rounded-full bg-[#00FF94]" />
-        <span className="ml-3 text-white/30 text-xs font-mono">nexus-protocol — demo-trace</span>
+        <span className="ml-3 text-white/55 text-xs font-mono">nexus-protocol — demo-trace</span>
         <span className="ml-auto"><DemoBadge label="SCRIPT, SIN BACKEND" /></span>
       </div>
 
@@ -89,7 +90,7 @@ function TerminalTrace() {
               transform: visible.includes(i) ? 'none' : 'translateX(-8px)',
             }}
           >
-            <span className="text-white/20 shrink-0 select-none">
+            <span className="text-white/55 shrink-0 select-none">
               {String(i + 1).padStart(2, '0')}
             </span>
             <span style={{ color: line.color }}>{line.text}</span>
@@ -97,7 +98,7 @@ function TerminalTrace() {
         ))}
         {visible.length > 0 && visible.length < TRACE_LINES.length && (
           <div className="flex gap-2 text-xs font-mono">
-            <span className="text-white/20">··</span>
+            <span className="text-white/55">··</span>
             <span className="text-[#00D4FF] blink">_</span>
           </div>
         )}
@@ -109,7 +110,7 @@ function TerminalTrace() {
 /* ── Main landing page ──────────────────────────────────────────── */
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#060D17] text-white overflow-x-hidden">
+    <div className="min-h-screen text-white overflow-x-hidden">
       <Navbar />
 
       {/* ── 1. HERO ─────────────────────────────────────────────── */}
@@ -128,7 +129,7 @@ export default function LandingPage() {
           {/* Divider label */}
           <div className="flex items-center gap-4 mb-3 justify-center">
             <div className="flex-1 h-px bg-gradient-to-r from-transparent to-[#00D4FF33]" />
-            <span className="font-orbitron text-xs text-white/30 uppercase tracking-widest px-4">
+            <span className="font-orbitron text-xs text-white/55 uppercase tracking-widest px-4">
               Métricas del Protocolo
             </span>
             <div className="flex-1 h-px bg-gradient-to-l from-transparent to-[#00D4FF33]" />
@@ -177,7 +178,7 @@ export default function LandingPage() {
                   className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center text-xl"
                   style={{ background: `${stat.color}15`, border: `1px solid ${stat.color}30` }}
                 >
-                  {stat.icon}
+                  <span style={{ color: stat.color }}><Glyph icon={stat.icon} /></span>
                 </div>
                 <p
                   className="font-orbitron text-3xl font-black mb-1"
@@ -186,7 +187,7 @@ export default function LandingPage() {
                   {stat.prefix}<Counter to={stat.value} />
                 </p>
                 <p className="text-white font-semibold text-sm mb-1">{stat.label}</p>
-                <p className="text-white/35 text-xs font-mono">{stat.sub}</p>
+                <p className="text-white/55 text-xs font-mono">{stat.sub}</p>
               </div>
               </ScaleIn>
             ))}
@@ -212,7 +213,7 @@ export default function LandingPage() {
               <span className="text-white">VE EL PROTOCOLO </span>
               <span className="gradient-text-cyan">EN ACCIÓN</span>
             </h2>
-            <p className="text-white/40 text-sm font-mono">
+            <p className="text-white/60 text-sm font-mono">
               Flujo completo de una Carta de Crédito MX→CO procesada en tiempo real
             </p>
           </div>
@@ -331,7 +332,7 @@ export default function LandingPage() {
               </button>
             </Link>
             <Link href="/trades">
-              <button className="text-white/40 hover:text-white/70 text-sm font-mono transition-colors border border-white/10 hover:border-white/20 px-8 py-4 rounded">
+              <button className="text-white/60 hover:text-white/70 text-sm font-mono transition-colors border border-white/10 hover:border-white/20 px-8 py-4 rounded">
                 DASHBOARD
               </button>
             </Link>

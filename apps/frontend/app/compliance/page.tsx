@@ -8,6 +8,7 @@ import { useComplianceStatus }    from '../../hooks/useContracts';
 import { Navbar }                 from '../../components/Navbar';
 import { FadeIn, ScaleIn }        from '../../components/FadeIn';
 import Link                       from 'next/link';
+import { Glyph } from '../../components/Glyph';
 
 const SAMPLE_WALLETS = [
   { addr: '0x1a2b3c4d...', country: 'MX', tier: 'VERIFIED', score: 891 },
@@ -57,13 +58,13 @@ export default function CompliancePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060D17] text-white grid-bg">
+    <div className="min-h-screen text-white">
       <Navbar />
 
       <div className="page-inner px-4 sm:px-6 max-w-5xl mx-auto">
         {/* Header */}
         <div className="py-8 border-b border-[#9B30FF20]">
-          <Link href="/" className="text-white/30 text-xs font-mono hover:text-[#9B30FF] transition-colors">
+          <Link href="/" className="text-white/55 text-xs font-mono hover:text-[#9B30FF] transition-colors">
             ← NEXUS LATAM
           </Link>
           <div className="flex flex-wrap items-end justify-between gap-3 mt-1">
@@ -71,13 +72,13 @@ export default function CompliancePage() {
               <h1 className="font-orbitron text-2xl font-black">
                 COMPLIANCE <span className="text-[#9B30FF]">REGISTRY</span>
               </h1>
-              <p className="text-white/40 text-xs font-mono mt-1">
+              <p className="text-white/60 text-xs font-mono mt-1">
                 KYC/AML on-chain · ComplianceNFT · Arbitrum Sepolia
               </p>
             </div>
             <div className="flex items-center gap-2 text-xs font-mono text-[#9B30FF]">
               <span className="w-2 h-2 rounded-full bg-[#9B30FF] pulse-cyan" />
-              ComplianceAgent online
+              ComplianceAgent · simulado
             </div>
           </div>
         </div>
@@ -90,10 +91,10 @@ export default function CompliancePage() {
               className="glass clip-corner-sm p-3 flex items-center gap-3 h-full"
               style={{ borderColor: `${meta.color}25` }}
             >
-              <span className="text-xl" style={{ color: meta.color }}>{meta.icon}</span>
+              <span className="text-xl" style={{ color: meta.color }}><Glyph icon={meta.icon} /></span>
               <div>
                 <p className="font-orbitron text-xs font-bold" style={{ color: meta.color }}>{tier}</p>
-                <p className="text-white/35 text-xs font-mono">{meta.desc}</p>
+                <p className="text-white/55 text-xs font-mono">{meta.desc}</p>
               </div>
             </div>
             </ScaleIn>
@@ -114,7 +115,7 @@ export default function CompliancePage() {
               </span>
             </div>
             {compLoading ? (
-              <div className="flex items-center gap-2 text-white/40 text-xs font-mono">
+              <div className="flex items-center gap-2 text-white/60 text-xs font-mono">
                 <span className="w-3 h-3 border border-[#9B30FF] border-t-transparent rounded-full animate-spin" />
                 Leyendo contrato...
               </div>
@@ -127,12 +128,12 @@ export default function CompliancePage() {
                 ].map(s => (
                   <div key={s.label} className="glass clip-corner-sm p-3" style={{ borderColor: `${s.color}20` }}>
                     <p className="font-orbitron text-lg font-black" style={{ color: s.color }}>{s.value}</p>
-                    <p className="text-white/30 text-xs font-mono mt-0.5">{s.label}</p>
+                    <p className="text-white/55 text-xs font-mono mt-0.5">{s.label}</p>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-white/30 text-xs font-mono">
+              <p className="text-white/55 text-xs font-mono">
                 Wallet conectada · Contrato pendiente de deploy en Sepolia
               </p>
             )}
@@ -179,7 +180,7 @@ export default function CompliancePage() {
           </div>
 
           {/* Hint */}
-          <p className="text-white/20 text-xs font-mono mt-3">
+          <p className="text-white/55 text-xs font-mono mt-3">
             ↵ Enter · o haz click en una wallet de ejemplo ↓
           </p>
         </div>
@@ -193,7 +194,7 @@ export default function CompliancePage() {
 
         {/* Sample wallets */}
         <div className="mb-12">
-          <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-3">
+          <p className="text-white/55 text-xs font-mono uppercase tracking-widest mb-3">
             Wallets de ejemplo — click para consultar
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -209,7 +210,7 @@ export default function CompliancePage() {
                   <div className="flex items-center justify-between mb-1">
                     <span className="font-mono text-xs text-white/50 truncate">{w.addr}</span>
                     <span className="font-orbitron text-xs font-bold" style={{ color: meta.color }}>
-                      {meta.icon} {w.tier}
+                      <Glyph icon={meta.icon} /> {w.tier}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -226,7 +227,7 @@ export default function CompliancePage() {
                       {w.score}
                     </span>
                   </div>
-                  <p className="text-white/25 text-xs font-mono mt-1">{w.country}</p>
+                  <p className="text-white/55 text-xs font-mono mt-1">{w.country}</p>
                 </button>
                 </ScaleIn>
               );

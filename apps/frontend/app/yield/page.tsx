@@ -5,6 +5,8 @@ import { Navbar }          from '../../components/Navbar';
 import { FadeIn, ScaleIn } from '../../components/FadeIn';
 import { useVaultStats }   from '../../hooks/useContracts';
 import Link                from 'next/link';
+import { DemoBadge } from '../../components/DemoBadge';
+import { Glyph } from '../../components/Glyph';
 
 /* ── Mock positions ──────────────────────────────────────────────── */
 const POSITIONS = [
@@ -66,7 +68,7 @@ function YieldSimulator() {
       </p>
 
       {/* Amount */}
-      <label className="text-white/40 text-xs font-mono block mb-1.5">
+      <label className="text-white/60 text-xs font-mono block mb-1.5">
         Principal (USDC)
       </label>
       <input
@@ -78,7 +80,7 @@ function YieldSimulator() {
       />
 
       {/* Duration tabs */}
-      <label className="text-white/40 text-xs font-mono block mb-2">Duración</label>
+      <label className="text-white/60 text-xs font-mono block mb-2">Duración</label>
       <div className="flex gap-2 mb-5">
         {DURATIONS.map((d, i) => (
           <button
@@ -102,24 +104,24 @@ function YieldSimulator() {
         style={{ background: 'rgba(0,255,148,0.05)', border: '1px solid rgba(0,255,148,0.2)' }}
       >
         <div className="flex justify-between text-xs font-mono">
-          <span className="text-white/40">APY</span>
+          <span className="text-white/60">APY</span>
           <span className="text-[#00D4FF] font-bold">{apy}%</span>
         </div>
         <div className="flex justify-between text-xs font-mono">
-          <span className="text-white/40">Yield total</span>
+          <span className="text-white/60">Yield total</span>
           <span className="text-[#00FF94] font-bold">+${yieldAmt.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-xs font-mono">
-          <span className="text-white/40">Tu parte (80%)</span>
+          <span className="text-white/60">Tu parte (80%)</span>
           <span className="text-[#00FF94] font-bold">+${sellerYield.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-xs font-mono">
-          <span className="text-white/40">Protocolo (20%)</span>
+          <span className="text-white/60">Protocolo (20%)</span>
           <span className="text-[#9B30FF]">${protocolYield.toFixed(2)}</span>
         </div>
         <div className="pt-2 border-t border-[#00FF9420]">
           <div className="flex justify-between">
-            <span className="text-white/40 text-xs font-mono">Return efectivo</span>
+            <span className="text-white/60 text-xs font-mono">Return efectivo</span>
             <span className="font-orbitron text-sm font-black text-[#00FF94]">
               {effectiveRate.toFixed(3)}%
             </span>
@@ -127,7 +129,7 @@ function YieldSimulator() {
         </div>
       </div>
 
-      <p className="text-white/20 text-xs font-mono mt-3 text-center">
+      <p className="text-white/55 text-xs font-mono mt-3 text-center">
         Tasas indicativas · Aave V3 · Arbitrum
       </p>
     </div>
@@ -143,13 +145,13 @@ export default function YieldPage() {
   const displayAPY = apyPct  ?? avgAPY;
 
   return (
-    <div className="min-h-screen bg-[#060D17] text-white grid-bg">
+    <div className="min-h-screen text-white">
       <Navbar />
 
       <div className="page-inner px-4 sm:px-6 max-w-6xl mx-auto">
         {/* Header */}
         <div className="py-8 border-b border-[#00FF9420]">
-          <Link href="/" className="text-white/30 text-xs font-mono hover:text-[#00FF94] transition-colors">
+          <Link href="/" className="text-white/55 text-xs font-mono hover:text-[#00FF94] transition-colors">
             ← NEXUS LATAM
           </Link>
           <div className="flex flex-wrap items-end justify-between gap-3 mt-1">
@@ -157,19 +159,23 @@ export default function YieldPage() {
               <h1 className="font-orbitron text-2xl font-black">
                 YIELD <span className="text-[#00FF94]">VAULT</span>
               </h1>
-              <p className="text-white/40 text-xs font-mono mt-1">
+              <p className="text-white/60 text-xs font-mono mt-1">
                 Aave V3 · Arbitrum · NexusVault.sol
               </p>
             </div>
             <span className="flex items-center gap-1.5 text-xs font-mono text-[#00FF94]">
               <span className="status-dot status-online" />
-              YieldAgent online
+              YieldAgent · simulado
             </span>
           </div>
         </div>
 
-        {/* KPI strip */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 py-6">
+        {/* KPI strip — el TVL y el APY vienen del contrato cuando hay datos; las
+            posiciones y el yield total son de ejemplo (POSITIONS). */}
+        <div className="pt-6">
+          <DemoBadge label="Posiciones y yield de ejemplo" />
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-3 pb-6">
           {[
             { label: 'TVL en Escrow',    icon: '⬡', value: displayTVL,    prefix: '$', suffix: ' USDC', color: '#00FF94' },
             { label: 'Yield Total',      icon: '📈', value: totalEarned, prefix: '$', suffix: ' USDC', color: '#F7B731' },
@@ -183,13 +189,13 @@ export default function YieldPage() {
                   className="w-9 h-9 rounded-lg flex items-center justify-center text-base"
                   style={{ background: `${k.color}15`, border: `1px solid ${k.color}30` }}
                 >
-                  {k.icon}
+                  <span style={{ color: k.color }}><Glyph icon={k.icon} /></span>
                 </div>
-                <p className="text-white/35 text-xs font-mono">{k.label}</p>
+                <p className="text-white/55 text-xs font-mono">{k.label}</p>
               </div>
               <p className="font-orbitron text-2xl font-black" style={{ color: k.color }}>
                 {k.value !== null ? <AnimatedValue value={k.value} prefix={k.prefix} /> : k.display}
-                {k.suffix && <span className="text-xs text-white/30 font-mono ml-1">{k.suffix}</span>}
+                {k.suffix && <span className="text-xs text-white/55 font-mono ml-1">{k.suffix}</span>}
               </p>
             </div>
             </ScaleIn>
@@ -221,7 +227,7 @@ export default function YieldPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12">
           {/* Positions */}
           <div className="lg:col-span-2 space-y-3">
-            <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-1">
+            <p className="text-white/55 text-xs font-mono uppercase tracking-widest mb-1">
               Posiciones en Aave V3
             </p>
             {POSITIONS.map(p => {
@@ -256,24 +262,24 @@ export default function YieldPage() {
                           {p.state}
                         </span>
                       </div>
-                      <span className="text-white/30 text-xs font-mono">{p.days}d</span>
+                      <span className="text-white/55 text-xs font-mono">{p.days}d</span>
                     </div>
 
                     <div className="grid grid-cols-4 gap-3 mb-3">
                       <div>
-                        <p className="text-white/30 text-xs font-mono">Principal</p>
+                        <p className="text-white/55 text-xs font-mono">Principal</p>
                         <p className="font-orbitron text-sm font-bold text-white">${p.amount.toLocaleString()}</p>
                       </div>
                       <div>
-                        <p className="text-white/30 text-xs font-mono">APY</p>
+                        <p className="text-white/55 text-xs font-mono">APY</p>
                         <p className="font-orbitron text-sm font-bold text-[#00D4FF]">{p.apy}%</p>
                       </div>
                       <div>
-                        <p className="text-white/30 text-xs font-mono">Yield</p>
+                        <p className="text-white/55 text-xs font-mono">Yield</p>
                         <p className="font-orbitron text-sm font-bold text-[#00FF94]">+${p.earned}</p>
                       </div>
                       <div>
-                        <p className="text-white/30 text-xs font-mono">Return</p>
+                        <p className="text-white/55 text-xs font-mono">Return</p>
                         <p className="font-orbitron text-sm font-bold text-[#F7B731]">{earnedPct}%</p>
                       </div>
                     </div>
@@ -292,19 +298,19 @@ export default function YieldPage() {
                     {isOpen && (
                       <div className="mt-3 pt-3 border-t border-[#00FF9415] grid grid-cols-2 gap-2 text-xs font-mono">
                         <div className="flex justify-between">
-                          <span className="text-white/30">Protocolo</span>
+                          <span className="text-white/55">Protocolo</span>
                           <span className="text-[#00FF94]">{p.protocol}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-white/30">Split seller</span>
+                          <span className="text-white/55">Split seller</span>
                           <span className="text-[#00FF94]">80%</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-white/30">Split protocolo</span>
+                          <span className="text-white/55">Split protocolo</span>
                           <span className="text-[#9B30FF]">20%</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-white/30">Contrato</span>
+                          <span className="text-white/55">Contrato</span>
                           <span className="text-[#00D4FF]">NexusVault.rs</span>
                         </div>
                       </div>
@@ -319,7 +325,7 @@ export default function YieldPage() {
           <div className="space-y-4">
             <YieldSimulator />
 
-            <p className="text-white/30 text-xs font-mono uppercase tracking-widest">
+            <p className="text-white/55 text-xs font-mono uppercase tracking-widest">
               Historial de Yield
             </p>
             <div className="glass clip-corner border-[#00FF9415] overflow-hidden">
@@ -330,10 +336,10 @@ export default function YieldPage() {
                       <span className="font-mono text-xs font-bold" style={{ color: h.color }}>
                         {h.amount}
                       </span>
-                      <span className="text-white/25 text-xs font-mono">{h.date}</span>
+                      <span className="text-white/55 text-xs font-mono">{h.date}</span>
                     </div>
                     <p className="text-white/50 text-xs">{h.event}</p>
-                    <p className="text-white/25 text-xs font-mono mt-0.5">{h.trade}</p>
+                    <p className="text-white/55 text-xs font-mono mt-0.5">{h.trade}</p>
                   </div>
                 ))}
               </div>

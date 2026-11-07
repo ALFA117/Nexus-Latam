@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Navbar }   from '../../components/Navbar';
 import { useToast } from '../../components/ToastProvider';
 import Link         from 'next/link';
+import { Glyph } from '../../components/Glyph';
 
 /* ── Demo steps ────────────────────────────────────────────────────── */
 const STEPS = [
@@ -148,7 +149,7 @@ function TerminalLog({ logs, running }: { logs: { t: number; c: string; text: st
           <div className="w-2.5 h-2.5 rounded-full bg-[#F7B731]" />
           <div className="w-2.5 h-2.5 rounded-full bg-[#00FF94]" />
         </div>
-        <span className="text-white/25 text-xs font-mono ml-2">nexus — agent-trace</span>
+        <span className="text-white/55 text-xs font-mono ml-2">nexus — agent-trace</span>
         {running && (
           <span className="ml-auto flex items-center gap-1.5 text-xs font-mono text-[#00D4FF]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#00D4FF] animate-pulse" />
@@ -189,7 +190,7 @@ function NFTBadge({ nft }: { nft: NonNullable<typeof STEPS[0]['nft']> }) {
         className="w-12 h-12 rounded-xl mx-auto mb-2 flex items-center justify-center text-2xl"
         style={{ background: `${nft.color}20`, border: `2px solid ${nft.color}50`, color: nft.color }}
       >
-        {nft.icon}
+        <Glyph icon={nft.icon} />
       </div>
       <p className="font-orbitron text-xs font-black mb-0.5" style={{ color: nft.color }}>
         {nft.type}
@@ -305,14 +306,14 @@ export default function DemoPage() {
   const progress = ((current + 1) / STEPS.length) * 100;
 
   return (
-    <div className="min-h-screen bg-[#060D17] text-white grid-bg">
+    <div className="min-h-screen text-white">
       <Navbar />
 
       <div className="page-inner px-4 sm:px-6 max-w-7xl mx-auto pb-16">
 
         {/* Header */}
         <div className="py-8 border-b border-[#00D4FF12]">
-          <Link href="/" className="text-white/30 text-xs font-mono hover:text-[#00D4FF] transition-colors">
+          <Link href="/" className="text-white/55 text-xs font-mono hover:text-[#00D4FF] transition-colors">
             ← NEXUS LATAM
           </Link>
           <div className="flex flex-wrap items-end justify-between gap-4 mt-2">
@@ -320,7 +321,7 @@ export default function DemoPage() {
               <h1 className="font-orbitron text-2xl sm:text-3xl font-black">
                 DEMO <span className="gradient-text-cyan">INTERACTIVO</span>
               </h1>
-              <p className="text-white/40 text-xs font-mono mt-1">
+              <p className="text-white/60 text-xs font-mono mt-1">
                 Flujo completo de una Carta de Crédito MX → BR · $25,000 USDC · &lt;60s
               </p>
             </div>
@@ -333,13 +334,13 @@ export default function DemoPage() {
               </button>
               <button
                 onClick={() => { setMintedNfts([]); goTo(0); setPlaying(false); }}
-                className="text-white/30 hover:text-white/60 text-xs font-mono transition-colors border border-white/10 hover:border-white/20 px-3 py-2 rounded"
+                className="text-white/55 hover:text-white/60 text-xs font-mono transition-colors border border-white/10 hover:border-white/20 px-3 py-2 rounded"
               >
                 ↺ RESET
               </button>
               <button
                 onClick={copyLink}
-                className="flex items-center gap-1.5 text-white/30 hover:text-[#00D4FF] text-xs font-mono transition-colors border border-white/10 hover:border-[#00D4FF30] px-3 py-2 rounded"
+                className="flex items-center gap-1.5 text-white/55 hover:text-[#00D4FF] text-xs font-mono transition-colors border border-white/10 hover:border-[#00D4FF30] px-3 py-2 rounded"
               >
                 {copied ? '✓ COPIADO' : '⎘ COMPARTIR'}
               </button>
@@ -350,7 +351,7 @@ export default function DemoPage() {
         {/* Progress bar */}
         <div className="py-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-white/30 text-xs font-mono">
+            <span className="text-white/55 text-xs font-mono">
               Paso {current + 1} de {STEPS.length}
             </span>
             <span className="text-xs font-mono" style={{ color: step.color }}>
@@ -422,7 +423,7 @@ export default function DemoPage() {
                   className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl shrink-0"
                   style={{ background: `${step.color}18`, border: `2px solid ${step.color}45`, color: step.color }}
                 >
-                  {step.icon}
+                  <Glyph icon={step.icon} />
                 </div>
                 <div>
                   <div className="flex items-center gap-3 mb-1 flex-wrap">
@@ -451,17 +452,17 @@ export default function DemoPage() {
               <button
                 onClick={() => { if (current > 0) { goTo(current - 1); setPlaying(false); } }}
                 disabled={current === 0}
-                className="text-white/40 hover:text-white disabled:opacity-20 text-sm font-mono transition-colors"
+                className="text-white/60 hover:text-white disabled:opacity-20 text-sm font-mono transition-colors"
               >
                 ← Anterior
               </button>
-              <span className="text-white/15 text-xs font-mono hidden sm:block">
+              <span className="text-white/55 text-xs font-mono hidden sm:block">
                 ← → teclado · espacio = play
               </span>
               <button
                 onClick={() => { if (current < STEPS.length - 1) { goTo(current + 1); setPlaying(false); } }}
                 disabled={current === STEPS.length - 1}
-                className="text-white/40 hover:text-[#00D4FF] disabled:opacity-20 text-sm font-mono transition-colors"
+                className="text-white/60 hover:text-[#00D4FF] disabled:opacity-20 text-sm font-mono transition-colors"
               >
                 Siguiente →
               </button>
@@ -473,7 +474,7 @@ export default function DemoPage() {
 
             {/* Operation info */}
             <div className="glass clip-corner p-4 border-[#00D4FF15]">
-              <p className="font-orbitron text-xs text-white/30 uppercase tracking-widest mb-3">
+              <p className="font-orbitron text-xs text-white/55 uppercase tracking-widest mb-3">
                 Operación Demo
               </p>
               <div className="space-y-2 text-xs font-mono">
@@ -486,7 +487,7 @@ export default function DemoPage() {
                   { k: 'Yield APY', v: '4.2%',          c: '#00FF94' },
                 ].map(({ k, v, c }) => (
                   <div key={k} className="flex justify-between">
-                    <span className="text-white/30">{k}</span>
+                    <span className="text-white/55">{k}</span>
                     <span className="font-bold" style={{ color: c }}>{v}</span>
                   </div>
                 ))}
@@ -495,12 +496,12 @@ export default function DemoPage() {
 
             {/* NFTs minted */}
             <div>
-              <p className="font-orbitron text-xs text-white/30 uppercase tracking-widest mb-3">
+              <p className="font-orbitron text-xs text-white/55 uppercase tracking-widest mb-3">
                 NFTs Acuñados
                 <span className="ml-2 text-[#00D4FF] text-xs">{mintedNfts.length}/3</span>
               </p>
               {mintedNfts.length === 0 ? (
-                <div className="glass clip-corner p-4 text-center text-white/20 text-xs font-mono border-[#ffffff08]">
+                <div className="glass clip-corner p-4 text-center text-white/55 text-xs font-mono border-[#ffffff08]">
                   Los NFTs aparecerán aquí al acuñarse
                 </div>
               ) : (
@@ -522,7 +523,7 @@ export default function DemoPage() {
                   className="w-14 h-14 rounded-2xl mx-auto flex items-center justify-center text-2xl"
                   style={{ background: '#00FF9415', border: '2px solid #00FF9450' }}
                 >
-                  🎉
+                  <span className="text-[#00FF94]"><Glyph icon="🎉" className="w-7 h-7" /></span>
                 </div>
                 <p className="font-orbitron text-xs text-[#00FF94] uppercase tracking-widest">
                   Demo completado
@@ -536,7 +537,7 @@ export default function DemoPage() {
                   ].map(({ l, v, c }) => (
                     <div key={l} className="glass p-2 rounded-lg">
                       <p className="font-orbitron text-base font-black" style={{ color: c }}>{v}</p>
-                      <p className="text-white/30 text-xs font-mono">{l}</p>
+                      <p className="text-white/55 text-xs font-mono">{l}</p>
                     </div>
                   ))}
                 </div>
@@ -558,7 +559,7 @@ export default function DemoPage() {
               <p className="font-orbitron text-sm font-black text-white mb-1">
                 ¿Quieres armar tu propia operación?
               </p>
-              <p className="text-white/40 text-xs font-mono">
+              <p className="text-white/60 text-xs font-mono">
                 Lanza el protocolo y recorre el flujo con tus datos (simulado, sin contratos desplegados)
               </p>
             </div>

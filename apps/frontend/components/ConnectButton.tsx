@@ -52,7 +52,7 @@ export function ConnectButton() {
             </span>
           )}
           <span
-            className="text-white/30 text-xs transition-transform duration-200"
+            className="text-white/55 text-xs transition-transform duration-200"
             style={{ display: 'inline-block', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
           >▾</span>
         </button>
@@ -63,13 +63,13 @@ export function ConnectButton() {
             style={{ animation: 'dropdownIn 0.15s ease-out' }}
           >
             <div className="px-4 py-3 border-b border-[#00D4FF12]">
-              <p className="text-white/30 text-xs font-mono uppercase tracking-widest">Conectado</p>
+              <p className="text-white/55 text-xs font-mono uppercase tracking-widest">Conectado</p>
               <div className="flex items-center gap-2 mt-1">
                 <p className="font-mono text-sm text-[#00D4FF]">{short(address)}</p>
                 <button
                   onClick={copyAddress}
                   title="Copiar address completa"
-                  className="text-white/30 hover:text-[#00D4FF] transition-colors text-xs"
+                  className="text-white/55 hover:text-[#00D4FF] transition-colors text-xs"
                 >
                   {copied ? '✓' : '⎘'}
                 </button>
@@ -78,7 +78,7 @@ export function ConnectButton() {
                 <p className="text-[#F7B731] text-xs font-mono mt-1">⚠ Cambia a Arbitrum Sepolia</p>
               )}
               {balance && (
-                <p className="text-white/40 text-xs font-mono mt-1">
+                <p className="text-white/60 text-xs font-mono mt-1">
                   {Number(balance.formatted).toFixed(4)} ETH
                 </p>
               )}
@@ -123,7 +123,7 @@ export function ConnectButton() {
           style={{ animation: 'dropdownIn 0.15s ease-out' }}
         >
           <div className="px-4 py-3 border-b border-[#00D4FF12]">
-            <p className="text-white/40 text-xs font-mono uppercase tracking-widest">Selecciona wallet</p>
+            <p className="text-white/60 text-xs font-mono uppercase tracking-widest">Selecciona wallet</p>
           </div>
           {connectors.map(c => (
             <button

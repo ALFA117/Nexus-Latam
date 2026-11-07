@@ -34,7 +34,7 @@ export function LiveTicker() {
       <div className="flex ticker-track whitespace-nowrap" style={{ width: 'max-content' }}>
         {doubled.map((t, i) => (
           <div key={i} className="flex items-center gap-2 mx-6 shrink-0">
-            <span className="text-white/40 font-mono text-xs uppercase tracking-widest">{t.label}</span>
+            <span className="text-white/60 font-mono text-xs uppercase tracking-widest">{t.label}</span>
             <span className="font-orbitron text-sm font-bold text-white">{t.value}</span>
             <span
               className="text-xs font-mono font-medium"

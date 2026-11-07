@@ -80,9 +80,10 @@ export function Navbar() {
         <div className="flex md:hidden items-center gap-2">
           <ConnectButton />
           <button
-            className="text-white/60 hover:text-white p-2 shrink-0"
+            className="text-white/60 hover:text-white shrink-0 w-11 h-11 flex flex-col items-center justify-center"
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Menu"
+            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={menuOpen}
           >
             <div className={`w-5 h-0.5 bg-current mb-1.5 transition-all ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
             <div className={`w-5 h-0.5 bg-current mb-1.5 transition-all ${menuOpen ? 'opacity-0 scale-x-0' : ''}`} />

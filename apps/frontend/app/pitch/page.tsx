@@ -4,6 +4,7 @@ import { Navbar }              from '../../components/Navbar';
 import { Footer }              from '../../components/Footer';
 import { FadeIn, ScaleIn, SlideIn } from '../../components/FadeIn';
 import Link                    from 'next/link';
+import { Glyph } from '../../components/Glyph';
 
 const PROBLEM_POINTS = [
   { stat: '40M+',   label: 'PYMEs en LATAM sin acceso a trade finance formal', color: '#FF3366' },
@@ -47,7 +48,7 @@ const TIMELINE = [
 
 export default function PitchPage() {
   return (
-    <div className="min-h-screen bg-[#060D17] text-white grid-bg">
+    <div className="min-h-screen text-white">
       <Navbar />
 
       <div className="page-inner px-4 sm:px-6 max-w-5xl mx-auto pb-20">
@@ -117,19 +118,19 @@ export default function PitchPage() {
                   className="w-10 h-10 rounded-lg flex items-center justify-center text-xl shrink-0"
                   style={{ background: `${s.color}18`, border: `1px solid ${s.color}40`, color: s.color }}
                 >
-                  {s.icon}
+                  <Glyph icon={s.icon} />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
                     <span className="font-orbitron text-sm font-black" style={{ color: s.color }}>
                       {s.title}
                     </span>
-                    <span className="text-white/20 text-xs font-mono">paso {i + 1}</span>
+                    <span className="text-white/55 text-xs font-mono">paso {i + 1}</span>
                   </div>
                   <p className="text-white/50 text-xs font-mono mt-0.5">{s.desc}</p>
                 </div>
                 {i < SOLUTION_POINTS.length - 1 && (
-                  <span className="text-white/15 text-lg">→</span>
+                  <span className="text-white/55 text-lg">→</span>
                 )}
               </div>
               </SlideIn>
@@ -156,7 +157,7 @@ export default function PitchPage() {
                 >
                   {m.value}
                 </p>
-                <p className="text-white/45 text-xs font-mono">{m.label}</p>
+                <p className="text-white/60 text-xs font-mono">{m.label}</p>
               </div>
             ))}
           </div>
@@ -181,7 +182,7 @@ export default function PitchPage() {
                 />
                 <div>
                   <p className="font-orbitron text-xs font-black" style={{ color: t.color }}>{t.name}</p>
-                  <p className="text-white/40 text-xs font-mono mt-0.5">{t.desc}</p>
+                  <p className="text-white/60 text-xs font-mono mt-0.5">{t.desc}</p>
                 </div>
               </div>
             ))}
@@ -216,7 +217,7 @@ export default function PitchPage() {
                     >
                       {t.phase}
                     </span>
-                    <p className="text-white/35 text-xs font-mono mt-0.5">{t.desc}</p>
+                    <p className="text-white/55 text-xs font-mono mt-0.5">{t.desc}</p>
                   </div>
                   <span
                     className="text-xs font-mono"
@@ -256,7 +257,7 @@ export default function PitchPage() {
               href="https://github.com/ALFA117/Nexus-Latam"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/40 hover:text-white/70 text-sm font-mono transition-colors border border-white/10 hover:border-white/20 px-6 py-3 rounded"
+              className="text-white/60 hover:text-white/70 text-sm font-mono transition-colors border border-white/10 hover:border-white/20 px-6 py-3 rounded"
             >
               GitHub →
             </a>

@@ -5,6 +5,8 @@ import { AuditTrailTable }        from '../../components/AuditTrailTable';
 import { Navbar }                 from '../../components/Navbar';
 import { FadeIn, ScaleIn }        from '../../components/FadeIn';
 import Link                       from 'next/link';
+import { DemoBadge } from '../../components/DemoBadge';
+import { Glyph } from '../../components/Glyph';
 
 const BUNDLES = [
   { id: 42, txs: 500,  volume: '$1,250,000', merkle: '0xabc123...', ts: '2026-05-26 14:32', status: 'FINALIZED' },
@@ -18,13 +20,13 @@ export default function AuditPage() {
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-[#060D17] text-white grid-bg">
+    <div className="min-h-screen text-white">
       <Navbar />
 
       <div className="page-inner px-4 sm:px-6 max-w-6xl mx-auto">
         {/* Header */}
         <div className="py-8 border-b border-[#FF6B3520]">
-          <Link href="/" className="text-white/30 text-xs font-mono hover:text-[#FF6B35] transition-colors">
+          <Link href="/" className="text-white/55 text-xs font-mono hover:text-[#FF6B35] transition-colors">
             ← NEXUS LATAM
           </Link>
           <div className="flex flex-wrap items-end justify-between gap-3 mt-1">
@@ -32,19 +34,22 @@ export default function AuditPage() {
               <h1 className="font-orbitron text-2xl font-black">
                 AUDIT <span className="text-[#FF6B35]">TRAIL</span>
               </h1>
-              <p className="text-white/40 text-xs font-mono mt-1">
+              <p className="text-white/60 text-xs font-mono mt-1">
                 Registro inmutable · Merkle Tree · Audit-NFT · Arbitrum Sepolia
               </p>
             </div>
             <span className="flex items-center gap-1.5 text-xs font-mono text-[#FF6B35]">
               <span className="w-2 h-2 rounded-full bg-[#FF6B35] pulse-amber" />
-              AuditAgent online
+              AuditAgent · simulado
             </span>
           </div>
         </div>
 
-        {/* KPIs */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 py-6">
+        {/* KPIs — cifras ilustrativas: el AuditAgent no está desplegado (ver DemoBadge) */}
+        <div className="pt-6">
+          <DemoBadge label="KPIs de ejemplo, no del protocolo en vivo" />
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-3 pb-6">
           {[
             { label: 'Audit Bundles',  value: '42',      color: '#FF6B35', icon: '◉' },
             { label: 'Transacciones',  value: '21,000+', color: '#F7B731', icon: '⚡' },
@@ -60,11 +65,11 @@ export default function AuditPage() {
                 className="w-10 h-10 rounded-lg flex items-center justify-center text-lg shrink-0"
                 style={{ background: `${k.color}15`, border: `1px solid ${k.color}30` }}
               >
-                {k.icon}
+                <span style={{ color: k.color }}><Glyph icon={k.icon} /></span>
               </div>
               <div>
                 <p className="font-orbitron text-lg font-black" style={{ color: k.color }}>{k.value}</p>
-                <p className="text-white/35 text-xs font-mono">{k.label}</p>
+                <p className="text-white/55 text-xs font-mono">{k.label}</p>
               </div>
             </div>
             </ScaleIn>
@@ -101,7 +106,7 @@ export default function AuditPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12">
           {/* Bundle list */}
           <div className="lg:col-span-2 space-y-3">
-            <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-2">
+            <p className="text-white/55 text-xs font-mono uppercase tracking-widest mb-2">
               Bundles Recientes
             </p>
             {BUNDLES.map((b) => (
@@ -133,40 +138,40 @@ export default function AuditPage() {
                         {b.status}
                       </span>
                     </div>
-                    <span className="text-white/30 text-xs font-mono">{b.ts}</span>
+                    <span className="text-white/55 text-xs font-mono">{b.ts}</span>
                   </div>
 
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div>
                       <p className="font-orbitron text-sm font-bold text-white">{b.txs}</p>
-                      <p className="text-white/30 text-xs font-mono">txs</p>
+                      <p className="text-white/55 text-xs font-mono">txs</p>
                     </div>
                     <div>
                       <p className="font-orbitron text-sm font-bold text-[#F7B731]">{b.volume}</p>
-                      <p className="text-white/30 text-xs font-mono">volumen</p>
+                      <p className="text-white/55 text-xs font-mono">volumen</p>
                     </div>
                     <div>
                       <p className="font-mono text-sm text-[#9B30FF] truncate">{b.merkle}</p>
-                      <p className="text-white/30 text-xs font-mono">merkle root</p>
+                      <p className="text-white/55 text-xs font-mono">merkle root</p>
                     </div>
                   </div>
 
                   {selected === b.id && (
                     <div className="mt-4 pt-3 border-t border-[#FF6B3520] grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono">
                       <div className="flex justify-between">
-                        <span className="text-white/30">Auditor</span>
+                        <span className="text-white/55">Auditor</span>
                         <span className="text-[#FF6B35]">NEXUS_AUDIT_AGENT_V1</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-white/30">NFT ID</span>
+                        <span className="text-white/55">NFT ID</span>
                         <span className="text-[#9B30FF]">AUDIT #{b.id}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-white/30">Chain</span>
+                        <span className="text-white/55">Chain</span>
                         <span className="text-[#00D4FF]">Arbitrum Sepolia</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-white/30">Hash algo</span>
+                        <span className="text-white/55">Hash algo</span>
                         <span className="text-[#00FF94]">SHA-256</span>
                       </div>
                     </div>
@@ -180,7 +185,7 @@ export default function AuditPage() {
           <div className="space-y-5">
             {/* Merkle tree visual */}
             <div>
-              <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-3">
+              <p className="text-white/55 text-xs font-mono uppercase tracking-widest mb-3">
                 Merkle Tree — Bundle #42
               </p>
               <div className="glass clip-corner border-[#FF6B3520] p-4">
@@ -191,7 +196,7 @@ export default function AuditPage() {
                     style={{ background: '#FF6B3520', border: '1px solid #FF6B3550', color: '#FF6B35' }}
                   >
                     ROOT<br/>
-                    <span className="text-white/40 font-normal text-xs">0xabc123...</span>
+                    <span className="text-white/60 font-normal text-xs">0xabc123...</span>
                   </div>
                 </div>
 
@@ -242,7 +247,7 @@ export default function AuditPage() {
 
                 {/* Dots indicating more levels */}
                 <div className="text-center mb-2">
-                  <span className="text-white/20 text-xs font-mono">· · · 9 niveles · · ·</span>
+                  <span className="text-white/55 text-xs font-mono">· · · 9 niveles · · ·</span>
                 </div>
 
                 {/* Leaf row hint */}
@@ -258,26 +263,26 @@ export default function AuditPage() {
                     />
                   ))}
                 </div>
-                <p className="text-white/20 text-xs font-mono text-center mt-1">
+                <p className="text-white/55 text-xs font-mono text-center mt-1">
                   500 hojas (transacciones)
                 </p>
 
                 {/* Stats */}
                 <div className="mt-3 pt-3 border-t border-[#FF6B3515] grid grid-cols-2 gap-2 text-xs font-mono">
                   <div className="flex justify-between">
-                    <span className="text-white/30">Algoritmo</span>
+                    <span className="text-white/55">Algoritmo</span>
                     <span className="text-[#00FF94]">SHA-256</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white/30">Niveles</span>
+                    <span className="text-white/55">Niveles</span>
                     <span className="text-[#F7B731]">9</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white/30">Hojas</span>
+                    <span className="text-white/55">Hojas</span>
                     <span className="text-[#00D4FF]">500</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white/30">Nodos</span>
+                    <span className="text-white/55">Nodos</span>
                     <span className="text-[#9B30FF]">1,023</span>
                   </div>
                 </div>
@@ -285,7 +290,7 @@ export default function AuditPage() {
             </div>
 
             <div>
-              <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-3">
+              <p className="text-white/55 text-xs font-mono uppercase tracking-widest mb-3">
                 Eventos Recientes
               </p>
               <AuditTrailTable />

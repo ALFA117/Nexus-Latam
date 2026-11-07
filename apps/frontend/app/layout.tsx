@@ -2,12 +2,15 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { WagmiProvider }   from '../components/WagmiProvider';
 import { ToastProvider }   from '../components/ToastProvider';
+import { AmbientBackground } from '../components/AmbientBackground';
 
 export const viewport: Viewport = {
-  themeColor: '#00D4FF',
+  themeColor: '#060D17',
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://nexus-latam-kappa.vercel.app'),
+  alternates:   { canonical: '/' },
   title: {
     default:  'NEXUS LATAM — Protocolo Autónomo de Financiamiento Comercial',
     template: '%s | NEXUS LATAM',
@@ -22,6 +25,8 @@ export const metadata: Metadata = {
     type:        'website',
     locale:      'es_MX',
     siteName:    'NEXUS LATAM',
+    url:         'https://nexus-latam-kappa.vercel.app',
+    images:      [{ url: '/screenshot-desktop.png', width: 1280, height: 720, alt: 'NEXUS LATAM' }],
   },
   twitter: {
     card:        'summary_large_image',
@@ -48,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <AmbientBackground />
         <WagmiProvider>
           <ToastProvider>
             {children}

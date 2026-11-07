@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { Glyph } from './Glyph';
 
 const AGENTS = [
   {
@@ -126,7 +127,7 @@ export function AgentGrid() {
                     className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl font-bold"
                     style={{ background: `${agent.color}15`, color: agent.color, border: `1px solid ${agent.color}40` }}
                   >
-                    {agent.icon}
+                    <Glyph icon={agent.icon} />
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <div className="flex items-center gap-1.5">
@@ -149,7 +150,7 @@ export function AgentGrid() {
                 >
                   {agent.name}
                 </h3>
-                <p className="text-white/40 text-xs font-mono uppercase tracking-widest mb-3">
+                <p className="text-white/60 text-xs font-mono uppercase tracking-widest mb-3">
                   {agent.role}
                 </p>
 
@@ -195,14 +196,14 @@ export function AgentGrid() {
                     {Object.entries(agent.metrics).map(([k, v]) => (
                       <div key={k} className="text-center">
                         <p className="font-orbitron text-sm font-bold" style={{ color: agent.color }}>{v}</p>
-                        <p className="text-white/30 text-xs font-mono uppercase">{k}</p>
+                        <p className="text-white/55 text-xs font-mono uppercase">{k}</p>
                       </div>
                     ))}
                   </div>
                 )}
 
                 {/* Expand hint */}
-                <div className="absolute bottom-3 right-4 text-white/20 text-xs font-mono">
+                <div className="absolute bottom-3 right-4 text-white/55 text-xs font-mono">
                   {active === agent.id ? '▲ menos' : '▼ stats'}
                 </div>
 
@@ -225,7 +226,7 @@ export function AgentGrid() {
                 <div>
                   <p className="text-[#00D4FF] font-orbitron text-xs uppercase tracking-widest mb-1">NEXUS ORCHESTRATOR</p>
                   <h3 className="text-white font-bold text-xl">Flow de Operación Completo</h3>
-                  <p className="text-white/40 text-sm mt-1">Todos los agentes operan en cadena coordinados por el Orchestrator via Claude Opus 4.7 con adaptive thinking</p>
+                  <p className="text-white/60 text-sm mt-1">Todos los agentes operan en cadena coordinados por el Orchestrator via Claude Opus 4.7 con adaptive thinking</p>
                 </div>
 
                 {/* Flow visual */}
@@ -260,7 +261,7 @@ export function AgentGrid() {
                   ].map(s => (
                     <div key={s.l} className="text-center">
                       <p className="font-orbitron text-lg font-black" style={{ color: s.c }}>{s.v}</p>
-                      <p className="text-white/30 text-xs font-mono">{s.l}</p>
+                      <p className="text-white/55 text-xs font-mono">{s.l}</p>
                     </div>
                   ))}
                 </div>

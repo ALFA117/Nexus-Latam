@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useCallback } from 'react';
+import { Glyph } from './Glyph';
 
 type ToastType = 'success' | 'error' | 'info' | 'warning';
 
@@ -64,7 +65,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                 className="font-orbitron font-black text-base leading-none mt-0.5 shrink-0"
                 style={{ color: s.text }}
               >
-                {s.icon}
+                <Glyph icon={s.icon} />
               </span>
               <div className="min-w-0">
                 <p

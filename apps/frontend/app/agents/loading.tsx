@@ -2,7 +2,7 @@ import { Skeleton } from '../../components/Skeleton';
 
 export default function AgentsLoading() {
   return (
-    <div className="min-h-screen bg-[#060D17] text-white grid-bg">
+    <div className="min-h-screen text-white">
       <div className="h-16 border-b border-[#9B30FF10]" />
 
       <div className="px-4 sm:px-6 max-w-7xl mx-auto pb-16" style={{ paddingTop: '80px' }}>

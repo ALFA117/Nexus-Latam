@@ -154,8 +154,8 @@ export function LiveFXTicker() {
 
       {/* Footer: last update */}
       <div className="flex items-center justify-between mt-3 pt-2 border-t border-[#00D4FF08]">
-        <p className="text-white/20 text-xs font-mono">vía Bitso Business API</p>
-        <p className="text-white/25 text-xs font-mono">
+        <p className="text-white/55 text-xs font-mono">vía Bitso Business API</p>
+        <p className="text-white/55 text-xs font-mono">
           {lastUpdate ? `↻ ${lastUpdate}` : ''}
         </p>
       </div>

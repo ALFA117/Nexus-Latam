@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Glyph } from './Glyph';
 
 const NFTS = [
   {
@@ -166,7 +167,7 @@ export function NFTShowcase() {
                         color: nft.color,
                       }}
                     >
-                      {nft.icon}
+                      <Glyph icon={nft.icon} />
                     </div>
 
                     {/* Rarity badge */}
@@ -188,9 +189,9 @@ export function NFTShowcase() {
                       <span className="font-orbitron text-xs font-bold" style={{ color: nft.color }}>
                         {nft.type}
                       </span>
-                      <span className="text-white/30 text-xs font-mono">{nft.id}</span>
+                      <span className="text-white/55 text-xs font-mono">{nft.id}</span>
                     </div>
-                    <p className="text-white/35 text-xs font-mono uppercase tracking-wider mb-3">
+                    <p className="text-white/55 text-xs font-mono uppercase tracking-wider mb-3">
                       {nft.collection}
                     </p>
                     <p className="text-white/55 text-xs leading-relaxed mb-3">
@@ -201,7 +202,7 @@ export function NFTShowcase() {
                     <div className="space-y-1.5">
                       {nft.attributes.map((attr) => (
                         <div key={attr.key} className="flex justify-between items-center">
-                          <span className="text-white/30 text-xs font-mono">{attr.key}</span>
+                          <span className="text-white/55 text-xs font-mono">{attr.key}</span>
                           <span
                             className="text-xs font-mono font-semibold clip-corner-sm px-2 py-0.5"
                             style={{
@@ -221,7 +222,7 @@ export function NFTShowcase() {
                       className="mt-4 pt-3 flex items-center gap-1.5"
                       style={{ borderTop: `1px solid ${nft.color}20` }}
                     >
-                      <span className="text-white/25 text-xs font-mono">Minted by</span>
+                      <span className="text-white/55 text-xs font-mono">Minted by</span>
                       <span className="text-xs font-mono font-bold" style={{ color: nft.color }}>
                         {nft.agent}
                       </span>
@@ -245,7 +246,7 @@ export function NFTShowcase() {
             ].map((s) => (
               <div key={s.l}>
                 <p className="font-orbitron text-2xl font-black" style={{ color: s.c }}>{s.v}</p>
-                <p className="text-white/30 text-xs font-mono uppercase tracking-wider mt-1">{s.l}</p>
+                <p className="text-white/55 text-xs font-mono uppercase tracking-wider mt-1">{s.l}</p>
               </div>
             ))}
           </div>

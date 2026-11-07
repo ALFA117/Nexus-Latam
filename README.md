@@ -206,3 +206,28 @@ Proyecto presentado en el **Arbitrum Track** de ETH México 2026.
 
 Mongli_Dao 2026
 MIT — © 2026 NEXUS LATAM
+
+## FIX_NOTES — frontend (rediseño /diseno, 2026-10-11)
+
+- **El hero se cortaba en celular**: la línea "PROTOCOLO DE ___" era un flex sin wrap con `min-w-[280px]` y empujaba el hero a 455 px en una pantalla de 380, así que el badge, el párrafo y los botones quedaban truncados por la derecha. Ahora se apila en celular. El hero también tiene aire debajo de la barra fija y usa `100dvh`.
+- **Cifras inventadas como si fueran reales**: el hero decía "$1.2M+ volumen 24h" en un despliegue de testnet. Ahora dice `Sepolia · Arbitrum testnet` y "<60s settlement objetivo". Los KPIs de Auditoría ($24.5M, 21,000+ tx) y de Yield (posiciones de ejemplo) llevan `DemoBadge`. "AuditAgent / ComplianceAgent / YieldAgent online" pasó a "· simulado", porque esos agentes no están desplegados (ya lo decía el propio `DemoBadge.tsx`).
+- **Contraste**: 191 textos en `text-white/15…45` (entre ~1.6:1 y 4:1) subieron a `/55–/60` (≈6:1). "PROTOCOLO DE" pasó de cian al 33 % al 70 %.
+- **Errores crudos**: "Failed to fetch" se ve ahora como "No se pudo conectar con la API de NEXUS…", con `role="alert"` y un botón **Reintentar** en Trades.
+- **Emojis como íconos** (📊 ⚡ 📈 🤖 ⛓ 🔐 🌎 🎉): ahora son SVG de trazo (`components/Glyph.tsx`) que heredan el color de cada tarjeta.
+- **Íconos que no existían**: el manifest pedía `icon-192.png`, `icon-512.png` y `screenshot-desktop.png` (404 en consola). Ya existen, además de `app/icon.png` y `app/apple-icon.png`. `screenshot-desktop.png` es una captura real de la home y también sirve de imagen OG.
+- **Botones móviles**: los botones neón pasaron de 11 px de texto a 12 px y 44 px de alto, y el menú (☰) a 44×44, con `aria-expanded`.
+- **SEO**: `metadataBase`, canonical, `og:url`, imagen OG, `robots.ts` y `sitemap.ts`. `theme-color` ahora es el fondo (#060D17) y no el cian.
+
+## DESIGN_NOTES — frontend
+
+- **Fondo 3D: el dado sacó la receta 2 (terreno de ondas en wireframe).** Es un océano de datos cian que ondula hacia el horizonte (las rutas del comercio B2B), con las filas lejanas en morado. Encima flotan **contenedores de carga en CSS 3D** con nervaduras y etiqueta de ruta (`MX→AR`, `LC-NFT`, `USDC`): lo que Nexus liquida. El puntero inclina la cámara del terreno y el scroll mueve cada capa a su velocidad (en píxeles; con `scrollYProgress` el fondo arrancaba como si ya hubieras hecho scroll hasta abajo). Es completo en `/` y tranquilo en las demás páginas (un contenedor, terreno al 60 %). En celular hay menos filas y columnas, DPR ≤ 2, pausa con la pestaña oculta y escena quieta con `prefers-reduced-motion`. `components/AmbientBackground.tsx`, montado en `layout.tsx`.
+- Se quitó la cuadrícula `grid-bg` (genérica) y el `bg-[#060D17]` opaco de las 19 páginas, para que el fondo se vea en toda la app.
+- **No se hizo modo claro.** El proyecto pinta sus colores con más de 800 hex/rgba inline, y 330 se arman concatenando alfa (`${color}20`, `#00D4FF30`). Un modo claro serio implica reescribir esos estilos a tokens, con riesgo alto de romper la UI. Queda como pendiente explícito.
+
+### Checklist de 2 minutos en el celular
+
+1. Abre la home: el hero se ve completo (badge, título, párrafo, botones), sin nada cortado a la derecha.
+2. Abajo del hero ondula el terreno cian y flotan dos contenedores girando.
+3. Las cifras dicen "Sepolia · Arbitrum testnet", ya no "$1.2M volumen".
+4. Entra a Trades sin backend: aparece el aviso rojo con "Reintentar" y los datos de ejemplo etiquetados.
+5. Abre el menú ☰: el botón se toca sin fallar.

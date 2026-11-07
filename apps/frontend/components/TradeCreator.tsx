@@ -189,7 +189,7 @@ export function TradeCreator() {
             <h2 className="font-orbitron text-base font-black text-[#F7B731] mb-2 uppercase tracking-wide">
               Nueva Operación Comercial
             </h2>
-            <p className="text-white/30 text-xs font-mono mb-4">
+            <p className="text-white/55 text-xs font-mono mb-4">
               El flujo de abajo es un guion local (setTimeout): no llama a ningún backend ni firma nada on-chain.
             </p>
             <div className="space-y-4">
@@ -199,7 +199,7 @@ export function TradeCreator() {
                 { label: 'Plazo (días)',             key: 'deadlineDays', placeholder: '30',    type: 'number' },
               ].map(({ label, key, placeholder, type }) => (
                 <div key={key}>
-                  <label className="text-white/40 text-xs font-mono uppercase tracking-widest block mb-1.5">
+                  <label className="text-white/60 text-xs font-mono uppercase tracking-widest block mb-1.5">
                     {label}
                   </label>
                   <input
@@ -213,7 +213,7 @@ export function TradeCreator() {
               ))}
 
               <div>
-                <label className="text-white/40 text-xs font-mono uppercase tracking-widest block mb-1.5">
+                <label className="text-white/60 text-xs font-mono uppercase tracking-widest block mb-1.5">
                   País de Destino
                 </label>
                 <select
@@ -243,7 +243,7 @@ export function TradeCreator() {
                 ].map(s => (
                   <div key={s.l} className="text-center glass clip-corner-sm p-2 border-[#00D4FF12]">
                     <p className="font-orbitron text-sm font-black text-[#00D4FF]">{s.v}</p>
-                    <p className="text-white/30 text-xs font-mono">{s.l}</p>
+                    <p className="text-white/55 text-xs font-mono">{s.l}</p>
                   </div>
                 ))}
               </div>
@@ -280,7 +280,7 @@ export function TradeCreator() {
                   key={k}
                   className="glass clip-corner-sm p-3 border-[#00D4FF15]"
                 >
-                  <p className="text-white/30 text-xs font-mono uppercase mb-0.5">{k}</p>
+                  <p className="text-white/55 text-xs font-mono uppercase mb-0.5">{k}</p>
                   <p className="text-[#00D4FF] text-sm font-mono font-semibold truncate">{v}</p>
                 </div>
               ))}
@@ -323,7 +323,7 @@ function Terminal({ logs, loading, logRef }: {
           <div className="w-2.5 h-2.5 rounded-full bg-[#F7B731]" />
           <div className="w-2.5 h-2.5 rounded-full bg-[#00FF94]" />
         </div>
-        <span className="text-white/25 text-xs font-mono ml-2">nexus-protocol — demo-trace</span>
+        <span className="text-white/55 text-xs font-mono ml-2">nexus-protocol — demo-trace</span>
         {loading && (
           <span className="ml-auto flex items-center gap-1.5 text-xs font-mono text-[#00D4FF]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#00D4FF] animate-pulse" />
@@ -338,7 +338,7 @@ function Terminal({ logs, loading, logRef }: {
           const agentColor = AGENT_COLORS[line.agent] ?? '#00D4FF';
           return (
             <div key={i} className="flex gap-2 text-xs font-mono leading-relaxed">
-              <span className="text-white/15 select-none shrink-0">
+              <span className="text-white/55 select-none shrink-0">
                 {String(i + 1).padStart(2, '0')}
               </span>
               <span className="shrink-0 font-bold" style={{ color: agentColor }}>
@@ -359,7 +359,7 @@ function Terminal({ logs, loading, logRef }: {
         })}
         {loading && (
           <div className="flex gap-2 text-xs font-mono">
-            <span className="text-white/15">··</span>
+            <span className="text-white/55">··</span>
             <span className="text-[#00D4FF] blink">█</span>
           </div>
         )}

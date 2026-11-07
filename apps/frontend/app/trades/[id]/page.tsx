@@ -8,6 +8,7 @@ import { useTradeState, useConfirmDelivery }       from '../../../hooks/useContr
 import { FadeIn }                                  from '../../../components/FadeIn';
 import { Navbar }                                  from '../../../components/Navbar';
 import Link                                        from 'next/link';
+import { Glyph } from '../../../components/Glyph';
 
 function toBytes32(str: string): `0x${string}` {
   let hex = '';
@@ -144,7 +145,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#060D17] grid-bg">
+      <div className="min-h-screen">
         <Navbar />
         <div className="page-inner flex items-center justify-center">
           <div className="flex items-center gap-3 text-[#00D4FF]">
@@ -158,7 +159,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
 
   if (!trade) {
     return (
-      <div className="min-h-screen bg-[#060D17] grid-bg">
+      <div className="min-h-screen">
         <Navbar />
         <div className="page-inner flex items-center justify-center">
         <div className="text-center">
@@ -174,13 +175,13 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
   const stateColor   = STATE_COLOR[displayState] ?? '#fff';
 
   return (
-    <div className="min-h-screen bg-[#060D17] text-white grid-bg">
+    <div className="min-h-screen text-white">
       <Navbar />
 
       <div className="page-inner px-4 sm:px-6 max-w-6xl mx-auto">
         {/* Header */}
         <div className="py-8 border-b border-[#00D4FF12]">
-          <Link href="/trades" className="text-white/30 text-xs font-mono hover:text-[#00D4FF] transition-colors">
+          <Link href="/trades" className="text-white/55 text-xs font-mono hover:text-[#00D4FF] transition-colors">
             ← COMMAND CENTER
           </Link>
           <div className="flex flex-wrap items-center gap-4 mt-2">
@@ -197,7 +198,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
                 on-chain
               </span>
             )}
-            <span className="text-white/30 text-xs font-mono ml-auto">{trade.createdAt}</span>
+            <span className="text-white/55 text-xs font-mono ml-auto">{trade.createdAt}</span>
           </div>
           {/* Confirmar Entrega — solo visible cuando está FUNDED */}
           {displayState === 'FUNDED' && (
@@ -238,7 +239,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
               { l: 'Costo',      v: trade.totalCost,             c: '#9B30FF' },
             ].map(s => (
               <div key={s.l}>
-                <p className="text-white/30 text-xs font-mono uppercase">{s.l}</p>
+                <p className="text-white/55 text-xs font-mono uppercase">{s.l}</p>
                 <p className="font-orbitron text-sm font-bold" style={{ color: s.c }}>{s.v}</p>
               </div>
             ))}
@@ -252,7 +253,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
 
             {/* NFT Cards */}
             <div>
-              <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-3">
+              <p className="text-white/55 text-xs font-mono uppercase tracking-widest mb-3">
                 NFTs Acuñados en Esta Operación
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -266,13 +267,13 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
                       className="w-10 h-10 rounded-xl mx-auto mb-2 flex items-center justify-center text-xl float"
                       style={{ background: `${n.color}18`, border: `1px solid ${n.color}40`, color: n.color }}
                     >
-                      {n.icon}
+                      <Glyph icon={n.icon} />
                     </div>
                     <p className="font-orbitron text-xs font-black mb-0.5" style={{ color: n.color }}>
                       {n.type}
                     </p>
                     <p className="font-mono text-sm font-bold text-white">{n.id}</p>
-                    <p className="text-white/25 text-xs font-mono mt-1 truncate">{n.collection}</p>
+                    <p className="text-white/55 text-xs font-mono mt-1 truncate">{n.collection}</p>
                   </div>
                 ))}
               </div>
@@ -280,7 +281,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
 
             {/* On-chain data */}
             <div>
-              <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-3">
+              <p className="text-white/55 text-xs font-mono uppercase tracking-widest mb-3">
                 Datos On-Chain
               </p>
               <div className="glass clip-corner border-[#00D4FF15] p-5 space-y-3">
@@ -293,7 +294,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
                   { l: 'Network',        v: 'Arbitrum Sepolia',   c: '#00D4FF' },
                 ].map(r => (
                   <div key={r.l} className="flex items-center justify-between gap-4 border-b border-[#ffffff05] pb-2 last:border-0 last:pb-0">
-                    <span className="text-white/30 text-xs font-mono shrink-0">{r.l}</span>
+                    <span className="text-white/55 text-xs font-mono shrink-0">{r.l}</span>
                     <span className="text-xs font-mono font-semibold truncate" style={{ color: r.c }}>{r.v}</span>
                   </div>
                 ))}
@@ -303,7 +304,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
 
           {/* Right: Timeline ──────────────────────────────────── */}
           <div>
-            <p className="text-white/30 text-xs font-mono uppercase tracking-widest mb-3">
+            <p className="text-white/55 text-xs font-mono uppercase tracking-widest mb-3">
               Timeline del Protocolo
             </p>
             <div className="space-y-0">
@@ -328,7 +329,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
                   >
                     {t.done
                       ? <span style={{ color: t.color }}>✓</span>
-                      : <span className="text-white/20">○</span>
+                      : <span className="text-white/55">○</span>
                     }
                   </div>
 
@@ -337,7 +338,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
                     <p className="text-white/75 text-xs font-medium">{t.step}</p>
                     <div className="flex items-center gap-2 mt-0.5">
                       <span className="text-xs font-mono" style={{ color: t.color }}>{t.agent}</span>
-                      <span className="text-white/20 text-xs font-mono">{t.ts}</span>
+                      <span className="text-white/55 text-xs font-mono">{t.ts}</span>
                     </div>
                   </div>
                 </div>
@@ -349,7 +350,7 @@ export default function TradeDetailPage({ params }: { params: { id: string } }) 
               <p className="text-[#00FF94] font-orbitron text-xl font-black">
                 {trade.settlementTime}
               </p>
-              <p className="text-white/30 text-xs font-mono">tiempo total E2E</p>
+              <p className="text-white/55 text-xs font-mono">tiempo total E2E</p>
             </div>
           </div>
         </div>

@@ -24,7 +24,14 @@ export function useNexusAPI() {
     } catch (e: unknown) {
       // Ignore intentional aborts
       if (e instanceof Error && e.name === 'AbortError') throw e;
-      const msg = e instanceof Error ? e.message : 'Unknown error';
+      // "Failed to fetch" es un TypeError del navegador: la API no respondió.
+      // Se traduce a una causa y una salida que la persona entienda.
+      const msg =
+        e instanceof TypeError
+          ? 'No se pudo conectar con la API de NEXUS (puede estar apagada o sin red). Abajo se muestran operaciones de ejemplo.'
+          : e instanceof Error
+            ? e.message
+            : 'Error desconocido';
       setError(msg);
       throw e;
     } finally {

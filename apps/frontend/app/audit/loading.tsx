@@ -2,7 +2,7 @@ import { Skeleton, KPICardSkeleton } from '../../components/Skeleton';
 
 export default function AuditLoading() {
   return (
-    <div className="min-h-screen bg-[#060D17] text-white grid-bg">
+    <div className="min-h-screen text-white">
       <div className="h-16 border-b border-white/5" />
 
       <div className="page-inner px-4 sm:px-6 max-w-6xl mx-auto">

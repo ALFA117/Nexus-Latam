@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Navbar }   from '../../components/Navbar';
 import { FadeIn, ScaleIn } from '../../components/FadeIn';
 import Link         from 'next/link';
+import { Glyph } from '../../components/Glyph';
 
 const AGENTS = [
   {
@@ -158,13 +159,13 @@ export default function AgentsPage() {
   const agent = AGENTS.find(a => a.id === selected)!;
 
   return (
-    <div className="min-h-screen bg-[#060D17] text-white grid-bg">
+    <div className="min-h-screen text-white">
       <Navbar />
 
       <div className="page-inner px-4 sm:px-6 max-w-7xl mx-auto pb-16">
         {/* Header */}
         <div className="py-8 border-b border-[#9B30FF20]">
-          <Link href="/" className="text-white/30 text-xs font-mono hover:text-[#9B30FF] transition-colors">
+          <Link href="/" className="text-white/55 text-xs font-mono hover:text-[#9B30FF] transition-colors">
             ← NEXUS LATAM
           </Link>
           <FadeIn>
@@ -173,22 +174,22 @@ export default function AgentsPage() {
               <h1 className="font-orbitron text-2xl sm:text-3xl font-black">
                 INTELLIGENCE <span className="gradient-text-cyan">LAYER</span>
               </h1>
-              <p className="text-white/40 text-xs font-mono mt-1">
+              <p className="text-white/60 text-xs font-mono mt-1">
                 5 agentes autónomos · Claude Opus 4.7 · Adaptive Thinking · Prompt Caching
               </p>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-center">
                 <p className="font-orbitron text-lg font-black text-[#9B30FF]">5</p>
-                <p className="text-white/30 text-xs font-mono">Agentes</p>
+                <p className="text-white/55 text-xs font-mono">Agentes</p>
               </div>
               <div className="text-center">
                 <p className="font-orbitron text-lg font-black text-[#00D4FF]">Opus 4.7</p>
-                <p className="text-white/30 text-xs font-mono">Modelo</p>
+                <p className="text-white/55 text-xs font-mono">Modelo</p>
               </div>
               <div className="text-center">
                 <p className="font-orbitron text-lg font-black text-[#00FF94]">$0.30</p>
-                <p className="text-white/30 text-xs font-mono">/1M tokens cache</p>
+                <p className="text-white/55 text-xs font-mono">/1M tokens cache</p>
               </div>
             </div>
           </div>
@@ -208,7 +209,7 @@ export default function AgentsPage() {
                 border:      `1px solid ${selected === a.id ? `${a.color}50` : 'rgba(255,255,255,0.08)'}`,
               }}
             >
-              <span>{a.icon}</span>
+              <span><Glyph icon={a.icon} /></span>
               <span className="hidden sm:inline">{a.name}</span>
               <span className="sm:hidden">
                 {a.name.split(' ')[0]}
@@ -231,7 +232,7 @@ export default function AgentsPage() {
                   className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl shrink-0"
                   style={{ background: `${agent.color}15`, border: `2px solid ${agent.color}40`, color: agent.color }}
                 >
-                  {agent.icon}
+                  <Glyph icon={agent.icon} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-3 mb-1">
@@ -258,7 +259,7 @@ export default function AgentsPage() {
 
               {/* XP bar */}
               <div className="flex items-center gap-3">
-                <span className="text-white/30 text-xs font-mono w-6">XP</span>
+                <span className="text-white/55 text-xs font-mono w-6">XP</span>
                 <div className="flex-1 progress-bar">
                   <div
                     className="progress-fill"
@@ -289,7 +290,7 @@ export default function AgentsPage() {
                     <p className="font-mono text-xs font-bold mb-1" style={{ color: agent.color }}>
                       {tool.name}()
                     </p>
-                    <p className="text-white/40 text-xs font-mono leading-relaxed">{tool.desc}</p>
+                    <p className="text-white/60 text-xs font-mono leading-relaxed">{tool.desc}</p>
                   </div>
                 ))}
               </div>
@@ -303,7 +304,7 @@ export default function AgentsPage() {
                   <div className="w-2.5 h-2.5 rounded-full bg-[#F7B731]" />
                   <div className="w-2.5 h-2.5 rounded-full bg-[#00FF94]" />
                 </div>
-                <span className="text-white/25 text-xs font-mono ml-2">system_prompt.txt</span>
+                <span className="text-white/55 text-xs font-mono ml-2">system_prompt.txt</span>
                 <span
                   className="ml-auto text-xs font-mono clip-corner-sm px-2 py-0.5"
                   style={{ color: agent.color, background: `${agent.color}15`, border: `1px solid ${agent.color}30` }}
@@ -322,13 +323,13 @@ export default function AgentsPage() {
           <div className="space-y-4">
             {/* Metrics */}
             <div className="glass clip-corner p-4" style={{ borderColor: `${agent.color}20` }}>
-              <p className="font-orbitron text-xs uppercase tracking-widest mb-4 text-white/40">
+              <p className="font-orbitron text-xs uppercase tracking-widest mb-4 text-white/60">
                 Métricas de ejemplo
               </p>
               <div className="space-y-3">
                 {Object.entries(agent.metrics).map(([k, v]) => (
                   <div key={k} className="flex justify-between items-center">
-                    <span className="text-white/35 text-xs font-mono uppercase">{k}</span>
+                    <span className="text-white/55 text-xs font-mono uppercase">{k}</span>
                     <span className="font-orbitron text-sm font-bold" style={{ color: agent.color }}>
                       {v}
                     </span>
@@ -339,7 +340,7 @@ export default function AgentsPage() {
 
             {/* Config */}
             <div className="glass clip-corner p-4" style={{ borderColor: `${agent.color}20` }}>
-              <p className="font-orbitron text-xs uppercase tracking-widest mb-4 text-white/40">
+              <p className="font-orbitron text-xs uppercase tracking-widest mb-4 text-white/60">
                 Configuración Claude
               </p>
               <div className="space-y-2.5 text-xs font-mono">
@@ -351,7 +352,7 @@ export default function AgentsPage() {
                   { k: 'stream',   v: 'true (SSE)' },
                 ].map(({ k, v }) => (
                   <div key={k} className="flex justify-between">
-                    <span className="text-white/30">{k}:</span>
+                    <span className="text-white/55">{k}:</span>
                     <span style={{ color: agent.color }}>{v}</span>
                   </div>
                 ))}
@@ -360,7 +361,7 @@ export default function AgentsPage() {
 
             {/* Skills */}
             <div className="glass clip-corner p-4" style={{ borderColor: `${agent.color}20` }}>
-              <p className="font-orbitron text-xs uppercase tracking-widest mb-3 text-white/40">
+              <p className="font-orbitron text-xs uppercase tracking-widest mb-3 text-white/60">
                 Skills
               </p>
               <div className="flex flex-wrap gap-1.5">
@@ -378,7 +379,7 @@ export default function AgentsPage() {
 
             {/* Connections */}
             <div className="glass clip-corner p-4" style={{ borderColor: `${agent.color}20` }}>
-              <p className="font-orbitron text-xs uppercase tracking-widest mb-3 text-white/40">
+              <p className="font-orbitron text-xs uppercase tracking-widest mb-3 text-white/60">
                 Se comunica con
               </p>
               <div className="space-y-1.5">
@@ -387,7 +388,7 @@ export default function AgentsPage() {
                   return (
                     <div key={c} className="flex items-center gap-2 text-xs font-mono">
                       <span style={{ color: connected?.color ?? '#fff' }}>
-                        {connected?.icon}
+                        <Glyph icon={connected?.icon ?? ''} />
                       </span>
                       <span className="text-white/55">{c}</span>
                     </div>
@@ -400,7 +401,7 @@ export default function AgentsPage() {
 
         {/* Operation flow */}
         <div className="mt-10">
-          <p className="font-orbitron text-xs text-white/30 uppercase tracking-widest mb-4 text-center">
+          <p className="font-orbitron text-xs text-white/55 uppercase tracking-widest mb-4 text-center">
             Flujo de Orquestación · Operación Completa
           </p>
           <div className="glass clip-corner-lg p-5 border-[#00D4FF12]">
@@ -416,26 +417,26 @@ export default function AgentsPage() {
                   <p className="text-xs font-orbitron font-bold mb-1" style={{ color: s.color }}>
                     {s.agent.replace('Agent', '').replace('Nexus', 'NX')}
                   </p>
-                  <p className="text-white/35 text-xs font-mono leading-tight">{s.action}</p>
+                  <p className="text-white/55 text-xs font-mono leading-tight">{s.action}</p>
                 </div>
               ))}
             </div>
             <div className="mt-4 pt-4 border-t border-[#00D4FF10] flex flex-wrap items-center justify-center gap-6 text-center">
               <div>
                 <p className="font-orbitron text-lg font-black text-[#F7B731]">&lt; 60s</p>
-                <p className="text-white/30 text-xs font-mono">End-to-end</p>
+                <p className="text-white/55 text-xs font-mono">End-to-end</p>
               </div>
               <div>
                 <p className="font-orbitron text-lg font-black text-[#9B30FF]">Claude Opus 4.7</p>
-                <p className="text-white/30 text-xs font-mono">Modelo base</p>
+                <p className="text-white/55 text-xs font-mono">Modelo base</p>
               </div>
               <div>
                 <p className="font-orbitron text-lg font-black text-[#00FF94]">$0.30/1M</p>
-                <p className="text-white/30 text-xs font-mono">Con prompt caching</p>
+                <p className="text-white/55 text-xs font-mono">Con prompt caching</p>
               </div>
               <div>
                 <p className="font-orbitron text-lg font-black text-[#00D4FF]">Adaptive</p>
-                <p className="text-white/30 text-xs font-mono">Thinking mode</p>
+                <p className="text-white/55 text-xs font-mono">Thinking mode</p>
               </div>
             </div>
           </div>
@@ -457,7 +458,7 @@ export default function AgentsPage() {
             </button>
           </Link>
           <Link href="/pitch">
-            <button className="text-white/40 hover:text-white/60 text-sm font-mono transition-colors border border-white/10 hover:border-white/20 px-6 py-3 rounded">
+            <button className="text-white/60 hover:text-white/60 text-sm font-mono transition-colors border border-white/10 hover:border-white/20 px-6 py-3 rounded">
               PITCH DECK
             </button>
           </Link>
@@ -541,12 +542,12 @@ function AgentQueryPanel({ agent }: { agent: { id: string; color: string; name: 
   return (
     <div className="mt-10 glass clip-corner-lg p-6" style={{ borderColor: `${agent.color}25` }}>
       <div className="flex items-center gap-3 mb-5">
-        <span className="text-xl" style={{ color: agent.color }}>{agent.icon}</span>
+        <span className="text-xl" style={{ color: agent.color }}><Glyph icon={agent.icon} /></span>
         <div>
           <p className="font-orbitron text-sm font-black" style={{ color: agent.color }}>
             Consultar {agent.name}
           </p>
-          <p className="text-white/35 text-xs font-mono">Simulación de respuesta del agente</p>
+          <p className="text-white/55 text-xs font-mono">Simulación de respuesta del agente</p>
         </div>
         <div className="ml-auto flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: agent.color }} />
@@ -601,7 +602,7 @@ function AgentQueryPanel({ agent }: { agent: { id: string; color: string; name: 
         >
           <div className="flex items-center gap-2 mb-2 pb-2 border-b" style={{ borderColor: `${agent.color}20` }}>
             <span style={{ color: agent.color }}>[{agent.name}]</span>
-            <span className="text-white/25">→ respuesta</span>
+            <span className="text-white/55">→ respuesta</span>
             {typing && <span className="ml-auto text-xs font-mono animate-pulse" style={{ color: agent.color }}>typing...</span>}
           </div>
           <p style={{ color: `${agent.color}cc` }}>

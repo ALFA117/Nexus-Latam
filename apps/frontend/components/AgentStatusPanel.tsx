@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAgentEvents }      from '../hooks/useAgentEvents';
+import { Glyph } from './Glyph';
 
 interface AgentStatus {
   name:     string;
@@ -141,7 +142,7 @@ export function AgentStatusPanel() {
               className="w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 mt-0.5"
               style={{ background: `${a.color}18`, border: `1px solid ${a.color}35`, color: a.color }}
             >
-              {a.icon}
+              <Glyph icon={a.icon} />
             </div>
 
             <div className="flex-1 min-w-0">
@@ -166,8 +167,8 @@ export function AgentStatusPanel() {
 
               {/* Role + ops */}
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-white/30 text-xs font-mono">{a.role}</span>
-                <span className="text-white/30 text-xs font-mono">{a.opsCount} ops</span>
+                <span className="text-white/55 text-xs font-mono">{a.role}</span>
+                <span className="text-white/55 text-xs font-mono">{a.opsCount} ops</span>
               </div>
 
               {/* Load bar */}
@@ -198,7 +199,7 @@ export function AgentStatusPanel() {
       {/* Live event feed */}
       <div className="mt-3 pt-3 border-t border-[#00D4FF08]">
         <div className="flex items-center justify-between mb-2">
-          <span className="font-orbitron text-xs text-white/30 uppercase tracking-widest">Live Feed</span>
+          <span className="font-orbitron text-xs text-white/55 uppercase tracking-widest">Live Feed</span>
           <span className="flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-[#00FF94] animate-pulse" />
             <span className="text-[#00FF94] text-xs font-mono">live</span>
@@ -211,11 +212,11 @@ export function AgentStatusPanel() {
               className="flex gap-2 text-xs font-mono transition-all duration-500"
               style={{ opacity: 1 - i * 0.18 }}
             >
-              <span className="shrink-0 text-white/15">{e.ts}</span>
+              <span className="shrink-0 text-white/55">{e.ts}</span>
               <span className="shrink-0 font-bold" style={{ color: e.color }}>
                 [{e.agent.replace('Agent', '').replace('Nexus', '')}]
               </span>
-              <span className="text-white/40 truncate">{e.msg}</span>
+              <span className="text-white/60 truncate">{e.msg}</span>
             </div>
           ))}
         </div>
@@ -223,8 +224,8 @@ export function AgentStatusPanel() {
 
       {/* Footer */}
       <div className="pt-2 flex items-center justify-between">
-        <span className="text-white/20 text-xs font-mono">Claude Opus 4.7</span>
-        <span className="text-white/20 text-xs font-mono">
+        <span className="text-white/55 text-xs font-mono">Claude Opus 4.7</span>
+        <span className="text-white/55 text-xs font-mono">
           {String(tick).padStart(4, '0')} ticks
         </span>
       </div>
